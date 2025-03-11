@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Login.css';
-import { signInWithGoogle } from './GoogleSignIn'
+import { signInWithGoogle } from './GoogleSignin'
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -91,7 +91,7 @@ function Login() {
               <img src="/google-icon.svg" alt="Google" />
               Sign in with Google
             </button>
-          </div>
+                      </div>
           
           <div className="divider">
             <span>OR</span>
@@ -118,20 +118,22 @@ function Login() {
 
           {step === 'password' && (
             <form onSubmit={handlePasswordSubmit}>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button 
-                type="button" 
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </button>
+              <div className="password-field">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button 
+                  type="button" 
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? 'Hide' : 'Show'}
+                </button>
+              </div>
               <button 
                 type="submit" 
                 className="continue-button"
@@ -151,7 +153,7 @@ function Login() {
 
           {step === 'otp' && (
             <form onSubmit={handleOtpSubmit}>
-              <p>Enter the verification code sent to your email</p>
+              <p className="otp-prompt">Enter the verification code sent to your email</p>
               <input
                 type="text"
                 placeholder="Verification code"
