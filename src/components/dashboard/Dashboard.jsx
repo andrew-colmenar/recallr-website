@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import authService from '../services/authService'; 
-import '../styles/Dashboard.css';
+import { useAuth } from '../../context/AuthContext';
+import authService from '../../services/authService'; 
+import '../../styles/Dashboard.css';
 
 function Dashboard() {
   const { user, logout } = useAuth();
