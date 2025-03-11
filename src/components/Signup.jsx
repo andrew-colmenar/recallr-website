@@ -100,11 +100,6 @@ function Signup() {
               <img src="/google-icon.svg" alt="Google" />
               Sign up with Google
             </button>
-            
-            <button className="social-button github">
-              <img src="/github-icon.svg" alt="GitHub" />
-              Sign up with GitHub
-            </button>
           </div>
           
           <div className="divider">
@@ -228,9 +223,6 @@ function Signup() {
             <p>Already have an account? <button onClick={handleLoginClick}>Sign in</button></p>
           </div>
         </div>
-      </div>
-      <div className="dashboard-preview">
-        {/* Dashboard preview content - optional */}
       </div>
     </div>
   );
