@@ -1,0 +1,147 @@
+.sessions-manager {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .sessions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .sessions-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .refresh-button {
+    padding: 6px 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .refresh-button:hover {
+    background-color: #e5e5e5;
+  }
+  
+  .sessions-loading,
+  .no-sessions {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+  }
+  
+  .sessions-error {
+    background-color: #fce8e6;
+    color: #d93025;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  
+  .sessions-list {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .sessions-table-header {
+    display: flex;
+    background-color: #f5f7fa;
+    font-weight: 500;
+    color: #333;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .session-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 12px 15px;
+    transition: background-color 0.2s;
+  }
+  
+  .session-row:last-child {
+    border-bottom: none;
+  }
+  
+  .session-row:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .session-row.current-session {
+    background-color: #e8f0fe;
+  }
+  
+  .column {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .column.device {
+    flex: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .column.actions {
+    flex: 0.5;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .current-badge {
+    font-size: 12px;
+    padding: 2px 6px;
+    background-color: #4285f4;
+    color: white;
+    border-radius: 10px;
+    margin-left: 5px;
+  }
+  
+  .revoke-button {
+    padding: 4px 8px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #666;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+  
+  .revoke-button:hover:not(:disabled) {
+    background-color: #f44336;
+    color: white;
+    border-color: #f44336;
+  }
+  
+  .revoke-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    .column.browser,
+    .column.location {
+      display: none;
+    }
+    
+    .column.device {
+      flex: 2;
+    }
+  }

@@ -1,126 +1,216 @@
-/* src/styles/Login.css */
 .login-container {
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  background-color: #f5f5f5;
 }
 
 .login-panel {
   flex: 1;
-  background-color: #000;
-  color: white;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 40px;
+  max-width: 500px;
+  background-color: white;
 }
 
 .login-content {
-  max-width: 400px;
   width: 100%;
+  max-width: 400px;
 }
 
 .login-content h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .login-content p {
-  color: #aaa;
-  margin-bottom: 2rem;
+  color: #666;
+  margin-bottom: 25px;
 }
 
 .social-logins {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .social-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border-radius: 4px;
-  background: transparent;
-  border: 1px solid #333;
-  color: white;
-  font-size: 0.9rem;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: white;
   cursor: pointer;
+  font-weight: 500;
   transition: background-color 0.2s;
-}
-
-.social-button:hover {
-  background-color: #111;
 }
 
 .social-button img {
   width: 20px;
   height: 20px;
+  margin-right: 10px;
+}
+
+.social-button.google:hover {
+  background-color: #f2f2f2;
+}
+
+.social-button.github {
+  background-color: #24292e;
+  color: white;
+  border: none;
+}
+
+.social-button.github:hover {
+  background-color: #1a1e22;
 }
 
 .divider {
   display: flex;
   align-items: center;
-  text-align: center;
-  margin: 1.5rem 0;
+  margin: 20px 0;
+  color: #999;
 }
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #eee;
 }
 
 .divider span {
-  padding: 0 0.75rem;
-  color: #777;
+  padding: 0 10px;
+  font-size: 14px;
 }
 
-input[type="email"] {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  background-color: transparent;
-  border: 1px solid #333;
-  border-radius: 4px;
-  color: white;
-  font-size: 1rem;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4285f4;
 }
 
 .continue-button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: white;
-  color: black;
+  padding: 12px;
+  border-radius: 6px;
+  background-color: #4285f4;
+  color: white;
+  font-weight: 500;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .continue-button:hover {
-  background-color: #eee;
+  background-color: #3367d6;
 }
 
-.dashboard-preview {
-  flex: 1;
-  background-color: #f2f2f2;
+.continue-button:disabled {
+  background-color: #a5c0f0;
+  cursor: not-allowed;
+}
+
+.password-field {
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .login-container {
-    flex-direction: column;
-  }
-  
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  align-self: center;
+}
+
+.resend-button {
+  background: none;
+  border: none;
+  color: #4285f4;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  align-self: center;
+}
+
+.error-message {
+  color: #d93025;
+  margin-bottom: 15px;
+  font-size: 14px;
+  padding: 10px;
+  background-color: #fce8e6;
+  border-radius: 4px;
+}
+
+.name-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.name-fields input {
+  flex: 1;
+}
+
+.signup-link,
+.login-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.signup-link button,
+.login-link button {
+  background: none;
+  border: none;
+  color: #4285f4;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.dashboard-preview {
+  flex: 1.5;
+  background-color: #f5f8ff;
+  display: none;
+}
+
+@media (min-width: 1024px) {
   .dashboard-preview {
-    display: none;
+    display: block;
   }
 }
