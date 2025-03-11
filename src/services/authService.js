@@ -11,9 +11,19 @@ const getDeviceInfo = () => {
   };
 };
 
+// Update your setSessionCookies function
 const setSessionCookies = (session) => {
-  Cookies.set('user_id', session.user_id, { expires: 7 });
-  Cookies.set('session_id', session.session_id, { expires: 7 });
+  const isProduction = 0; // Change to 1 when deploying to production
+  Cookies.set('user_id', session.user_id, { 
+    expires: 7,
+    sameSite: 'strict',
+    secure: isProduction // Will be false on localhost, allowing cookies to work
+  });
+  Cookies.set('session_id', session.session_id, { 
+    expires: 7,
+    sameSite: 'strict',
+    secure: isProduction
+  });
 };
 
 const clearSessionCookies = () => {
