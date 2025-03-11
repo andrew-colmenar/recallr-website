@@ -45,24 +45,15 @@ function getDeviceInfo() {
 export const signInWithGoogle = async () => {
   const deviceInfo = getDeviceInfo();
 
-  const params = {
-    referal_url: encodeURIComponent('https://auth.recallrai.com'),
+  const params = new URLSearchParams({
+    referal_url: "https://auth.recallrai.com", // No need for `encodeURIComponent` here
     device_type: deviceInfo.deviceType,
     operating_system: deviceInfo.operatingSystem,
     browser_version: deviceInfo.browserVersion,
     browser_name: deviceInfo.browserName,
-  };
-
-  const response = await axios.get("/api/v1/sso/google/redirect", {
-    params,
-    maxRedirects: 0,
-    headers: {
-      Accept: "application/json", 
-    },
   });
 
-  const redirectUrl = response.data.redirectUri;
-  console.log(response.data);
+  const redirectUrl = `https://auth.recallrai.com/api/v1/sso/google/redirect?${params.toString()}`;
 
   window.location.href = redirectUrl;
 };
