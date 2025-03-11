@@ -1,6 +1,7 @@
 // src/components/Login.jsx
 import { useState } from 'react'
 import '../styles/Login.css'
+import { signInWithGoogle } from './GoogleSignIn'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -19,7 +20,7 @@ function Login() {
           <p>Sign in to your account</p>
           
           <div className="social-logins">
-            <button className="social-button google">
+            <button className="social-button google" onClick={signInWithGoogle}>
               <img src="/google-icon.svg" alt="Google" />
               Sign in with Google
             </button>
