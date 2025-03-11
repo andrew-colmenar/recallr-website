@@ -91,7 +91,7 @@ function Login() {
               <img src="/google-icon.svg" alt="Google" />
               Sign in with Google
             </button>
-                      </div>
+          </div>
           
           <div className="divider">
             <span>OR</span>
@@ -184,9 +184,6 @@ function Login() {
             <p>Don't have an account? <button onClick={handleSignupClick}>Sign up</button></p>
           </div>
         </div>
-      </div>
-      <div className="dashboard-preview">
-        {/* Dashboard preview content - optional */}
       </div>
     </div>
   );

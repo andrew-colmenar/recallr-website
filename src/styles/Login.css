@@ -1,12 +1,13 @@
 .login-container {
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: #f5f5f5;
+  background-color: #000;
 }
 
 .login-panel {
-  flex: 1;
   background-color: #000;
   color: white;
   display: flex;
@@ -14,6 +15,7 @@
   align-items: center;
   padding: 2rem;
   max-width: 500px;
+  width: 100%;
 }
 
 .login-content {
@@ -24,7 +26,7 @@
 .login-content h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #fff;
 }
 
 .login-content p {
