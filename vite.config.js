@@ -9,9 +9,9 @@ export default defineConfig({
       '/api': {
         target: 'https://auth.recallrai.com',
         changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api/, '') // Correct path rewriting
-      }
-    }
-  }
+        secure: false,
+        // rewrite: (path) => path.replace(/^\/api/, '')
+      },
+    },
+  },
 })
