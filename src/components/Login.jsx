@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Login.css';
@@ -13,9 +13,32 @@ function Login() {
   const [transactionId, setTransactionId] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [step, setStep] = useState('email'); // email -> password -> otp -> complete
+  const [otpExpiresAt, setOtpExpiresAt] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(null);
   
   const navigate = useNavigate();
   const { login, completeLogin, verifyOtp, resendOtp } = useAuth();
+
+  useEffect(() => {
+    let timer;
+    if (otpExpiresAt) {
+      timer = setInterval(() => {
+        const expiryTime = new Date(otpExpiresAt).getTime();
+        const currentTime = new Date().getTime();
+        const remaining = Math.max(0, Math.floor((expiryTime - currentTime) / 1000));
+        
+        setTimeRemaining(remaining);
+        
+        if (remaining <= 0) {
+          clearInterval(timer);
+        }
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [otpExpiresAt]);
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +61,12 @@ function Login() {
       setError('');
       const response = await login(email, password);
       setTransactionId(response.transaction_id);
+      
+      // Set OTP expiration time from API response
+      if (response.otp_expires_at) {
+        setOtpExpiresAt(response.otp_expires_at);
+      }
+      
       setStep('otp');
     } catch (error) {
       setError(error.response?.data?.detail || 'Login failed. Please check your credentials.');
@@ -64,7 +93,13 @@ function Login() {
   const handleResendOtp = async () => {
     try {
       setLoading(true);
-      await resendOtp(transactionId);
+      const response = await resendOtp(transactionId);
+      
+      // Update OTP expiration time after resend
+      if (response && response.otp_expires_at) {
+        setOtpExpiresAt(response.otp_expires_at);
+      }
+      
       setError('');
     } catch (error) {
       setError(error.response?.data?.detail || 'Failed to resend OTP');
@@ -75,6 +110,14 @@ function Login() {
 
   const handleSignupClick = () => {
     navigate('/signup');
+  };
+
+  // Format remaining time as MM:SS
+  const formatTime = (seconds) => {
+    if (seconds === null) return '';
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -154,6 +197,9 @@ function Login() {
           {step === 'otp' && (
             <form onSubmit={handleOtpSubmit}>
               <p className="otp-prompt">Enter the verification code sent to your email</p>
+              {timeRemaining !== null && timeRemaining > 0 && (
+                <p className="otp-timer">Code expires in: {formatTime(timeRemaining)}</p>
+              )}
               <input
                 type="text"
                 placeholder="Verification code"
@@ -173,9 +219,11 @@ function Login() {
                 type="button" 
                 className="resend-button"
                 onClick={handleResendOtp}
-                disabled={loading}
+                disabled={loading || (timeRemaining !== null && timeRemaining > 0)}
               >
-                Resend code
+                {timeRemaining !== null && timeRemaining > 0 
+                  ? `Resend code in ${formatTime(timeRemaining)}`
+                  : 'Resend code'}
               </button>
             </form>
           )}

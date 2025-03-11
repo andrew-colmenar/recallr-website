@@ -46,7 +46,8 @@ export const signInWithGoogle = async () => {
   const deviceInfo = getDeviceInfo();
 
   const params = new URLSearchParams({
-    referal_url: "https://auth.recallrai.com", // No need for `encodeURIComponent` here
+    // referal_url: "https://auth.recallrai.com", 
+    referal_url: "http://localhost:5173/dashboard",
     device_type: deviceInfo.deviceType,
     operating_system: deviceInfo.operatingSystem,
     browser_version: deviceInfo.browserVersion,
