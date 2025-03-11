@@ -1,6 +1,5 @@
 // Base API URL configuration
-// For direct testing, use the absolute URL temporarily
-const API_BASE_URL = 'https://auth.recallrai.com'; 
+const API_BASE_URL = 'https://auth.recallrai.com'; // Replace with your actual API URL
 
 // Create API service with common configurations
 const apiService = {
@@ -55,15 +54,12 @@ const apiService = {
   // Auth endpoints
   auth: {
     requestSignup(email, deviceInfo) {
-      // Make sure this path matches exactly what the backend expects
       return apiService.request('/signup/request', {
         method: 'POST',
-        body: JSON.stringify({ email, device_info: deviceInfo }),
-        mode: 'no-cors'
+        body: JSON.stringify({ email, device_info: deviceInfo })
       });
     },
     
-    // Similarly check these paths
     verifyOtp(transactionId, otp) {
       return apiService.request('/otp/verify', {
         method: 'POST',
