@@ -1,7 +1,7 @@
 import React from 'react';
 import { Check, Sparkles, Shield } from "lucide-react";
 
-const PricingPage = () => {
+const Billing = () => {
   return (
     <div className="bg-[#1a191e] dark min-h-screen flex flex-col items-center justify-center py-12 px-4">
       <div className="max-w-6xl w-full mx-auto text-center mb-12">
@@ -142,4 +142,4 @@ const PricingPage = () => {
   );
 };
 
-export default PricingPage;
+export default Billing;
