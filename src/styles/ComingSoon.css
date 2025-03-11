@@ -1,0 +1,37 @@
+/* Reset margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Full-screen container with a black background and white text */
+  .coming-soon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    color: #fff;
+    height: 100vh;
+    width: 100vw;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Centered content styling */
+  .coming-soon-content {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Large heading style */
+  .coming-soon-content h1 {
+    font-size: 4rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .coming-soon-content h1 {
+      font-size: 2.5rem;
+    }
+  }
+  
