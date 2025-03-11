@@ -90,11 +90,6 @@ function Login() {
               <img src="/google-icon.svg" alt="Google" />
               Sign in with Google
             </button>
-            
-            <button className="social-button github">
-              <img src="/github-icon.svg" alt="GitHub" />
-              Sign in with GitHub
-            </button>
           </div>
           
           <div className="divider">
