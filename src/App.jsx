@@ -7,6 +7,7 @@ import Signup from "./components/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
 import SessionsManager from "./components/SessionsManager";
 import Billing from "./components/Billing/Billing";
+import ComingSoon from "./components/CommingSoon";
 import "./App.css";
 import authService from "./services/authService";
 
@@ -78,6 +79,72 @@ function AppRoutes() {
         element={
           <ProtectedRoute isValid={sessionValid}>
             <Billing />
+          </ProtectedRoute>
+        } 
+      />
+      
+      {/* Coming Soon protected routes */}
+      <Route 
+        path="/usage" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/users" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/apikeys" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/settings" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/getstarted" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/status" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/playground" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/docs" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <ComingSoon />
           </ProtectedRoute>
         } 
       />
