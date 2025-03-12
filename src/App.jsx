@@ -14,7 +14,7 @@ import CreateProject from "./components/CreateProject/CreateProject";
 import Header from "./components/Header/Header";
 
 // Main app content with routes
-function AppRoutes() {
+function AppContent() {
   const { user, isAuthenticated, loading } = useAuth();
   const [sessionValid, setSessionValid] = useState(null);
   const [validatingSession, setValidatingSession] = useState(true);
@@ -48,89 +48,92 @@ function AppRoutes() {
   }
 
   return (
-    <Routes>
-      {/* Public routes - accessible when not logged in */}
-      <Route 
-        path="/login" 
-        element={sessionValid ? <Navigate to="/dashboard" /> : <Login />} 
-      />
-      <Route 
-        path="/signup" 
-        element={sessionValid ? <Navigate to="/dashboard" /> : <Signup />} 
-      />
-      
-      {/* Protected routes - require authentication */}
-      <Route 
-        path="/dashboard/*" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <Dashboard />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/sessions" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <SessionsManager />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/CreateProject" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <CreateProject />
-          </ProtectedRoute>
-        } 
-      />
-      <Route path="/usage" element={<Navigate to="/dashboard/usage" />} />
-      <Route path="/users" element={<Navigate to="/dashboard/users" />} />
-      <Route path="/apikeys" element={<Navigate to="/dashboard/apikeys" />} />
-      <Route path="/settings" element={<Navigate to="/dashboard/settings" />} />
-      <Route path="/billing" element={<Navigate to="/dashboard/billing" />} />
-      <Route path="/getstarted" element={<Navigate to="/dashboard/getstarted" />} />
-      <Route 
-        path="/status" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/playground" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/docs" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
-      
-      {/* Redirect from root to dashboard or login */}
-      <Route 
-        path="/" 
-        element={
-          sessionValid ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
-        } 
-      />
-      
-      {/* 404 route - handle unmatched routes */}
-      <Route 
-        path="*" 
-        element={
-          <Navigate to={sessionValid ? "/dashboard" : "/login"} />
-        } 
-      />
-    </Routes>
+    <>
+      {sessionValid && <Header />}
+      <Routes>
+        {/* Public routes - accessible when not logged in */}
+        <Route 
+          path="/login" 
+          element={sessionValid ? <Navigate to="/dashboard" /> : <Login />} 
+        />
+        <Route 
+          path="/signup" 
+          element={sessionValid ? <Navigate to="/dashboard" /> : <Signup />} 
+        />
+        
+        {/* Protected routes - require authentication */}
+        <Route 
+          path="/dashboard/*" 
+          element={
+            <ProtectedRoute isValid={sessionValid}>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/sessions" 
+          element={
+            <ProtectedRoute isValid={sessionValid}>
+              <SessionsManager />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/CreateProject" 
+          element={
+            <ProtectedRoute isValid={sessionValid}>
+              <CreateProject />
+            </ProtectedRoute>
+          } 
+        />
+        <Route path="/usage" element={<Navigate to="/dashboard/usage" />} />
+        <Route path="/users" element={<Navigate to="/dashboard/users" />} />
+        <Route path="/apikeys" element={<Navigate to="/dashboard/apikeys" />} />
+        <Route path="/settings" element={<Navigate to="/dashboard/settings" />} />
+        <Route path="/billing" element={<Navigate to="/dashboard/billing" />} />
+        <Route path="/getstarted" element={<Navigate to="/dashboard/getstarted" />} />
+        <Route 
+          path="/status" 
+          element={
+            <ProtectedRoute isValid={sessionValid}>
+              <ComingSoon />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/playground" 
+          element={
+            <ProtectedRoute isValid={sessionValid}>
+              <ComingSoon />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/docs" 
+          element={
+            <ProtectedRoute isValid={sessionValid}>
+              <ComingSoon />
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Redirect from root to dashboard or login */}
+        <Route 
+          path="/" 
+          element={
+            sessionValid ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+          } 
+        />
+        
+        {/* 404 route - handle unmatched routes */}
+        <Route 
+          path="*" 
+          element={
+            <Navigate to={sessionValid ? "/dashboard" : "/login"} />
+          } 
+        />
+      </Routes>
+    </>
   );
 }
 
@@ -139,8 +142,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Header />
-        <AppRoutes />
+        <AppContent />
       </Router>
     </AuthProvider>
   );
