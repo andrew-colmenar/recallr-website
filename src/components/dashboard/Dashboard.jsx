@@ -1,24 +1,26 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Sidebar from "./Sidebar/Sidebar";
+import Sidebar from "./Sidebar/Sidebar"
 import Header from "../Header/Header";
 import RequestsDashboard from "./RequestsDashboard";
 import ComingSoon from "../ComingSoon/ComingSoon";
+import Billing from "../Billing/Billing";
+import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
   return (
-    <div className="flex h-screen bg-[#121212] text-white">
+    <div className={styles.mainContainer}>
       <Sidebar />
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className={styles.contentContainer}>
         <Header />
-        <main className="flex-1 overflow-auto p-6">
+        <main className={styles.main}>
           <Routes>
             <Route index element={<RequestsDashboard />} />
             <Route path="usage" element={<ComingSoon />} />
             <Route path="users" element={<ComingSoon />} />
             <Route path="apikeys" element={<ComingSoon />} />
             <Route path="settings" element={<ComingSoon />} />
-            <Route path="billing" element={<ComingSoon />} />
+            <Route path="billing" element={<Billing />} />
             <Route path="getstarted" element={<ComingSoon />} />
             <Route path="status" element={<ComingSoon />} />
             <Route path="playground" element={<ComingSoon />} />
