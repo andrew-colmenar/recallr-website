@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import RequestsDashboard from "./RequestsDashboard";
-import ComingSoon from "../CommingSoon";
+import ComingSoon from "../ComingSoon/ComingSoon";
 
 const Dashboard = () => {
   return (

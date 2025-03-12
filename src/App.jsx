@@ -7,7 +7,7 @@ import Signup from "./components/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
 import SessionsManager from "./components/SessionsManager";
 import Billing from "./components/Billing/Billing";
-import ComingSoon from "./components/CommingSoon";
+import ComingSoon from "./components/ComingSoon/ComingSoon";
 import "./App.css";
 import authService from "./services/authService";
 
