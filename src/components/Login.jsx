@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Login.css';
-import { signInWithGoogle } from './GoogleSignin'
+import { signInWithGoogle } from './GoogleAuth'
 
 function Login() {
   const [email, setEmail] = useState('');
