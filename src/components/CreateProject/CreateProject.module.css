@@ -3,12 +3,12 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #0a0a0a;
+    background-color: #000000;
     padding: 20px;
   }
   
   .create-project-card {
-    background-color: #1a1a1a;
+    background-color: #1F1F22;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     padding: 32px;
@@ -38,16 +38,17 @@
   }
   
   .form-group label {
-    color: #b3b3b3;
+    color: #ffffff;
     font-size: 14px;
     font-weight: 500;
+    opacity: 0.8;
   }
   
   .form-group input,
   .form-group textarea {
     padding: 12px 16px;
-    background-color: #2a2a2a;
-    border: 1px solid #3a3a3a;
+    background-color: #1A1A1E;
+    border: 1px solid #2a2a2e;
     border-radius: 8px;
     color: #ffffff;
     font-size: 16px;
@@ -57,35 +58,36 @@
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
-    border-color: #5e5eff;
-    box-shadow: 0 0 0 2px rgba(94, 94, 255, 0.25);
+    border-color: #444444;
+    box-shadow: 0 0 0 2px rgba(68, 68, 68, 0.25);
   }
   
   .form-group input::placeholder,
   .form-group textarea::placeholder {
-    color: #6c6c6c;
+    color: #7c7c7c;
   }
   
   .create-project-button {
     margin-top: 16px;
     padding: 14px;
-    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    background-color: #111111;
     color: white;
     font-size: 16px;
     font-weight: 600;
-    border: none;
+    border: 1px solid #333333;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
   }
   
   .create-project-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    background-color: #222222;
+    border-color: #444444;
   }
   
   .create-project-button:active {
-    transform: translateY(0);
+    transform: translateY(1px);
+    background-color: #000000;
   }
   
   /* Animations */

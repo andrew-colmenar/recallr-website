@@ -79,7 +79,7 @@ function AppContent() {
           } 
         />
         <Route 
-          path="/CreateProject" 
+          path="/create-project" 
           element={
             <ProtectedRoute isValid={sessionValid}>
               <CreateProject />

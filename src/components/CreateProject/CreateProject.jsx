@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './CreateProject.module.css';
+import styles from './CreateProject.module.css';
 
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
@@ -22,12 +22,12 @@ const CreateProject = () => {
   };
 
   return (
-    <div className="create-project-container">
-      <div className="create-project-card">
-        <h2 className="create-project-title">Create New Project</h2>
+    <div className={styles['create-project-container']}>
+      <div className={styles['create-project-card']}>
+        <h2 className={styles['create-project-title']}>Create New Project</h2>
         
-        <form onSubmit={handleSubmit} className="create-project-form">
-          <div className="form-group">
+        <form onSubmit={handleSubmit} className={styles['create-project-form']}>
+          <div className={styles['form-group']}>
             <label htmlFor="projectName">Project Name</label>
             <input
               type="text"
@@ -40,7 +40,7 @@ const CreateProject = () => {
             />
           </div>
           
-          <div className="form-group">
+          <div className={styles['form-group']}>
             <label htmlFor="projectDescription">Project Description</label>
             <textarea
               id="projectDescription"
@@ -52,7 +52,7 @@ const CreateProject = () => {
             />
           </div>
           
-          <button type="submit" className="create-project-button">
+          <button type="submit" className={styles['create-project-button']}>
             Create Project
           </button>
         </form>
