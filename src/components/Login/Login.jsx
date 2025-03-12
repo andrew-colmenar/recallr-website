@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import '../styles/Login.css';
-import { signInWithGoogle } from './GoogleAuth'
+import { useAuth } from '../../context/AuthContext';
+import { signInWithGoogle } from '../GoogleAuth';
+import styles from './Login.module.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -121,37 +121,38 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-panel">
-        <div className="login-content">
+    <div className={styles.loginContainer}>
+      <div className={styles.loginPanel}>
+        <div className={styles.loginContent}>
           <h1>Welcome back!</h1>
           <p>Sign in to your account</p>
           
-          {error && <div className="error-message">{error}</div>}
+          {error && <div className={styles.errorMessage}>{error}</div>}
           
-          <div className="social-logins">
-            <button className="social-button google" onClick={signInWithGoogle}>
+          <div className={styles.socialLogins}>
+            <button className={`${styles.socialButton} ${styles.google}`} onClick={signInWithGoogle}>
               <img src="/google-icon.svg" alt="Google" />
               Sign in with Google
             </button>
           </div>
           
-          <div className="divider">
+          <div className={styles.divider}>
             <span>OR</span>
           </div>
           
           {step === 'email' && (
-            <form onSubmit={handleEmailSubmit}>
+            <form onSubmit={handleEmailSubmit} className={styles.form}>
               <input
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className={styles.input}
               />
               <button 
                 type="submit" 
-                className="continue-button"
+                className={styles.continueButton}
                 disabled={loading}
               >
                 {loading ? 'Loading...' : 'Continue'}
@@ -160,18 +161,19 @@ function Login() {
           )}
 
           {step === 'password' && (
-            <form onSubmit={handlePasswordSubmit}>
-              <div className="password-field">
+            <form onSubmit={handlePasswordSubmit} className={styles.form}>
+              <div className={styles.passwordField}>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className={styles.input}
                 />
                 <button 
                   type="button" 
-                  className="toggle-password"
+                  className={styles.togglePassword}
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? 'Hide' : 'Show'}
@@ -179,14 +181,14 @@ function Login() {
               </div>
               <button 
                 type="submit" 
-                className="continue-button"
+                className={styles.continueButton}
                 disabled={loading}
               >
                 {loading ? 'Loading...' : 'Login'}
               </button>
               <button 
                 type="button" 
-                className="back-button"
+                className={styles.backButton}
                 onClick={() => setStep('email')}
               >
                 Back
@@ -195,10 +197,10 @@ function Login() {
           )}
 
           {step === 'otp' && (
-            <form onSubmit={handleOtpSubmit}>
-              <p className="otp-prompt">Enter the verification code sent to your email</p>
+            <form onSubmit={handleOtpSubmit} className={styles.form}>
+              <p className={styles.otpPrompt}>Enter the verification code sent to your email</p>
               {timeRemaining !== null && timeRemaining > 0 && (
-                <p className="otp-timer">Code expires in: {formatTime(timeRemaining)}</p>
+                <p className={styles.otpTimer}>Code expires in: {formatTime(timeRemaining)}</p>
               )}
               <input
                 type="text"
@@ -207,17 +209,18 @@ function Login() {
                 onChange={(e) => setOtpCode(e.target.value)}
                 maxLength={6}
                 required
+                className={styles.input}
               />
               <button 
                 type="submit" 
-                className="continue-button"
+                className={styles.continueButton}
                 disabled={loading}
               >
                 {loading ? 'Verifying...' : 'Verify & Login'}
               </button>
               <button 
                 type="button" 
-                className="resend-button"
+                className={styles.resendButton}
                 onClick={handleResendOtp}
                 disabled={loading || (timeRemaining !== null && timeRemaining > 0)}
               >
@@ -228,7 +231,7 @@ function Login() {
             </form>
           )}
           
-          <div className="signup-link">
+          <div className={styles.signupLink}>
             <p>Don't have an account? <button onClick={handleSignupClick}>Sign up</button></p>
           </div>
         </div>

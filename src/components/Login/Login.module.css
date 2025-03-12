@@ -1,0 +1,273 @@
+/* Login styling with CSS modules */
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #000;
+}
+
+.loginPanel {
+  background-color: #000;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+}
+
+.loginContent {
+  max-width: 400px;
+  width: 100%;
+}
+
+.loginContent h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.loginContent p {
+  color: #aaa;
+  margin-bottom: 2rem;
+}
+
+.socialLogins {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.socialButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid #333;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.socialButton img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.google:hover {
+  background-color: #f2f2f2;
+}
+
+.github {
+  background-color: #24292e;
+  color: white;
+  border: none;
+}
+
+.github:hover {
+  background-color: #1a1e22;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #999;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #333;
+}
+
+.divider span {
+  padding: 0 0.75rem;
+  color: #777;
+  font-size: 14px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: white;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #4285f4;
+}
+
+.continueButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.continueButton:hover {
+  background-color: #eee;
+}
+
+.continueButton:disabled {
+  background-color: #555;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.passwordField {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: -8px;
+}
+
+.backButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: #aaa;
+  border: 1px solid #333;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s;
+  align-self: center;
+}
+
+.backButton:hover {
+  background-color: #111;
+}
+
+.resendButton {
+  background: none;
+  border: none;
+  color: #aaa;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  text-align: center;
+  width: 100%;
+  align-self: center;
+}
+
+.resendButton:hover {
+  color: white;
+}
+
+.errorMessage {
+  color: #ff6b6b;
+  margin-bottom: 15px;
+  font-size: 14px;
+  padding: 10px;
+  background-color: rgba(255, 107, 107, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #ff6b6b;
+}
+
+.nameFields {
+  display: flex;
+  gap: 10px;
+}
+
+.nameFields input {
+  flex: 1;
+}
+
+.signupLink,
+.loginLink {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.signupLink button,
+.loginLink button {
+  background: none;
+  border: none;
+  color: #4285f4;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.dashboardPreview {
+  flex: 1;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.otpPrompt {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #aaa;
+}
+
+.otpTimer {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #4285f4;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 1024px) {
+  .dashboardPreview {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .loginContainer {
+    flex-direction: column;
+  }
+  
+  .dashboardPreview {
+    display: none;
+  }
+}

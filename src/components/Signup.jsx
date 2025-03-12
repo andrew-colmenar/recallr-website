@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import '../styles/Login.css'; // Reusing the same styles
+import '../styles/signup.css'; // Reusing the same styles
 import { signInWithGoogle } from './GoogleAuth'
 
 function Signup() {
