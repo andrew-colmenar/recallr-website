@@ -1,0 +1,96 @@
+.container {
+  width: 100%;
+  background-color: #1F1F22; /* As requested */
+  color: #f7f7f7;
+  border-radius: 0.5rem;
+  height: 100%;
+}
+
+.content {
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.projectId {
+  font-size: 0.875rem;
+  color: #a0aec0;
+}
+
+.mono {
+  font-family: monospace;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tableHeader {
+  text-align: left;
+  color: #a0aec0;
+}
+
+.headerCell {
+  padding-bottom: 0.75rem;
+  font-weight: 400;
+  border-bottom: 1px solid #4a5568;
+}
+
+.tableRow {
+  border-bottom: 1px solid #2d3748;
+}
+
+.cell {
+  padding: 1rem 0.5rem 1rem 0;
+}
+
+.keyContainer {
+  display: flex;
+  align-items: center;
+}
+
+.iconButton {
+  margin-left: 0.5rem;
+  padding: 0.25rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  color: currentColor;
+}
+
+.iconButton:hover {
+  background-color: #4a5568;
+}
+
+.createButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  border-radius: 0.25rem;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.createButton:hover {
+  background-color: #4a5568;
+}
