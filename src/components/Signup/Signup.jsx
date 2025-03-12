@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import '../styles/signup.css'; // Reusing the same styles
-import { signInWithGoogle } from './GoogleAuth'
+import { useAuth } from '../../context/AuthContext';
+import { signInWithGoogle } from '../GoogleAuth';
+import styles from './Signup.module.css';
 
 function Signup() {
   const [email, setEmail] = useState('');
@@ -131,37 +131,38 @@ function Signup() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-panel">
-        <div className="login-content">
+    <div className={styles.loginContainer}>
+      <div className={styles.loginPanel}>
+        <div className={styles.loginContent}>
           <h1>Create account</h1>
           <p>Sign up to get started</p>
           
-          {error && <div className="error-message">{error}</div>}
+          {error && <div className={styles.errorMessage}>{error}</div>}
           
-          <div className="social-logins">
-            <button className="social-button google" onClick={signInWithGoogle}>
+          <div className={styles.socialLogins}>
+            <button className={`${styles.socialButton} ${styles.google}`} onClick={signInWithGoogle}>
               <img src="/google-icon.svg" alt="Google" />
               Sign up with Google
             </button>
           </div>
           
-          <div className="divider">
+          <div className={styles.divider}>
             <span>OR</span>
           </div>
           
           {step === 'email' && (
-            <form onSubmit={handleEmailSubmit}>
+            <form onSubmit={handleEmailSubmit} className={styles.form}>
               <input
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className={styles.input}
               />
               <button 
                 type="submit" 
-                className="continue-button"
+                className={styles.continueButton}
                 disabled={loading}
               >
                 {loading ? 'Loading...' : 'Continue'}
@@ -170,10 +171,10 @@ function Signup() {
           )}
 
           {step === 'otp' && (
-            <form onSubmit={handleOtpSubmit}>
-              <p>Enter the verification code sent to your email</p>
+            <form onSubmit={handleOtpSubmit} className={styles.form}>
+              <p className={styles.otpPrompt}>Enter the verification code sent to your email</p>
               {timeRemaining !== null && timeRemaining > 0 && (
-                <p className="otp-timer">Code expires in: {formatTime(timeRemaining)}</p>
+                <p className={styles.otpTimer}>Code expires in: {formatTime(timeRemaining)}</p>
               )}
               <input
                 type="text"
@@ -182,17 +183,18 @@ function Signup() {
                 onChange={(e) => setOtpCode(e.target.value)}
                 maxLength={6}
                 required
+                className={styles.input}
               />
               <button 
                 type="submit" 
-                className="continue-button"
+                className={styles.continueButton}
                 disabled={loading}
               >
                 {loading ? 'Verifying...' : 'Verify'}
               </button>
               <button 
                 type="button" 
-                className="resend-button"
+                className={styles.resendButton}
                 onClick={handleResendOtp}
                 disabled={loading || (timeRemaining !== null && timeRemaining > 0)}
               >
@@ -202,7 +204,7 @@ function Signup() {
               </button>
               <button 
                 type="button" 
-                className="back-button"
+                className={styles.backButton}
                 onClick={() => setStep('email')}
               >
                 Back
@@ -211,14 +213,15 @@ function Signup() {
           )}
 
           {step === 'userInfo' && (
-            <form onSubmit={handleUserInfoSubmit}>
-              <div className="name-fields">
+            <form onSubmit={handleUserInfoSubmit} className={styles.form}>
+              <div className={styles.nameFields}>
                 <input
                   type="text"
                   placeholder="First name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   required
+                  className={styles.input}
                 />
                 <input
                   type="text"
@@ -226,19 +229,21 @@ function Signup() {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   required
+                  className={styles.input}
                 />
               </div>
-              <div className="password-field">
+              <div className={styles.passwordField}>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className={styles.input}
                 />
                 <button 
                   type="button" 
-                  className="toggle-password"
+                  className={styles.togglePassword}
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? 'Hide' : 'Show'}
@@ -250,17 +255,18 @@ function Signup() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                className={styles.input}
               />
               <button 
                 type="submit" 
-                className="continue-button"
+                className={styles.continueButton}
                 disabled={loading}
               >
                 {loading ? 'Creating account...' : 'Create account'}
               </button>
               <button 
                 type="button" 
-                className="back-button"
+                className={styles.backButton}
                 onClick={() => setStep('otp')}
               >
                 Back
@@ -268,7 +274,7 @@ function Signup() {
             </form>
           )}
           
-          <div className="login-link">
+          <div className={styles.loginLink}>
             <p>Already have an account? <button onClick={handleLoginClick}>Sign in</button></p>
           </div>
         </div>
