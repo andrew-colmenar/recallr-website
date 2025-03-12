@@ -74,56 +74,12 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      <Route 
-        path="/billing" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <Billing />
-          </ProtectedRoute>
-        } 
-      />
-      
-      {/* Coming Soon protected routes */}
-      <Route 
-        path="/usage" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/users" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/apikeys" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/settings" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/getstarted" 
-        element={
-          <ProtectedRoute isValid={sessionValid}>
-            <ComingSoon />
-          </ProtectedRoute>
-        } 
-      />
+      <Route path="/usage" element={<Navigate to="/dashboard/usage" />} />
+      <Route path="/users" element={<Navigate to="/dashboard/users" />} />
+      <Route path="/apikeys" element={<Navigate to="/dashboard/apikeys" />} />
+      <Route path="/settings" element={<Navigate to="/dashboard/settings" />} />
+      <Route path="/billing" element={<Navigate to="/dashboard/billing" />} />
+      <Route path="/getstarted" element={<Navigate to="/dashboard/getstarted" />} />
       <Route 
         path="/status" 
         element={
