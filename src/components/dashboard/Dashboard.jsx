@@ -13,7 +13,6 @@ const Dashboard = () => {
     <div className={styles.mainContainer}>
       <Sidebar />
       <div className={styles.contentContainer}>
-        <Header />
         <main className={styles.main}>
           <Routes>
             <Route index element={<RequestsDashboard />} />

@@ -10,6 +10,8 @@ import Billing from "./components/Billing/Billing";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
 import "./App.css";
 import authService from "./services/authService";
+import CreateProject from "./components/CreateProject/CreateProject";
+import Header from "./components/Header/Header";
 
 // Main app content with routes
 function AppRoutes() {
@@ -74,6 +76,14 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/CreateProject" 
+        element={
+          <ProtectedRoute isValid={sessionValid}>
+            <CreateProject />
+          </ProtectedRoute>
+        } 
+      />
       <Route path="/usage" element={<Navigate to="/dashboard/usage" />} />
       <Route path="/users" element={<Navigate to="/dashboard/users" />} />
       <Route path="/apikeys" element={<Navigate to="/dashboard/apikeys" />} />
@@ -129,6 +139,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <Header />
         <AppRoutes />
       </Router>
     </AuthProvider>

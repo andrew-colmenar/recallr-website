@@ -9,6 +9,12 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
+      <div className={styles.LogoContainer}>
+        <div className={styles.Logo}>
+          <span className="text-black text-xs"></span>
+        </div>
+        <span className={styles.Title}>Recallr AI</span>
+      </div>
       <div className={styles.headerLeft}>
         <div className={styles.projectDropdown}>
           <button
@@ -27,10 +33,10 @@ const Header = () => {
                   <div className={styles.dropdownItemSubtitle}>default-project</div>
                 </div>
                 <div className={styles.dropdownItemCreate}>
-                  <div className={styles.createProject}>
+                  <Link to="/create-project" className={styles.createProject}>
                     <Plus className={styles.createIcon} />
                     Create new project
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>

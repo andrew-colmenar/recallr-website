@@ -21,13 +21,6 @@ const Sidebar = () => {
 
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.sidebarHeader}>
-        <div className={styles.sidebarLogo}>
-          <span className="text-black text-xs"></span>
-        </div>
-        <span className={styles.sidebarTitle}>Recallr AI</span>
-      </div>
-
       <div className={styles.sidebarNav}>
         <nav>
           <ul>
