@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import RequestsDashboard from "./RequestsDashboard";
+import ComingSoon from "../CommingSoon";
 
 const Dashboard = () => {
   return (
@@ -13,15 +14,16 @@ const Dashboard = () => {
         <main className="flex-1 overflow-auto p-6">
           <Routes>
             <Route index element={<RequestsDashboard />} />
-            <Route path="usage" element={<div>Usage Page</div>} />
-            <Route path="users" element={<div>Users Page</div>} />
-            <Route path="api-keys" element={<div>API Keys Page</div>} />
-            <Route path="settings" element={<div>Settings Page</div>} />
-            <Route path="billing" element={<div>Billing Page</div>} />
-            <Route path="get-started" element={<div>Get Started Page</div>} />
-            <Route path="status" element={<div>Status Page</div>} />
-            <Route path="playground" element={<div>Playground Page</div>} />
-            <Route path="docs" element={<div>Documentation Page</div>} />
+            <Route path="usage" element={<ComingSoon />} />
+            <Route path="users" element={<ComingSoon />} />
+            <Route path="apikeys" element={<ComingSoon />} />
+            <Route path="settings" element={<ComingSoon />} />
+            <Route path="billing" element={<ComingSoon />} />
+            <Route path="getstarted" element={<ComingSoon />} />
+            <Route path="status" element={<ComingSoon />} />
+            <Route path="playground" element={<ComingSoon />} />
+            <Route path="docs" element={<ComingSoon />} />
+            <Route path="*" element={<ComingSoon />} />
           </Routes>
         </main>
       </div>
@@ -30,4 +32,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
