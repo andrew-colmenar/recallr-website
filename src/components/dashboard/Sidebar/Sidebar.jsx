@@ -61,7 +61,7 @@ const Sidebar = () => {
                 <div className={styles.iconContainer}>
                   <Key className="w-4 h-4" />
                 </div>
-                <span>Api Keys</span>
+                <span>API Keys</span>
               </Link>
             </li>
             <li>
