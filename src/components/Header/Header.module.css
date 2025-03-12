@@ -159,6 +159,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-left: 1rem;
+  position: relative;
 }
 
 .avatar {
@@ -169,9 +170,54 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .avatarText {
   font-size: 0.875rem;
   font-weight: 500;
+}
+
+.profileDropdown {
+  right: 0;
+  left: auto;
+  width: 12rem; /* w-48 */
+}
+
+.profileInfo {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileName {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.profileEmail {
+  font-size: 0.75rem;
+  color: #9ca3af; /* text-gray-400 */
+  margin-top: 0.25rem;
+}
+
+.profileMenuItem {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  color: #e5e7eb;
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.profileMenuItem:hover {
+  background-color: #2a2a2a;
 }

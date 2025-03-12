@@ -41,6 +41,8 @@ export const AuthProvider = ({ children }) => {
   const completeLogin = async (transactionId) => {
     try {
       const response = await authService.completeLogin(transactionId);
+      // console.log('Login response:', response);
+      // console.log('User:', response.user);
       setUser(response.user);
       return response;
     } catch (error) {
