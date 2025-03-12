@@ -11,34 +11,33 @@ import {
   AlertCircle,
   LifeBuoy,
 } from "lucide-react";
+import "../../styles/Sidebar.css";
 
 const Sidebar = () => {
   const location = useLocation();
 
   const isActive = (path) => {
-    return location.pathname === path ? "bg-[#1e1e1e]" : "";
+    return location.pathname === path ? "active" : "";
   };
 
   return (
-    <aside className="w-64 bg-[#121212] border-r border-[#2a2a2a] flex flex-col">
-      <div className="p-4 flex items-center gap-2 border-b border-[#2a2a2a]">
-        <div className="flex items-center">
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-            <span className="text-black text-xs"></span>
-          </div>
-          <span className="ml-2 font-semibold text-lg">Recallr AI</span>
+    <aside className="sidebar">
+      <div className="sidebar-header">
+        <div className="sidebar-logo">
+          <span className="text-black text-xs"></span>
         </div>
+        <span className="sidebar-title">Recallr AI</span>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <nav className="p-2">
-          <ul className="space-y-1">
+      <div className="sidebar-nav">
+        <nav>
+          <ul>
             <li>
               <Link
                 to="/usage"
-                className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#1e1e1e] ${isActive("/usage")}`}
+                className={`nav-item ${isActive("/usage")}`}
               >
-                <div className="w-5 h-5 flex items-center justify-center">
+                <div className="icon-container">
                   <Activity className="w-4 h-4" />
                 </div>
                 <span>Usage</span>
@@ -47,9 +46,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/users"
-                className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#1e1e1e] ${isActive("/users")}`}
+                className={`nav-item ${isActive("/users")}`}
               >
-                <div className="w-5 h-5 flex items-center justify-center">
+                <div className="icon-container">
                   <User className="w-4 h-4" />
                 </div>
                 <span>Users</span>
@@ -58,9 +57,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/apikeys"
-                className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#1e1e1e] ${isActive("/apikeys")}`}
+                className={`nav-item ${isActive("/apikeys")}`}
               >
-                <div className="w-5 h-5 flex items-center justify-center">
+                <div className="icon-container">
                   <Key className="w-4 h-4" />
                 </div>
                 <span>Api Keys</span>
@@ -69,9 +68,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/settings"
-                className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#1e1e1e] ${isActive("/settings")}`}
+                className={`nav-item ${isActive("/settings")}`}
               >
-                <div className="w-5 h-5 flex items-center justify-center">
+                <div className="icon-container">
                   <Settings className="w-4 h-4" />
                 </div>
                 <span>Settings</span>
@@ -81,26 +80,26 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <div className="mt-auto border-t border-[#2a2a2a]">
-        <nav className="p-2">
-          <ul className="space-y-1">
+      <div className="sidebar-footer">
+        <nav>
+          <ul>
             <li>
-                <Link
-                    to="/pricing"
-                    className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#1e1e1e] ${isActive("/pricing")}`}
-                >
-                    <div className="w-5 h-5 flex items-center justify-center">
-                    <MessageSquare className="w-4 h-4" />
-                    </div>
-                    <span>Billing</span>
-                </Link>
+              <Link
+                to="/billing"
+                className={`nav-item ${isActive("/pricing")}`}
+              >
+                <div className="icon-container">
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <span>Billing</span>
+              </Link>
             </li>
             <li>
               <Link
                 to="/getstarted"
-                className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#1e1e1e] ${isActive("/getstarted")}`}
+                className={`nav-item ${isActive("/getstarted")}`}
               >
-                <div className="w-5 h-5 flex items-center justify-center">
+                <div className="icon-container">
                   <AlertCircle className="w-4 h-4" />
                 </div>
                 <span>Get Started</span>
@@ -109,9 +108,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/status"
-                className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-[#1e1e1e] ${isActive("/status")}`}
+                className={`nav-item ${isActive("/status")}`}
               >
-                <div className="w-5 h-5 flex items-center justify-center">
+                <div className="icon-container">
                   <LifeBuoy className="w-4 h-4" />
                 </div>
                 <span>Status</span>
