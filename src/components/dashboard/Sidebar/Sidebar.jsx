@@ -1,4 +1,3 @@
-// components/Sidebar.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -11,33 +10,33 @@ import {
   AlertCircle,
   LifeBuoy,
 } from "lucide-react";
-import "../../styles/Sidebar.css";
+import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
   const location = useLocation();
 
   const isActive = (path) => {
-    return location.pathname === path ? "active" : "";
+    return location.pathname === path ? styles.active : "";
   };
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header">
-        <div className="sidebar-logo">
+    <aside className={styles.sidebar}>
+      <div className={styles.sidebarHeader}>
+        <div className={styles.sidebarLogo}>
           <span className="text-black text-xs"></span>
         </div>
-        <span className="sidebar-title">Recallr AI</span>
+        <span className={styles.sidebarTitle}>Recallr AI</span>
       </div>
 
-      <div className="sidebar-nav">
+      <div className={styles.sidebarNav}>
         <nav>
           <ul>
             <li>
               <Link
                 to="/usage"
-                className={`nav-item ${isActive("/usage")}`}
+                className={`${styles.navItem} ${isActive("/usage")}`}
               >
-                <div className="icon-container">
+                <div className={styles.iconContainer}>
                   <Activity className="w-4 h-4" />
                 </div>
                 <span>Usage</span>
@@ -46,9 +45,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/users"
-                className={`nav-item ${isActive("/users")}`}
+                className={`${styles.navItem} ${isActive("/users")}`}
               >
-                <div className="icon-container">
+                <div className={styles.iconContainer}>
                   <User className="w-4 h-4" />
                 </div>
                 <span>Users</span>
@@ -57,9 +56,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/apikeys"
-                className={`nav-item ${isActive("/apikeys")}`}
+                className={`${styles.navItem} ${isActive("/apikeys")}`}
               >
-                <div className="icon-container">
+                <div className={styles.iconContainer}>
                   <Key className="w-4 h-4" />
                 </div>
                 <span>Api Keys</span>
@@ -68,9 +67,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/settings"
-                className={`nav-item ${isActive("/settings")}`}
+                className={`${styles.navItem} ${isActive("/settings")}`}
               >
-                <div className="icon-container">
+                <div className={styles.iconContainer}>
                   <Settings className="w-4 h-4" />
                 </div>
                 <span>Settings</span>
@@ -80,15 +79,15 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <div className="sidebar-footer">
+      <div className={styles.sidebarFooter}>
         <nav>
           <ul>
             <li>
               <Link
                 to="/billing"
-                className={`nav-item ${isActive("/pricing")}`}
+                className={`${styles.navItem} ${isActive("/billing")}`}
               >
-                <div className="icon-container">
+                <div className={styles.iconContainer}>
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <span>Billing</span>
@@ -97,9 +96,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/getstarted"
-                className={`nav-item ${isActive("/getstarted")}`}
+                className={`${styles.navItem} ${isActive("/getstarted")}`}
               >
-                <div className="icon-container">
+                <div className={styles.iconContainer}>
                   <AlertCircle className="w-4 h-4" />
                 </div>
                 <span>Get Started</span>
@@ -108,9 +107,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/status"
-                className={`nav-item ${isActive("/status")}`}
+                className={`${styles.navItem} ${isActive("/status")}`}
               >
-                <div className="icon-container">
+                <div className={styles.iconContainer}>
                   <LifeBuoy className="w-4 h-4" />
                 </div>
                 <span>Status</span>

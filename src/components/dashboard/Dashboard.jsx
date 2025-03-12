@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar/Sidebar";
 import Header from "../Header/Header";
 import RequestsDashboard from "./RequestsDashboard";
 import ComingSoon from "../ComingSoon/ComingSoon";
