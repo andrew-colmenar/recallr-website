@@ -1,0 +1,101 @@
+/* MetricCard styling with CSS modules */
+
+.card {
+  background-color: #1f1f1f;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  background-color: #2a2a2a;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.redBg {
+  background-color: rgba(248, 113, 113, 0.2);
+}
+
+.greenBg {
+  background-color: rgba(52, 211, 153, 0.2);
+}
+
+.blueBg {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+.purpleBg {
+  background-color: rgba(167, 139, 250, 0.2);
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.redIcon {
+  color: rgb(248, 113, 113);
+}
+
+.greenIcon {
+  color: rgb(52, 211, 153);
+}
+
+.blueIcon {
+  color: rgb(59, 130, 246);
+}
+
+.purpleIcon {
+  color: rgb(167, 139, 250);
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.changeIndicator {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.increase {
+  color: rgb(52, 211, 153);
+}
+
+.decrease {
+  color: rgb(248, 113, 113);
+}
+
+.changeIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.25rem;
+}
+
+.period {
+  color: #9ca3af;
+  margin-left: 0.25rem;
+}
