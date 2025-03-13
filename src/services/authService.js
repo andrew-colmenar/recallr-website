@@ -44,7 +44,7 @@ const authService = {
   requestSignup: async (email) => {
     console.log('email', email);
     console.log('device_info', getDeviceInfo());
-    const response = await api.post('/api/v1/signup/request', {
+    const response = await api.post('auth/signup/request', {
       email,
       device_info: getDeviceInfo(),
     });
@@ -54,7 +54,7 @@ const authService = {
 
   // Verify OTP code
   verifyOtp: async (transactionId, code) => {
-    const response = await api.post('/api/v1/otp/verify', {
+    const response = await api.post('auth/otp/verify', {
       transaction_id: transactionId,
       code:code,
     });
@@ -63,7 +63,7 @@ const authService = {
 
   // Resend OTP code
   resendOtp: async (transactionId) => {
-    const response = await api.post('/api/v1/otp/resend', {
+    const response = await api.post('auth/otp/resend', {
       transaction_id: transactionId,
     });
     return response.data;
@@ -71,7 +71,7 @@ const authService = {
 
   // Complete signup with user details
   completeSignup: async (email, firstName, lastName, password, transactionId) => {
-    const response = await api.post('/api/v1/signup/complete', {
+    const response = await api.post('auth/signup/complete', {
       user: {
         email,
         first_name: firstName,
@@ -91,7 +91,7 @@ const authService = {
 
   // Request login (first step)
   requestLogin: async (email, password) => {
-    const response = await api.post('/api/v1/login/request', {
+    const response = await api.post('auth/login/request', {
       email,
       password,
       device_info: getDeviceInfo(),
@@ -101,7 +101,7 @@ const authService = {
 
   // Complete login after OTP verification
   completeLogin: async (transactionId) => {
-    const response = await api.post('/api/v1/login/complete', {
+    const response = await api.post('auth/login/complete', {
       transaction_id: transactionId,
     });
     
@@ -121,7 +121,7 @@ const authService = {
       return { detail: 'No active session' };
     }
     
-    const response = await api.post('/api/v1/logout', {
+    const response = await api.post('auth/logout', {
       user_id,
       session_id,
     });
@@ -139,7 +139,7 @@ const authService = {
     }
     
     try {
-      const response = await api.post('/api/v1/sessions/current', {
+      const response = await api.post('auth/sessions/current', {
         user_id,
         session_id,
       });
@@ -158,7 +158,7 @@ const authService = {
       return null;
     }
     
-    const response = await api.post('/api/v1/sessions/all', {
+    const response = await api.post('auth/sessions/all', {
       user_id,
       session_id,
       device_info: getDeviceInfo(),
@@ -174,7 +174,7 @@ const authService = {
       return null;
     }
     
-    const response = await api.post(`/api/v1/sessions/${targetUserId}/${targetSessionId}/revoke`, {});
+    const response = await api.post(`auth/sessions/${targetUserId}/${targetSessionId}/revoke`, {});
     return response.data;
   },
 
@@ -187,7 +187,7 @@ const authService = {
     }
     
     try {
-      await api.post('/api/v1/sessions/validate-session', {
+      await api.post('auth/sessions/validate-session', {
         user_id,
         session_id,
       });

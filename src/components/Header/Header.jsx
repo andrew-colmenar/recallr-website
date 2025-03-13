@@ -1,16 +1,44 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ChevronDown, Plus, LogOut, Settings } from "lucide-react";
+import ProjectModal from "../Projects/ProjectModal";
 import styles from './Header.module.css';
 import { useAuth } from '../../context/AuthContext';
 
+const DEFAULT_PROJECT = {
+  id: "default-id",
+  name: "Default Project",
+  description: "Default project for new users",
+  created_at: new Date().toISOString(),
+  is_available: true
+};
+
 const Header = () => {
-  const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false);
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [currentProject, setCurrentProject] = useState(DEFAULT_PROJECT);
+  const [searchParams] = useSearchParams();
+  
   const location = useLocation();
+  const navigate = useNavigate();
   const { logout, user } = useAuth();
   const profileRef = useRef(null);
-  const projectRef = useRef(null);
+
+  // Update current project when URL search params change
+  useEffect(() => {
+    const projectId = searchParams.get('project');
+    
+    // If no project ID in URL, use default
+    if (!projectId) {
+      setCurrentProject(DEFAULT_PROJECT);
+    }
+    // Don't set current project here if it has a project ID
+    // The Dashboard component will fetch the full project details
+  }, [searchParams]);
+
+  const handleProjectSelect = (project) => {
+    setCurrentProject(project);
+  };
 
   const handleLogout = async () => {
     try {
@@ -26,11 +54,6 @@ const Header = () => {
       // Close profile dropdown if clicked outside
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setIsProfileMenuOpen(false);
-      }
-      
-      // Close project dropdown if clicked outside
-      if (projectRef.current && !projectRef.current.contains(event.target)) {
-        setIsProjectMenuOpen(false);
       }
     }
 
@@ -52,36 +75,25 @@ const Header = () => {
         <span className={styles.Title}>Recallr AI</span>
       </div>
       <div className={styles.headerLeft}>
-        <div className={styles.projectDropdown} ref={projectRef}>
+        <div className={styles.projectDropdown}>
           <button
             className={styles.projectDropdownButton}
-            onClick={() => setIsProjectMenuOpen(!isProjectMenuOpen)}
+            onClick={() => setIsProjectModalOpen(true)}
           >
-            <span className={styles.orgName}>game-default-org</span>
+            <span className={styles.orgName}>{currentProject.name}</span>
             <ChevronDown className={styles.dropdownIcon} />
           </button>
 
-          {isProjectMenuOpen && (
-            <div className={styles.dropdownMenu}>
-              <div className={styles.dropdownContent}>
-                <div className={styles.dropdownItem}>
-                  <div className={styles.dropdownItemTitle}>game-default-org</div>
-                  <div className={styles.dropdownItemSubtitle}>default-project</div>
-                </div>
-                <div className={styles.dropdownItemCreate}>
-                  <Link to="/create-project" className={styles.createProject}>
-                    <Plus className={styles.createIcon} />
-                    Create new project
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
+          <ProjectModal 
+            isOpen={isProjectModalOpen} 
+            onClose={() => setIsProjectModalOpen(false)} 
+            onProjectSelect={handleProjectSelect}
+          />
         </div>
       </div>
 
       <div className={styles.headerRight}>
-        <Link to="/" className={`${styles.navLink} ${location.pathname === "/" ? styles.active : ""}`}>
+        <Link to="/dashboard" className={`${styles.navLink} ${location.pathname === "/dashboard" ? styles.active : ""}`}>
           Dashboard
         </Link>
         <Link

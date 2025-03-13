@@ -10,7 +10,6 @@ import Billing from "./components/Billing/Billing";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
 import "./App.css";
 import authService from "./services/authService";
-import CreateProject from "./components/CreateProject/CreateProject";
 import Header from "./components/Header/Header";
 
 // Main app content with routes
@@ -75,14 +74,6 @@ function AppContent() {
           element={
             <ProtectedRoute isValid={sessionValid}>
               <SessionsManager />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/create-project" 
-          element={
-            <ProtectedRoute isValid={sessionValid}>
-              <CreateProject />
             </ProtectedRoute>
           } 
         />

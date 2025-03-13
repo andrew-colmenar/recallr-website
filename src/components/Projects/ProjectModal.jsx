@@ -1,21 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Plus, AlertCircle } from 'lucide-react';
+import { X, Plus, AlertCircle, Calendar } from 'lucide-react';
 import api from '../../api/axios';
 import Cookies from 'js-cookie';
 import styles from './ProjectModal.module.css';
 
+// Default project to show when no projects are available
+const DEFAULT_PROJECT = {
+  id: "default-id",
+  name: "Default Project",
+  description: "Default project for new users",
+  created_at: new Date().toISOString(),
+};
+
 const getSessionFromCookies = () => {
+  const userId = Cookies.get('user_id');
+  const sessionId = Cookies.get('session_id');
+  
+  // Log the values to help with debugging
+  console.log('Cookies retrieved:', {userId, sessionId});
+  
   return {
-    user_id: Cookies.get('user_id'),
-    session_id: Cookies.get('session_id'),
+    user_id: userId,
+    session_id: sessionId,
   };
+};
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
 };
 
 const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newProject, setNewProject] = useState({
+    name: '',
+    description: ''
+  });
+  const [creatingProject, setCreatingProject] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -37,13 +68,35 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
         return;
       }
       
-      const response = await api.get('/api/v1/projects', {
-        params: { user_id, session_id }
+      // Use api.get() instead of api() with method parameter
+      const response = await api.get('app/projects', {
+        headers: {
+          'X-User-Id': user_id,
+          'X-Session-Id': session_id
+        },
+        params: {
+          offset: 0,
+          limit: 100
+        },
+        withCredentials: true,
       });
       
-      setProjects(response.data.projects || []);
+      // The rest of your code remains the same
+      const { projects: projectsList, total, has_more } = response.data;
+      
+      setTotal(total || 0);
+      setHasMore(has_more || false);
+      
+      if (!projectsList || projectsList.length === 0) {
+        setProjects([DEFAULT_PROJECT]);
+      } else {
+        setProjects(projectsList);
+      }
     } catch (error) {
       console.error('Error fetching projects:', error);
+      
+      // Set default project on error
+      setProjects([DEFAULT_PROJECT]);
       
       if (error.response) {
         switch (error.response.status) {
@@ -52,11 +105,13 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
             break;
           case 401:
             setError('Authentication required. Please log in again.');
-            // Redirect to login after a delay
             setTimeout(() => navigate('/login'), 2000);
             break;
           case 403:
             setError('Subscription required to access projects.');
+            break;
+          case 404:
+            setError('Projects endpoint not found. API may be unavailable.');
             break;
           case 422:
             const validationErrors = error.response.data.detail;
@@ -66,10 +121,12 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
             setError('Server error. Please try again later.');
             break;
           default:
-            setError('An error occurred. Please try again.');
+            setError(`Error (${error.response.status}): ${error.response.statusText}`);
         }
+      } else if (error.request) {
+        setError('Network error. Please check your connection and API server.');
       } else {
-        setError('Network error. Please check your connection.');
+        setError('Application error. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -79,13 +136,163 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
   const handleProjectSelect = (project) => {
     if (onProjectSelect) {
       onProjectSelect(project);
+      
+      // If it's the default project, don't include project parameter in the URL
+      if (project.id === DEFAULT_PROJECT.id) {
+        navigate('/dashboard');
+      } else {
+        navigate(`/dashboard?project=${project.id}`);
+      }
     }
     onClose();
   };
   
-  const handleCreateProject = () => {
-    navigate('/create-project');
-    onClose();
+  const toggleCreateForm = () => {
+    setShowCreateForm(!showCreateForm);
+    setError(null);
+  };
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  
+  const handleCreateProject = async (e) => {
+    e.preventDefault();
+    
+    if (!newProject.name.trim()) {
+      setError('Project name is required');
+      return;
+    }
+    
+    setCreatingProject(true);
+    setError(null);
+    
+    try {
+      const { user_id, session_id } = getSessionFromCookies();
+      
+      if (!user_id || !session_id) {
+        setError('Authentication required');
+        setCreatingProject(false);
+        return;
+      }
+      
+      // Create the project payload with required fields and sensible defaults
+      const projectPayload = {
+        name: newProject.name,
+        description: newProject.description,
+        recall_preferences: {
+          classifier: {
+            custom_instructions: [],
+            false_positive_examples: [],
+            false_negative_examples: []
+          },
+          subquery_and_keywords_generator: {
+            custom_instructions: [],
+            subqueries_candidate_nodes_weight: 0,
+            example_subqueries: [],
+            keywords_candidate_nodes_weight: 0,
+            example_keywords: []
+          }
+        },
+        generation_preferences: {
+          custom_instructions: [],
+          top_k_symantic_similarity_check: 10,
+          raise_merge_conflict: true
+        }
+      };
+      
+      // Try sending without withCredentials to see if that's causing an issue
+      const response = await api.post('app/projects', 
+        projectPayload,
+        {
+          headers: {
+            'X-User-Id': user_id,
+            'X-Session-Id': session_id
+          }
+        }
+      );
+      
+      console.log('Project creation response:', response.data);
+      
+      // The response contains project_id, not the full project data
+      const { project_id } = response.data;
+      
+      if (!project_id) {
+        throw new Error('Project ID not received from server');
+      }
+      
+      // Create a project object with the returned ID and form data
+      const createdProject = {
+        id: project_id,
+        name: newProject.name,
+        description: newProject.description,
+        created_at: new Date().toISOString()
+      };
+      
+      // Add the new project to the list
+      setProjects(prev => [createdProject, ...prev.filter(p => p.id !== DEFAULT_PROJECT.id)]);
+      
+      // Reset the form
+      setNewProject({ name: '', description: '' });
+      setShowCreateForm(false);
+      
+      // Select the newly created project
+      handleProjectSelect(createdProject);
+      
+      // Refresh the projects list to get the full details from the server
+      // This is optional but ensures we have complete project data
+      fetchProjects();
+      
+    } catch (error) {
+      console.error('Error creating project:', error);
+      
+      // Add detailed logging to see exactly what's failing
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Request sent to:', error.response.request.responseURL);
+        
+        switch (error.response.status) {
+          case 400:
+            setError('Invalid project data. Please check your inputs.');
+            break;
+          case 401:
+            setError('Authentication required. Please log in again.');
+            setTimeout(() => navigate('/login'), 2000);
+            break;
+          case 403:
+            setError('You do not have permission to create projects.');
+            break;
+          case 422:
+            const validationErrors = error.response.data.detail;
+            if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+              setError(`Validation error: ${validationErrors[0].msg}`);
+            } else if (typeof error.response.data.detail === 'string') {
+              setError(`Validation error: ${error.response.data.detail}`);
+            } else {
+              setError('Validation error: Please check your inputs.');
+            }
+            break;
+          case 500:
+            setError('Server error. Please try again later.');
+            break;
+          default:
+            setError(`Error (${error.response.status}): ${error.response.statusText}`);
+        }
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+        setError('Network error. Please check your connection.');
+      } else {
+        console.error('Error setting up request:', error.message);
+        setError('An error occurred while creating the project.');
+      }
+    } finally {
+      setCreatingProject(false);
+    }
   };
   
   if (!isOpen) return null;
@@ -94,7 +301,9 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
-          <h2 className={styles.modalTitle}>Select Project</h2>
+          <h2 className={styles.modalTitle}>
+            {showCreateForm ? 'Create New Project' : 'Select Project'}
+          </h2>
           <button className={styles.closeButton} onClick={onClose}>
             <X size={18} />
           </button>
@@ -108,7 +317,51 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
             </div>
           )}
           
-          {loading ? (
+          {showCreateForm ? (
+            <form onSubmit={handleCreateProject} className={styles.createForm}>
+              <div className={styles.formGroup}>
+                <label htmlFor="projectName">Project Name*</label>
+                <input
+                  type="text"
+                  id="projectName"
+                  name="name"
+                  value={newProject.name}
+                  onChange={handleInputChange}
+                  placeholder="Enter project name"
+                  required
+                />
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="projectDescription">Project Description</label>
+                <textarea
+                  id="projectDescription"
+                  name="description"
+                  value={newProject.description}
+                  onChange={handleInputChange}
+                  placeholder="Enter project description"
+                  rows="4"
+                />
+              </div>
+              
+              <div className={styles.formActions}>
+                <button 
+                  type="button" 
+                  className={styles.cancelButton}
+                  onClick={toggleCreateForm}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className={styles.submitButton}
+                  disabled={creatingProject}
+                >
+                  {creatingProject ? 'Creating...' : 'Create Project'}
+                </button>
+              </div>
+            </form>
+          ) : loading ? (
             <div className={styles.loadingIndicator}>
               <div className={styles.spinner}></div>
               <span>Loading projects...</span>
@@ -118,15 +371,24 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
               {projects.map(project => (
                 <div 
                   key={project.id} 
-                  className={styles.projectItem}
-                  onClick={() => handleProjectSelect(project)}
+                  className={`${styles.projectItem} ${!project.is_available ? styles.projectDisabled : ''}`}
+                  onClick={() => project.is_available !== false && handleProjectSelect(project)}
                 >
                   <div className={styles.projectInfo}>
-                    <h3 className={styles.projectName}>{project.name}</h3>
+                    <h3 className={styles.projectName}>
+                      {project.name}
+                      {project.is_available === false && <span className={styles.unavailableTag}>Unavailable</span>}
+                    </h3>
                     <p className={styles.projectId}>ID: {project.id}</p>
                     {project.description && (
                       <p className={styles.projectDescription}>{project.description}</p>
                     )}
+                    <div className={styles.projectMeta}>
+                      <span className={styles.projectDate}>
+                        <Calendar size={12} />
+                        Created: {formatDate(project.created_at)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -143,10 +405,12 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
         </div>
         
         <div className={styles.modalFooter}>
-          <button className={styles.createButton} onClick={handleCreateProject}>
-            <Plus size={16} />
-            <span>Create New Project</span>
-          </button>
+          {!showCreateForm && (
+            <button className={styles.createButton} onClick={toggleCreateForm}>
+              <Plus size={16} />
+              <span>Create New Project</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
