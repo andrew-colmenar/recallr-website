@@ -1,28 +1,78 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { appApi } from '../../../api/axios';
 import Cookies from 'js-cookie';
 import { AlertCircle, X, Check, Edit, Trash2, ChevronDown, ChevronUp, Plus, Save } from 'lucide-react';
 import styles from './ProjectSettings.module.css';
 
-const ProjectSettings = ({ project }) => {
+const ProjectSettings = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [project, setProject] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [showSections, setShowSections] = useState({
     classifierInstructions: false,
     subqueryGenerator: false,
     generationPreferences: false
   });
   const [editedProject, setEditedProject] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // Initialize editedProject when the project prop changes
+  // Fetch project data when component mounts or projectId changes
   useEffect(() => {
-    if (project) {
-      setEditedProject(JSON.parse(JSON.stringify(project))); // Deep clone project
+    const projectId = searchParams.get('project');
+    
+    if (!projectId) {
+      setError('No project selected. Please select a project from the dashboard.');
+      setLoading(false);
+      return;
     }
-  }, [project]);
+    
+    fetchProject(projectId);
+  }, [searchParams]);
+
+  // Fetch project details from API
+  const fetchProject = async (projectId) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const user_id = Cookies.get('user_id');
+      const session_id = Cookies.get('session_id');
+      
+      if (!user_id || !session_id) {
+        throw new Error('Authentication required');
+      }
+      
+      const response = await appApi.get(`projects/${projectId}`, {
+        headers: {
+          'X-User-Id': user_id,
+          'X-Session-Id': session_id
+        }
+      });
+      
+      setProject(response.data);
+      setEditedProject(JSON.parse(JSON.stringify(response.data))); // Deep clone
+    } catch (err) {
+      console.error('Error fetching project:', err);
+      
+      if (err.response?.status === 404) {
+        setError('Project not found. It may have been deleted.');
+      } else if (err.response?.status === 401) {
+        setError('Authentication required. Please log in again.');
+        // Potentially redirect to login page
+      } else {
+        setError('Failed to load project details. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Format date for display
   const formatDate = (dateString) => {
@@ -178,74 +228,117 @@ const ProjectSettings = ({ project }) => {
 
   // Submit the updated project
   const handleUpdateProject = async () => {
-    setLoading(true);
+    setActionLoading(true);
     setError(null);
     setSuccess(null);
     
     try {
-      // In a real implementation, we would make an API call here
-      // const user_id = Cookies.get('user_id');
-      // const session_id = Cookies.get('session_id');
+      const user_id = Cookies.get('user_id');
+      const session_id = Cookies.get('session_id');
       
-      // await appApi.put(`projects/${project.id}`, editedProject, {
-      //   headers: {
-      //     'X-User-Id': user_id,
-      //     'X-Session-Id': session_id
-      //   }
-      // });
+      if (!user_id || !session_id) {
+        throw new Error('Authentication required');
+      }
       
-      // For demo purposes, simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Create update payload
+      const updatePayload = {
+        name: editedProject.name,
+        description: editedProject.description,
+        recall_preferences: editedProject.recall_preferences,
+        generation_preferences: editedProject.generation_preferences
+      };
+      
+      const response = await appApi.put(`projects/${project.id}`, updatePayload, {
+        headers: {
+          'X-User-Id': user_id,
+          'X-Session-Id': session_id
+        }
+      });
+      
+      // Update the project state with the response data
+      setProject(response.data);
+      setEditedProject(JSON.parse(JSON.stringify(response.data))); // Deep clone
       
       setSuccess('Project updated successfully');
       setIsEditing(false);
       
-      // After successful update, we would typically refresh the project data
-      // But for now, we'll just keep using our edited version
-      
+      // Hide success message after 5 seconds
       setTimeout(() => {
         setSuccess(null);
       }, 5000);
     } catch (err) {
       console.error('Error updating project:', err);
-      setError('Failed to update project. Please try again.');
+      
+      if (err.response?.status === 404) {
+        setError('Project not found. It may have been deleted.');
+      } else if (err.response?.status === 401) {
+        setError('Authentication required. Please log in again.');
+      } else if (err.response?.data?.detail) {
+        if (Array.isArray(err.response.data.detail)) {
+          setError(err.response.data.detail[0]?.msg || 'Failed to update project');
+        } else {
+          setError(err.response.data.detail || 'Failed to update project');
+        }
+      } else {
+        setError('Failed to update project. Please try again.');
+      }
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
 
   // Delete the project
   const handleDeleteProject = async () => {
-    setLoading(true);
+    if (deleteConfirmText !== project.name) {
+      setError('Please type the project name correctly to confirm deletion.');
+      return;
+    }
+    
+    setActionLoading(true);
     setError(null);
     
     try {
-      // In a real implementation, we would make an API call here
-      // const user_id = Cookies.get('user_id');
-      // const session_id = Cookies.get('session_id');
+      const user_id = Cookies.get('user_id');
+      const session_id = Cookies.get('session_id');
       
-      // await appApi.delete(`projects/${project.id}`, {
-      //   headers: {
-      //     'X-User-Id': user_id,
-      //     'X-Session-Id': session_id
-      //   }
-      // });
+      if (!user_id || !session_id) {
+        throw new Error('Authentication required');
+      }
       
-      // For demo purposes, simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await appApi.delete(`projects/${project.id}`, {
+        headers: {
+          'X-User-Id': user_id,
+          'X-Session-Id': session_id
+        }
+      });
       
       setSuccess('Project deleted successfully. Redirecting...');
       
-      // In real implementation, redirect to projects list or default project
+      // Redirect to dashboard after successful deletion
       setTimeout(() => {
-        window.location.href = '/dashboard';
+        navigate('/dashboard');
       }, 2000);
     } catch (err) {
       console.error('Error deleting project:', err);
-      setError('Failed to delete project. Please try again.');
+      
+      if (err.response?.status === 404) {
+        setError('Project not found. It may have been already deleted.');
+      } else if (err.response?.status === 401) {
+        setError('Authentication required. Please log in again.');
+      } else if (err.response?.data?.detail) {
+        if (Array.isArray(err.response.data.detail)) {
+          setError(err.response.data.detail[0]?.msg || 'Failed to delete project');
+        } else {
+          setError(err.response.data.detail || 'Failed to delete project');
+        }
+      } else {
+        setError('Failed to delete project. Please try again.');
+      }
     } finally {
-      setLoading(false);
-      setShowDeleteConfirm(false);
+      setActionLoading(false);
+      if (error) {
+        setShowDeleteConfirm(false);
+      }
     }
   };
 
@@ -256,8 +349,24 @@ const ProjectSettings = ({ project }) => {
     setError(null);
   };
 
-  if (!project || !editedProject) {
+  if (loading) {
     return <div className={styles.loading}>Loading project settings...</div>;
+  }
+
+  if (!project || !editedProject) {
+    return (
+      <div className={styles.error}>
+        <AlertCircle size={24} />
+        <h2>Project not found</h2>
+        <p>{error || "We couldn't find this project. Please return to the dashboard."}</p>
+        <button 
+          className={styles.returnButton}
+          onClick={() => navigate('/dashboard')}
+        >
+          Return to Dashboard
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -285,17 +394,17 @@ const ProjectSettings = ({ project }) => {
                 <button 
                   className={`${styles.actionButton} ${styles.cancelButton}`} 
                   onClick={handleCancelEdit}
-                  disabled={loading}
+                  disabled={actionLoading}
                 >
                   Cancel
                 </button>
                 <button 
                   className={`${styles.actionButton} ${styles.saveButton}`}
                   onClick={handleUpdateProject}
-                  disabled={loading}
+                  disabled={actionLoading}
                 >
-                  {loading ? 'Saving...' : 'Save Changes'}
-                  {!loading && <Save size={16} />}
+                  {actionLoading ? 'Saving...' : 'Save Changes'}
+                  {!actionLoading && <Save size={16} />}
                 </button>
               </>
             ) : (
@@ -771,7 +880,7 @@ const ProjectSettings = ({ project }) => {
             <button 
               className={styles.deleteButton}
               onClick={() => setShowDeleteConfirm(true)}
-              disabled={loading}
+              disabled={actionLoading}
             >
               Delete Project
             </button>
@@ -804,13 +913,15 @@ const ProjectSettings = ({ project }) => {
                   type="text" 
                   className={styles.confirmInput} 
                   placeholder="Type project name to confirm"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
                 />
                 
                 <div className={styles.modalActions}>
                   <button
                     className={styles.cancelButton}
                     onClick={() => setShowDeleteConfirm(false)}
-                    disabled={loading}
+                    disabled={actionLoading}
                   >
                     Cancel
                   </button>
@@ -818,9 +929,9 @@ const ProjectSettings = ({ project }) => {
                   <button
                     className={styles.deleteConfirmButton}
                     onClick={handleDeleteProject}
-                    disabled={loading}
+                    disabled={actionLoading || deleteConfirmText !== project.name}
                   >
-                    {loading ? 'Deleting...' : 'I understand, delete this project'}
+                    {actionLoading ? 'Deleting...' : 'I understand, delete this project'}
                   </button>
                 </div>
               </div>

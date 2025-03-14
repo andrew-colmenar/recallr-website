@@ -113,46 +113,48 @@
 
 /* Project info section */
 .infoSection {
+  background-color: #1A1A1E;
+  border-radius: 8px;
+  padding: 1.5rem;
   margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
 }
 
 .sectionTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 1.25rem;
-  color: #e0e0e0;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .infoGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
 .infoItem {
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .infoLabel {
   font-size: 0.875rem;
-  color: #a0a0a0;
-  margin-bottom: 0.5rem;
+  color: #a0aec0;
 }
 
 .infoValue {
   font-size: 1rem;
-  color: #ffffff;
-  word-break: break-word;
+  word-break: break-all;
 }
 
 .editableDescription {
-  width: 100%;
-  min-height: 100px;
-  padding: 0.75rem;
-  background-color: #1A1A1E;
+  background-color: #131315;
   border: 1px solid #333333;
   border-radius: 4px;
+  padding: 0.75rem;
+  min-height: 100px;
+  width: 100%;
   color: #ffffff;
   font-family: inherit;
   resize: vertical;
@@ -166,19 +168,18 @@
 .preferencesCard {
   background-color: #1A1A1E;
   border-radius: 8px;
-  overflow: hidden;
   margin-bottom: 1rem;
-  border: 1px solid #2a2a2e;
+  overflow: hidden;
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.5rem;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid transparent;
+  user-select: none;
+  transition: background-color 0.2s;
 }
 
 .cardHeader:hover {
@@ -187,14 +188,14 @@
 
 .cardTitle {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
 }
 
 .toggleButton {
   background: none;
   border: none;
-  color: #a0a0a0;
+  color: #a0aec0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -202,46 +203,40 @@
 }
 
 .cardContent {
-  padding: 1.25rem;
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid #333333;
 }
 
 /* Field groups and array items */
 .fieldGroup {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #2a2a2e;
+  margin-top: 1.5rem;
 }
 
 .fieldGroup:last-child {
   margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
 }
 
 .fieldLabel {
   display: block;
-  font-size: 0.875rem;
-  color: #c4c4c4;
   margin-bottom: 0.75rem;
   font-weight: 500;
+  color: #e2e8f0;
 }
 
 .arrayItemContainer {
   display: flex;
-  margin-bottom: 0.75rem;
-  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .arrayItemInput {
   flex: 1;
-  padding: 0.75rem;
   background-color: #131315;
   border: 1px solid #333333;
   border-radius: 4px;
+  padding: 0.75rem;
   color: #ffffff;
   font-family: inherit;
-  font-size: 0.875rem;
-  min-height: 38px;
 }
 
 textarea.arrayItemInput {
@@ -251,50 +246,46 @@ textarea.arrayItemInput {
 
 .arrayItemValue {
   background-color: #131315;
-  border: 1px solid #333333;
   border-radius: 4px;
   padding: 0.75rem;
-  white-space: pre-wrap;
   width: 100%;
-  font-size: 0.875rem;
-  color: #f7f7f7;
+  min-height: 48px;
 }
 
 .removeItemButton {
+  background-color: rgba(231, 76, 60, 0.1);
+  border: none;
+  border-radius: 4px;
+  color: #e74c3c;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background-color: transparent;
-  color: #a0a0a0;
-  cursor: pointer;
-  padding: 0.5rem;
-  margin-left: 0.5rem;
-  border-radius: 4px;
-  transition: all 0.2s;
+  padding: 0 0.5rem;
+  transition: background-color 0.2s;
 }
 
 .removeItemButton:hover {
-  color: #e74c3c;
-  background-color: rgba(231, 76, 60, 0.1);
+  background-color: rgba(231, 76, 60, 0.2);
 }
 
 .addItemButton {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #131315;
-  border: 1px solid #333333;
+  padding: 0.5rem 0.75rem;
+  background-color: transparent;
+  border: 1px dashed #4a5568;
   border-radius: 4px;
-  padding: 0.5rem 1rem;
-  color: #ffffff;
+  color: #a0aec0;
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 0.5rem;
 }
 
 .addItemButton:hover {
-  background-color: #2a2a2e;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
 }
 
 /* Number inputs and switches */
@@ -304,7 +295,8 @@ textarea.arrayItemInput {
   border-radius: 4px;
   padding: 0.75rem;
   color: #ffffff;
-  width: 150px;
+  width: 100%;
+  max-width: 200px;
 }
 
 .switchContainer {
@@ -315,45 +307,51 @@ textarea.arrayItemInput {
 .switchInput {
   position: absolute;
   opacity: 0;
-  width: 0;
   height: 0;
+  width: 0;
 }
 
 .switchLabel {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 30px;
-  background-color: #131315;
-  border: 1px solid #333333;
-  border-radius: 30px;
+  padding-left: 50px;
   cursor: pointer;
-  transition: all 0.3s;
-  padding-left: 65px;
-  line-height: 30px;
+  user-select: none;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
 }
 
 .switchLabel::before {
-  content: "";
+  content: '';
   position: absolute;
-  width: 26px;
-  height: 26px;
-  left: 2px;
-  bottom: 1px;
-  background-color: white;
-  border-radius: 50%;
-  transition: all 0.3s;
+  left: 0;
+  width: 40px;
+  height: 20px;
+  background-color: #4a5568;
+  border-radius: 20px;
+  transition: background-color 0.2s;
 }
 
-.switchInput:checked + .switchLabel {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  color: #131315;
+.switchLabel::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  transform: translateX(0);
+  top: 4px;
 }
 
 .switchInput:checked + .switchLabel::before {
-  transform: translateX(30px);
-  background-color: #131315;
+  background-color: #48bb78;
+}
+
+.switchInput:checked + .switchLabel::after {
+  transform: translateX(20px);
 }
 
 /* Danger zone */
@@ -364,40 +362,42 @@ textarea.arrayItemInput {
 .dangerTitle {
   color: #e74c3c;
   font-size: 1.25rem;
-  margin-bottom: 1rem;
   font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .dangerCard {
+  background-color: rgba(231, 76, 60, 0.05);
   border: 1px solid #e74c3c;
   border-radius: 8px;
-  padding: 1.25rem;
+  padding: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(231, 76, 60, 0.05);
+  gap: 1rem;
 }
 
 .dangerInfo h3 {
   margin-top: 0;
   margin-bottom: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
   color: #e74c3c;
 }
 
 .dangerInfo p {
   margin: 0;
+  color: #cbd5e0;
   font-size: 0.875rem;
-  color: #c4c4c4;
 }
 
 .deleteButton {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid #e74c3c;
   border-radius: 4px;
-  padding: 0.75rem 1.25rem;
+  color: #e74c3c;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
@@ -405,7 +405,8 @@ textarea.arrayItemInput {
 }
 
 .deleteButton:hover {
-  background-color: #d44031;
+  background-color: #e74c3c;
+  color: white;
 }
 
 .deleteButton:disabled {
@@ -416,24 +417,21 @@ textarea.arrayItemInput {
 /* Modal styles */
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+  z-index: 50;
 }
 
 .deleteModal {
-  width: 100%;
-  max-width: 480px;
   background-color: #1A1A1E;
   border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px;
   overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .modalHeader {
@@ -446,15 +444,15 @@ textarea.arrayItemInput {
 
 .modalHeader h3 {
   margin: 0;
-  color: #f7f7f7;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 600;
+  color: #e74c3c;
 }
 
 .closeButton {
   background: none;
   border: none;
-  color: #a0a0a0;
+  color: #a0aec0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -462,7 +460,7 @@ textarea.arrayItemInput {
 }
 
 .closeButton:hover {
-  color: #f7f7f7;
+  color: #e2e8f0;
 }
 
 .modalBody {
@@ -472,10 +470,9 @@ textarea.arrayItemInput {
 .warningMessage {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
-  padding: 0.75rem;
+  gap: 0.75rem;
+  padding: 1rem;
   background-color: rgba(231, 76, 60, 0.1);
-  border-left: 3px solid #e74c3c;
   border-radius: 4px;
   margin-bottom: 1.5rem;
   color: #e74c3c;
@@ -484,12 +481,11 @@ textarea.arrayItemInput {
 .confirmInput {
   width: 100%;
   padding: 0.75rem;
-  margin: 1rem 0;
   background-color: #131315;
   border: 1px solid #333333;
   border-radius: 4px;
   color: #ffffff;
-  font-size: 1rem;
+  margin: 1rem 0;
 }
 
 .modalActions {
@@ -500,29 +496,32 @@ textarea.arrayItemInput {
 }
 
 .cancelButton {
+  padding: 0.5rem 1rem;
   background-color: transparent;
   border: 1px solid #333333;
-  color: #c4c4c4;
-  padding: 0.6rem 1.2rem;
   border-radius: 4px;
+  color: #a0aec0;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .cancelButton:hover {
   background-color: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
 }
 
 .deleteConfirmButton {
+  padding: 0.5rem 1rem;
   background-color: #e74c3c;
-  border: none;
-  color: white;
-  padding: 0.6rem 1.2rem;
+  border: 1px solid #e74c3c;
   border-radius: 4px;
+  color: white;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .deleteConfirmButton:hover {
-  background-color: #d44031;
+  background-color: #c0392b;
 }
 
 .deleteConfirmButton:disabled, .cancelButton:disabled {
@@ -534,49 +533,74 @@ textarea.arrayItemInput {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
-  color: #a0a0a0;
+  height: 300px;
+  color: #a0aec0;
+  font-size: 1.1rem;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #e2e8f0;
+}
+
+.error h2 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.error p {
+  color: #a0aec0;
+  margin-bottom: 1.5rem;
+}
+
+.returnButton {
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: #131315;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.returnButton:hover {
+  opacity: 0.9;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  .infoGrid {
-    grid-template-columns: 1fr;
-  }
-
   .header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
-
+  
   .actionButtons {
     width: 100%;
+    justify-content: flex-end;
   }
-
-  .actionButton {
-    flex: 1;
-    justify-content: center;
-  }
-
+  
   .dangerCard {
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .dangerInfo {
-    margin-bottom: 1rem;
-  }
-
+  
   .deleteButton {
     width: 100%;
+    margin-top: 1rem;
   }
-
+  
   .modalActions {
     flex-direction: column;
   }
-
-  .modalActions button {
+  
+  .cancelButton, .deleteConfirmButton {
     width: 100%;
   }
 }
