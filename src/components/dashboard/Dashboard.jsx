@@ -108,6 +108,13 @@ const Dashboard = () => {
         return;
       }
       
+      // Set timeout for project loading
+      const timeoutId = setTimeout(() => {
+        if (loading) {
+          setError('Loading is taking longer than expected. Please wait...');
+        }
+      }, 10000); // Increase to 10 seconds from what appears to be immediate error
+      
       // Otherwise fetch the specific project
       try {
         const user_id = Cookies.get('user_id');
@@ -129,43 +136,55 @@ const Dashboard = () => {
       } catch (err) {
         console.error('Error fetching project details:', err);
         
-        // Handle different error responses
-        if (err.response) {
-          switch (err.response.status) {
-            case 400:
-              setError('Bad request. Please check your request parameters.');
-              break;
-            case 401:
-              setError('Authentication required. Please log in again.');
-              setTimeout(() => navigate('/login'), 2000);
-              break;
-            case 403:
-              setError('You don\'t have access to this project or subscription required.');
-              break;
-            case 404:
-              setError(`Project not found: ${projectId}`);
-              // Redirect to dashboard with default project ID after showing error
-              setTimeout(() => navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`), 2000);
-              break;
-            case 422:
-              const validationErrors = err.response.data.detail;
-              setError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
-              break;
-            case 500:
-              setError('Server error. Please try again later.');
-              break;
-            default:
-              setError(`Error: ${err.response.status} - ${err.response.statusText}`);
+        // Only set error state if we're still loading (prevents flashing errors)
+        if (loading) {
+          // Handle different error responses
+          if (err.response) {
+            switch (err.response.status) {
+              case 400:
+                setError('Bad request. Please check your request parameters.');
+                break;
+              case 401:
+                setError('Authentication required. Please log in again.');
+                // Increased timeout before redirecting
+                setTimeout(() => navigate('/login'), 3000);
+                break;
+              case 403:
+                setError('You don\'t have access to this project or subscription required.');
+                break;
+              case 404:
+                setError(`Project not found: ${projectId}`);
+                // Increased timeout before redirecting
+                setTimeout(() => navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`), 3000);
+                break;
+              case 422:
+                const validationErrors = err.response.data.detail;
+                setError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
+                break;
+              case 500:
+                setError('Server error. Please try again later.');
+                break;
+              default:
+                setError(`Error: ${err.response.status} - ${err.response.statusText}`);
+            }
+          } else if (err.request) {
+            setError('Network error. Please check your connection.');
+          } else {
+            setError(err.message || 'An error occurred while loading the project.');
           }
-        } else if (err.request) {
-          setError('Network error. Please check your connection.');
-        } else {
-          setError(err.message || 'An error occurred while loading the project.');
         }
         
-        // Use the default project on error
-        setCurrentProject(DEFAULT_PROJECT);
+        // Don't use default project right away - give the API time to respond
+        // Only use default after timeout
+        setTimeout(() => {
+          if (loading) {
+            // Use the default project on error after waiting
+            setCurrentProject(DEFAULT_PROJECT);
+            setLoading(false);
+          }
+        }, 15000); // 15 second timeout before falling back to default
       } finally {
+        clearTimeout(timeoutId);
         setLoading(false);
       }
     };
@@ -174,7 +193,17 @@ const Dashboard = () => {
   }, [projectId, navigate]);
 
   if (loading) {
-    return <div className={styles.loadingContainer}>Loading project...</div>;
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p className={styles.loadingMessage}>
+          {error ? error : 'Loading project data...'}
+        </p>
+        <p className={styles.loadingSubtext}>
+          This might take a moment. Please wait...
+        </p>
+      </div>
+    );
   }
 
   return (
