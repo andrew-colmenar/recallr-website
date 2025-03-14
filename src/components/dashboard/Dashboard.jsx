@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useSearchParams, useNavigate } from "react-router-dom";
-import api from "../../api/axios";
+import { Routes, Route, useSearchParams, useNavigate, Navigate } from "react-router-dom";
+import { appApi } from "../../api/axios";
 import Cookies from 'js-cookie';
 import Sidebar from "./Sidebar/Sidebar";
 import RequestsDashboard from "./RequestsDashboard";
@@ -41,9 +41,62 @@ const Dashboard = () => {
   const [currentProject, setCurrentProject] = useState(DEFAULT_PROJECT);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
   
   const projectId = searchParams.get('project');
+  
+  // First, fetch all projects to determine if user has any
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const user_id = Cookies.get('user_id');
+        const session_id = Cookies.get('session_id');
+        
+        if (!user_id || !session_id) {
+          throw new Error('Authentication required');
+        }
+        
+        const response = await appApi.get('projects', {
+          headers: {
+            'X-User-Id': user_id,
+            'X-Session-Id': session_id
+          },
+          params: {
+            offset: 0,
+            limit: 100
+          }
+        });
+        
+        const { projects: projectsList } = response.data;
+        
+        setProjects(projectsList || []);
+        
+        // If no project is selected in URL but user has projects, redirect to latest project
+        if (!projectId && projectsList && projectsList.length > 0) {
+          // Sort by creation date (newest first) and redirect to settings
+          const sortedProjects = [...projectsList].sort((a, b) => 
+            new Date(b.created_at) - new Date(a.created_at)
+          );
+          
+          navigate(`/dashboard/settings?project=${sortedProjects[0].id}`, { replace: true });
+          return;
+        }
+        
+        // If no projects exist and no project is selected, use default project and go to settings
+        if ((!projectsList || projectsList.length === 0) && !projectId) {
+          navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`, { replace: true });
+          return;
+        }
+        
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        // In case of error, we'll continue with project details fetching
+      }
+    };
+    
+    fetchProjects();
+  }, []);
   
   useEffect(() => {
     const fetchProjectDetails = async () => {
@@ -63,7 +116,7 @@ const Dashboard = () => {
           throw new Error('Authentication required');
         }
         
-        const response = await api.get(`app/projects/${projectId}`, {
+        const response = await appApi.get(`projects/${projectId}`, {
           headers: {
             'X-User-Id': user_id,
             'X-Session-Id': session_id
@@ -90,8 +143,8 @@ const Dashboard = () => {
               break;
             case 404:
               setError(`Project not found: ${projectId}`);
-              // Redirect to dashboard with no project ID after showing error
-              setTimeout(() => navigate('/dashboard'), 2000);
+              // Redirect to dashboard with default project ID after showing error
+              setTimeout(() => navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`), 2000);
               break;
             case 422:
               const validationErrors = err.response.data.detail;
@@ -125,7 +178,7 @@ const Dashboard = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <Sidebar />
+      <Sidebar projectId={projectId || DEFAULT_PROJECT.id} />
       <div className={styles.contentContainer}>
         {error && (
           <div className={styles.errorBanner}>
@@ -134,16 +187,11 @@ const Dashboard = () => {
         )}
         <main className={styles.main}>
           <Routes>
-            <Route index element={<RequestsDashboard project={currentProject} />} />
+            <Route index element={<Navigate to={`settings?project=${projectId || DEFAULT_PROJECT.id}`} replace />} />
             <Route path="usage" element={<ComingSoon project={currentProject} />} />
             <Route path="users" element={<ComingSoon project={currentProject} />} />
             <Route path="apikeys" element={<APIKeys project={currentProject} />} />
             <Route path="settings" element={<ComingSoon project={currentProject} />} />
-            <Route path="billing" element={<Billing project={currentProject} />} />
-            <Route path="getstarted" element={<ComingSoon project={currentProject} />} />
-            <Route path="status" element={<ComingSoon project={currentProject} />} />
-            <Route path="playground" element={<ComingSoon project={currentProject} />} />
-            <Route path="docs" element={<ComingSoon project={currentProject} />} />
             <Route path="*" element={<ComingSoon project={currentProject} />} />
           </Routes>
         </main>

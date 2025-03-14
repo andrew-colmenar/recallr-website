@@ -1,3 +1,13 @@
+# Dashboard Application
+
+## Environment Variables
+
+This application uses environment variables for configuration. Copy the `.env.template` file to create your own `.env.local` file:
+
+```bash
+cp .env.template .env.local
+```
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

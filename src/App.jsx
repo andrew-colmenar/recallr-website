@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useSearchParams } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./components/Login/Login"; // Updated import path
+import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
-import SessionsManager from "./components/SessionsManager";
-import Billing from "./components/Billing/Billing";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
+import Billing from "./components/Billing/Billing";
 import "./App.css";
 import authService from "./services/authService";
 import Header from "./components/Header/Header";
@@ -69,20 +68,24 @@ function AppContent() {
             </ProtectedRoute>
           } 
         />
+        
+        {/* Non-project specific routes */}
         <Route 
-          path="/sessions" 
+          path="/billing" 
           element={
             <ProtectedRoute isValid={sessionValid}>
-              <SessionsManager />
+              <Billing />
             </ProtectedRoute>
           } 
         />
-        <Route path="/usage" element={<Navigate to="/dashboard/usage" />} />
-        <Route path="/users" element={<Navigate to="/dashboard/users" />} />
-        <Route path="/apikeys" element={<Navigate to="/dashboard/apikeys" />} />
-        <Route path="/settings" element={<Navigate to="/dashboard/settings" />} />
-        <Route path="/billing" element={<Navigate to="/dashboard/billing" />} />
-        <Route path="/getstarted" element={<Navigate to="/dashboard/getstarted" />} />
+
+        {/* These routes need to preserve the project ID parameter */}
+        <Route           path="/usage"           element={
+            <ProtectedRoute isValid={sessionValid}>
+              <ComingSoon />
+            </ProtectedRoute>
+          } 
+        />
         <Route 
           path="/status" 
           element={
@@ -108,7 +111,7 @@ function AppContent() {
           } 
         />
         
-        {/* Redirect from root to dashboard or login */}
+        {/* Redirect from root to dashboard */}
         <Route 
           path="/" 
           element={

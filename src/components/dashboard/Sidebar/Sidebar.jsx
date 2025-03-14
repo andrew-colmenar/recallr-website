@@ -12,11 +12,16 @@ import {
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = () => {
+const Sidebar = ({ projectId }) => {
   const location = useLocation();
 
   const isActive = (path) => {
     return location.pathname === path ? styles.active : "";
+  };
+
+  // Helper function to create project-specific URLs for dashboard routes
+  const projectUrl = (path) => {
+    return `/dashboard/${path}?project=${projectId}`;
   };
 
   return (
@@ -26,8 +31,8 @@ const Sidebar = () => {
           <ul>
             <li>
               <Link
-                to="/usage"
-                className={`${styles.navItem} ${isActive("/usage")}`}
+                to={projectUrl("usage")}
+                className={`${styles.navItem} ${isActive(projectUrl("usage"))}`}
               >
                 <div className={styles.iconContainer}>
                   <Activity className="w-4 h-4" />
@@ -37,8 +42,8 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/users"
-                className={`${styles.navItem} ${isActive("/users")}`}
+                to={projectUrl("users")}
+                className={`${styles.navItem} ${isActive(projectUrl("users"))}`}
               >
                 <div className={styles.iconContainer}>
                   <User className="w-4 h-4" />
@@ -48,8 +53,8 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/apikeys"
-                className={`${styles.navItem} ${isActive("/apikeys")}`}
+                to={projectUrl("apikeys")}
+                className={`${styles.navItem} ${isActive(projectUrl("apikeys"))}`}
               >
                 <div className={styles.iconContainer}>
                   <Key className="w-4 h-4" />
@@ -59,8 +64,8 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/settings"
-                className={`${styles.navItem} ${isActive("/settings")}`}
+                to={projectUrl("settings")}
+                className={`${styles.navItem} ${isActive(projectUrl("settings"))}`}
               >
                 <div className={styles.iconContainer}>
                   <Settings className="w-4 h-4" />

@@ -50,14 +50,14 @@ export const signInWithGoogle = async () => {
   const deviceInfo = getDeviceInfo();
 
   const params = new URLSearchParams({
-    referal_url: "http://localhost:5173/dashboard",
+    referal_url: import.meta.env.VITE_APP_URL + "/dashboard",
     device_type: deviceInfo.deviceType,
     operating_system: deviceInfo.operatingSystem,
     browser_version: deviceInfo.browserVersion,
     browser_name: deviceInfo.browserName,
   });
 
-  const redirectUrl = `https://auth.recallrai.com/api/v1/sso/google/redirect?${params.toString()}`;
+  const redirectUrl = `${import.meta.env.VITE_GOOGLE_AUTH_REDIRECT_URL}?${params.toString()}`;
 
   // Before redirecting, set up a handler for when we return
   localStorage.setItem('pendingGoogleAuth', 'true');

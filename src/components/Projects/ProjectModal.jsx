@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Plus, AlertCircle, Calendar } from 'lucide-react';
-import api from '../../api/axios';
+import { appApi } from '../../api/axios';
 import Cookies from 'js-cookie';
 import styles from './ProjectModal.module.css';
 
 // Default project to show when no projects are available
 const DEFAULT_PROJECT = {
-  id: "default-id",
+  id: "default-project-id", // Updated to match Dashboard component
   name: "Default Project",
   description: "Default project for new users",
   created_at: new Date().toISOString(),
+  is_available: true
 };
 
 const getSessionFromCookies = () => {
   const userId = Cookies.get('user_id');
   const sessionId = Cookies.get('session_id');
-  
-  // Log the values to help with debugging
-  console.log('Cookies retrieved:', {userId, sessionId});
   
   return {
     user_id: userId,
@@ -35,7 +33,7 @@ const formatDate = (dateString) => {
   });
 };
 
-const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
+const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -49,6 +47,12 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
   const [creatingProject, setCreatingProject] = useState(false);
   const navigate = useNavigate();
   
+  // Debug log when the modal opens/closes
+  useEffect(() => {
+    console.log("ProjectModal isOpen:", isOpen);
+    console.log("Current project ID:", currentProjectId);
+  }, [isOpen, currentProjectId]);
+  
   useEffect(() => {
     if (isOpen) {
       fetchProjects();
@@ -56,6 +60,7 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
   }, [isOpen]);
   
   const fetchProjects = async () => {
+    console.log("Fetching projects...");
     setLoading(true);
     setError(null);
     
@@ -68,8 +73,8 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
         return;
       }
       
-      // Use api.get() instead of api() with method parameter
-      const response = await api.get('app/projects', {
+      // Use appApi.get() instead of api() with method parameter
+      const response = await appApi.get('projects', {
         headers: {
           'X-User-Id': user_id,
           'X-Session-Id': session_id
@@ -83,6 +88,7 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
       
       // The rest of your code remains the same
       const { projects: projectsList, total, has_more } = response.data;
+      console.log("Projects fetched:", projectsList);
       
       setTotal(total || 0);
       setHasMore(has_more || false);
@@ -90,7 +96,11 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
       if (!projectsList || projectsList.length === 0) {
         setProjects([DEFAULT_PROJECT]);
       } else {
-        setProjects(projectsList);
+        // Sort projects by creation date (newest first)
+        const sortedProjects = [...projectsList].sort((a, b) => 
+          new Date(b.created_at) - new Date(a.created_at)
+        );
+        setProjects(sortedProjects);
       }
     } catch (error) {
       console.error('Error fetching projects:', error);
@@ -134,17 +144,12 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
   };
   
   const handleProjectSelect = (project) => {
+    console.log("Project selected in modal:", project);
     if (onProjectSelect) {
       onProjectSelect(project);
-      
-      // If it's the default project, don't include project parameter in the URL
-      if (project.id === DEFAULT_PROJECT.id) {
-        navigate('/dashboard');
-      } else {
-        navigate(`/dashboard?project=${project.id}`);
-      }
     }
-    onClose();
+    // Modal is closed by the parent component via onProjectSelect
+    // No need to call onClose() directly here
   };
   
   const toggleCreateForm = () => {
@@ -206,7 +211,7 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
       };
       
       // Try sending without withCredentials to see if that's causing an issue
-      const response = await api.post('app/projects', 
+      const response = await appApi.post('projects', 
         projectPayload,
         {
           headers: {
@@ -230,7 +235,8 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
         id: project_id,
         name: newProject.name,
         description: newProject.description,
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        is_available: true
       };
       
       // Add the new project to the list
@@ -371,13 +377,14 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect }) => {
               {projects.map(project => (
                 <div 
                   key={project.id} 
-                  className={`${styles.projectItem} ${!project.is_available ? styles.projectDisabled : ''}`}
+                  className={`${styles.projectItem} ${!project.is_available ? styles.projectDisabled : ''} ${project.id === currentProjectId ? styles.projectActive : ''}`}
                   onClick={() => project.is_available !== false && handleProjectSelect(project)}
                 >
                   <div className={styles.projectInfo}>
                     <h3 className={styles.projectName}>
                       {project.name}
                       {project.is_available === false && <span className={styles.unavailableTag}>Unavailable</span>}
+                      {project.id === currentProjectId && <span className={styles.currentTag}>Current</span>}
                     </h3>
                     <p className={styles.projectId}>ID: {project.id}</p>
                     {project.description && (
