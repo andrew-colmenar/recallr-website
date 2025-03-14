@@ -110,6 +110,14 @@ function AppContent() {
             </ProtectedRoute>
           } 
         />
+        <Route 
+          path="/getstarted" 
+          element={
+            <ProtectedRoute isValid={sessionValid}>
+              <ComingSoon />
+            </ProtectedRoute>
+          } 
+        />
         
         {/* Redirect from root to dashboard */}
         <Route 
