@@ -3,9 +3,8 @@ import { Routes, Route, useSearchParams, useNavigate, Navigate } from "react-rou
 import { appApi } from "../../api/axios";
 import Cookies from 'js-cookie';
 import Sidebar from "./Sidebar/Sidebar";
-import RequestsDashboard from "./RequestsDashboard";
 import ComingSoon from "../ComingSoon/ComingSoon";
-
+import Users from "../Users/Users";
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
 import ProjectSettings from "./Settings/ProjectSettings";
@@ -219,7 +218,7 @@ const Dashboard = () => {
           <Routes>
             <Route index element={<Navigate to={`settings?project=${projectId || DEFAULT_PROJECT.id}`} replace />} />
             <Route path="usage" element={<ComingSoon project={currentProject} />} />
-            <Route path="users" element={<ComingSoon project={currentProject} />} />
+            <Route path="users" element={<Users project={currentProject} />} />
             <Route path="apikeys" element={<APIKeys project={currentProject} />} />
             <Route path="settings" element={<ProjectSettings project={currentProject} />} />
             <Route path="*" element={<ComingSoon project={currentProject} />} />

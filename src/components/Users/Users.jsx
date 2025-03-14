@@ -1,45 +1,141 @@
 // UsersInterface.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { recallApi } from '../../api/axios';
+import Cookies from 'js-cookie';
 import styles from './Users.module.css';
+import { AlertCircle, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useParams, useSearchParams } from 'react-router-dom';
+
+const USERS_PER_PAGE = 10;
 
 const Users = () => {
-  // Sample user data
-  const [users, setUsers] = useState([
-    {
-      user_id: "user_123456",
-      created_at: "Jan 6, 2025, 2:42:39 AM",
-      last_active_at: "Jan 15, 2025, 4:15:22 PM"
-    },
-    {
-      user_id: "user_789012",
-      created_at: "Feb 12, 2025, 10:30:15 AM",
-      last_active_at: "Mar 1, 2025, 9:22:08 AM"
-    },
-    {
-      user_id: "user_345678",
-      created_at: "Dec 22, 2024, 8:05:51 PM",
-      last_active_at: "Mar 10, 2025, 11:45:30 AM"
-    }
-  ]);
-
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortField, setSortField] = useState(null);
-  const [sortDirection, setSortDirection] = useState('asc');
-
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [sortField, setSortField] = useState('created_at');
+  const [sortDirection, setSortDirection] = useState('desc');
+  const [deleteError, setDeleteError] = useState(null);
+  const [deletingUser, setDeletingUser] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [searchParams] = useSearchParams();
+  const projectId = searchParams.get('project');
+  
+  // Fetch users on component mount and when page, sort, or project changes
+  useEffect(() => {
+    if (projectId) {
+      fetchUsers();
     } else {
-      setSortField(field);
-      setSortDirection('asc');
+      setError('No project selected. Please select a project.');
+      setLoading(false);
+    }
+  }, [projectId, currentPage, sortField, sortDirection]);
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const apiKey = Cookies.get('api_key');
+      
+      if (!apiKey || !projectId) {
+        throw new Error('Authentication or project ID missing');
+      }
+      
+      const offset = (currentPage - 1) * USERS_PER_PAGE;
+      
+      const response = await recallApi.get('/api/v1/users', {
+        headers: {
+          'X-Project-Id': projectId,
+          'X-Api-Key': apiKey
+        },
+        params: {
+          offset: offset,
+          limit: USERS_PER_PAGE
+        }
+      });
+      
+      const { users: fetchedUsers, total, has_more } = response.data;
+      
+      // Sort users if needed (API might already sort them)
+      const sortedUsers = sortUsers(fetchedUsers || []);
+      
+      setUsers(sortedUsers);
+      setTotalUsers(total || 0);
+      setHasMore(has_more || false);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching users:', err);
+      
+      if (err.response) {
+        switch (err.response.status) {
+          case 401:
+            setError('Authentication failed. Please check your API key.');
+            break;
+          case 422:
+            const validationErrors = err.response.data.detail;
+            setError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
+            break;
+          case 500:
+            setError('Server error. Please try again later.');
+            break;
+          default:
+            setError(`Error: ${err.response.status} - ${err.response.statusText || 'Unknown error'}`);
+        }
+      } else if (err.request) {
+        setError('Network error. Please check your connection.');
+      } else {
+        setError(err.message || 'An error occurred while loading users.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getSortIndicator = (field) => {
+  const sortUsers = (usersList) => {
+    return [...usersList].sort((a, b) => {
+      let valueA = a[sortField];
+      let valueB = b[sortField];
+      
+      // Handle dates
+      if (sortField === 'created_at' || sortField === 'last_active_at') {
+        valueA = new Date(valueA).getTime();
+        valueB = new Date(valueB).getTime();
+      }
+      
+      if (sortDirection === 'asc') {
+        return valueA > valueB ? 1 : -1;
+      } else {
+        return valueA < valueB ? 1 : -1;
+      }
+    });
+  };
+
+  const handleSort = (field) => {
     if (sortField === field) {
-      return sortDirection === 'asc' ? '↑' : '↓';
+      // Toggle direction if same field
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // New field, default to descending
+      setSortField(field);
+      setSortDirection('desc');
     }
-    return '';
+    
+    // Reset to first page when sorting changes
+    setCurrentPage(1);
+  };
+
+  const getSortIndicator = (field) => {
+    if (sortField !== field) return null;
+    
+    return (
+      <span className={styles['sort-indicator']}>
+        {sortDirection === 'asc' ? '↑' : '↓'}
+      </span>
+    );
   };
 
   const goToPreviousPage = () => {
@@ -49,89 +145,269 @@ const Users = () => {
   };
 
   const goToNextPage = () => {
-    // Assuming there's more data beyond what we have
-    setCurrentPage(currentPage + 1);
+    if (hasMore) {
+      setCurrentPage(currentPage + 1);
+    }
   };
+
+  const openDeleteConfirm = (user) => {
+    setUserToDelete(user);
+    setShowDeleteConfirm(true);
+  };
+
+  const closeDeleteConfirm = () => {
+    setUserToDelete(null);
+    setShowDeleteConfirm(false);
+    setDeleteError(null);
+  };
+
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+    
+    setDeletingUser(userToDelete.user_id);
+    setDeleteError(null);
+    
+    try {
+      const apiKey = Cookies.get('api_key');
+      
+      if (!apiKey || !projectId) {
+        throw new Error('Authentication or project ID missing');
+      }
+      
+      await recallApi.delete(`/api/v1/users/${userToDelete.user_id}`, {
+        headers: {
+          'X-Project-Id': projectId,
+          'X-Api-Key': apiKey
+        }
+      });
+      
+      // Remove deleted user from the list
+      setUsers(users.filter(user => user.user_id !== userToDelete.user_id));
+      
+      // Update total count
+      setTotalUsers(totalUsers - 1);
+      
+      // Close the confirmation modal
+      closeDeleteConfirm();
+      
+      // If we deleted the last user on this page and it's not the first page, go back one page
+      if (users.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+      // Otherwise, if we're on a page with no users now, refresh to get the next batch
+      else if (users.length === 1) {
+        fetchUsers();
+      }
+    } catch (err) {
+      console.error('Error deleting user:', err);
+      
+      if (err.response) {
+        switch (err.response.status) {
+          case 401:
+            setDeleteError('Authentication failed. Please check your API key.');
+            break;
+          case 404:
+            setDeleteError('User not found. It may have been already deleted.');
+            // Remove from the list if it no longer exists
+            setUsers(users.filter(user => user.user_id !== userToDelete.user_id));
+            break;
+          case 422:
+            const validationErrors = err.response.data.detail;
+            setDeleteError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
+            break;
+          case 500:
+            setDeleteError('Server error. Please try again later.');
+            break;
+          default:
+            setDeleteError(`Error: ${err.response.status} - ${err.response.statusText || 'Unknown error'}`);
+        }
+      } else if (err.request) {
+        setDeleteError('Network error. Please check your connection.');
+      } else {
+        setDeleteError(err.message || 'An error occurred while deleting the user.');
+      }
+    } finally {
+      setDeletingUser(null);
+    }
+  };
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid date';
+    
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // Truncate user ID for display
+  const truncateId = (id) => {
+    if (!id) return 'N/A';
+    if (id.length <= 8) return id;
+    return `${id.substring(0, 8)}...`;
+  };
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalUsers / USERS_PER_PAGE) || 1;
 
   return (
     <div className={styles['users-container']}>
       <div className={styles['users-header']}>
         <h2 className={styles['users-title']}>Users</h2>
-        <p className={styles['users-subtitle']}>Here's a list of all users, agents, apps, and sessions in your account.</p>
+        <p className={styles['users-subtitle']}>
+          Manage all users in your project. You can view details and delete users.
+        </p>
       </div>
+
+      {error && (
+        <div className={styles['error-message']}>
+          <AlertCircle size={16} />
+          <span>{error}</span>
+        </div>
+      )}
 
       <div className={styles['users-table-container']}>
-        <table className={styles['users-table']}>
-          <thead>
-            <tr>
-              <th 
-                onClick={() => handleSort('user_id')}
-                className={styles['sortable-header']}
-              >
-                User ID {getSortIndicator('user_id')}
-              </th>
-              <th 
-                onClick={() => handleSort('created_at')}
-                className={styles['sortable-header']}
-              >
-                Created At {getSortIndicator('created_at')}
-              </th>
-              <th 
-                onClick={() => handleSort('last_active_at')}
-                className={styles['sortable-header']}
-              >
-                Last Active At {getSortIndicator('last_active_at')}
-              </th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index}>
-                <td>{user.user_id}</td>
-                <td>{user.created_at}</td>
-                <td>{user.last_active_at}</td>
-                <td>
-                  <button className={styles['delete-button']}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M3 6h18"></path>
-                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                    </svg>
-                  </button>
-                </td>
+        {loading && users.length === 0 ? (
+          <div className={styles['loading']}>Loading users...</div>
+        ) : users.length === 0 ? (
+          <div className={styles['no-users']}>
+            <p>No users found for this project.</p>
+          </div>
+        ) : (
+          <table className={styles['users-table']}>
+            <thead>
+              <tr>
+                <th 
+                  onClick={() => handleSort('user_id')}
+                  className={styles['sortable-header']}
+                >
+                  User ID {getSortIndicator('user_id')}
+                </th>
+                <th 
+                  onClick={() => handleSort('created_at')}
+                  className={styles['sortable-header']}
+                >
+                  Created At {getSortIndicator('created_at')}
+                </th>
+                <th 
+                  onClick={() => handleSort('last_active_at')}
+                  className={styles['sortable-header']}
+                >
+                  Last Active {getSortIndicator('last_active_at')}
+                </th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.user_id} className={deletingUser === user.user_id ? styles['deleting'] : ''}>
+                  <td title={user.user_id}>{truncateId(user.user_id)}</td>
+                  <td title={user.created_at}>{formatDate(user.created_at)}</td>
+                  <td title={user.last_active_at}>{formatDate(user.last_active_at)}</td>
+                  <td>
+                    <button 
+                      className={styles['delete-button']}
+                      onClick={() => openDeleteConfirm(user)}
+                      disabled={!!deletingUser}
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
-      <div className={styles['pagination']}>
-        <button 
-          className={styles['pagination-button']}
-          onClick={goToPreviousPage}
-          disabled={currentPage === 1}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          Previous
-        </button>
-        
-        <div className={styles['page-number']}>
-          Page {currentPage}
+      {/* Pagination */}
+      {users.length > 0 && (
+        <div className={styles['pagination']}>
+          <button 
+            className={styles['pagination-button']}
+            onClick={goToPreviousPage}
+            disabled={currentPage === 1 || loading}
+          >
+            <ChevronLeft size={16} />
+            Previous
+          </button>
+          
+          <div className={styles['page-info']}>
+            Page {currentPage} of {totalPages || '?'}
+            <span className={styles['total-count']}>(Total: {totalUsers})</span>
+          </div>
+          
+          <button 
+            className={styles['pagination-button']}
+            onClick={goToNextPage}
+            disabled={!hasMore || loading}
+          >
+            Next
+            <ChevronRight size={16} />
+          </button>
         </div>
-        
-        <button 
-          className={styles['pagination-button']}
-          onClick={goToNextPage}
-        >
-          Next
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className={styles['modal-overlay']}>
+          <div className={styles['delete-modal']}>
+            <div className={styles['modal-header']}>
+              <h3>Delete User</h3>
+              <button
+                className={styles['close-button']}
+                onClick={closeDeleteConfirm}
+                disabled={deletingUser}
+              >
+                &times;
+              </button>
+            </div>
+            
+            <div className={styles['modal-content']}>
+              <p>
+                Are you sure you want to delete the user with ID: <br />
+                <strong>{userToDelete?.user_id}</strong>?
+              </p>
+              <p className={styles['warning']}>
+                <AlertCircle size={16} />
+                This action cannot be undone. All data associated with this user will be permanently deleted.
+              </p>
+              
+              {deleteError && (
+                <div className={styles['error-message']}>
+                  <AlertCircle size={16} />
+                  <span>{deleteError}</span>
+                </div>
+              )}
+            </div>
+            
+            <div className={styles['modal-actions']}>
+              <button
+                className={styles['cancel-button']}
+                onClick={closeDeleteConfirm}
+                disabled={!!deletingUser}
+              >
+                Cancel
+              </button>
+              
+              <button
+                className={styles['confirm-delete-button']}
+                onClick={handleDeleteUser}
+                disabled={!!deletingUser}
+              >
+                {deletingUser ? 'Deleting...' : 'Delete User'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
