@@ -5,32 +5,247 @@
   box-sizing: border-box;
 }
 
-/* Full-screen container with a black background and white text */
+/* Full-screen container with a dark background and white text */
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000;
-  color: #fff;
-  height: 100vh;
-  width: 100vw;
-  font-family: Arial, sans-serif;
+  background-color: #131315;
+  color: #ffffff;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 20px;
 }
 
 /* Centered content styling */
 .content {
   text-align: center;
-  padding: 20px;
+  max-width: 1000px;
+  width: 100%;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
 }
 
-/* Large heading style */
-.content h1 {
+/* Logo styling */
+.logo {
+  margin-bottom: 20px;
+}
+
+.logoText {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #4CAF50, #2196F3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+/* Title styling */
+.title {
   font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #4CAF50, #2196F3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+
+/* Subtitle styling */
+.subtitle {
+  font-size: 1.5rem;
+  color: #aaaaaa;
+  max-width: 600px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  margin: 40px 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(to bottom, #4CAF50, #2196F3, rgba(76, 175, 80, 0.3));
+  left: 24px;
+  top: 0;
+}
+
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding-left: 60px;
+  text-align: left;
+}
+
+.timelineDot {
+  position: absolute;
+  left: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  transform: translateY(8px);
+  z-index: 1;
+}
+
+.future .timelineDot {
+  background-color: rgba(76, 175, 80, 0.3);
+}
+
+.timelineContent {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+}
+
+.timelineContent h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.timelineContent p {
+  font-size: 0.9rem;
+  color: #aaaaaa;
+}
+
+.future .timelineContent {
+  opacity: 0.7;
+}
+
+/* Features */
+.features {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 40px 0;
+}
+
+.feature {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 30px 20px;
+  max-width: 300px;
+  flex: 1;
+  min-width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.featureIcon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.feature h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.feature p {
+  color: #aaaaaa;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+/* Back button */
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  margin-top: 20px;
+}
+
+.backButton:hover {
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .content h1 {
+  .content {
+    gap: 30px;
+    padding: 30px 15px;
+  }
+
+  .title {
     font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .timeline {
+    gap: 20px;
+  }
+
+  .feature {
+    min-width: 200px;
+  }
+
+  .features {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature {
+    width: 100%;
+  }
+  
+  .timeline::before {
+    left: 15px;
+  }
+  
+  .timelineItem {
+    padding-left: 40px;
+  }
+  
+  .timelineDot {
+    left: 11px;
   }
 }
