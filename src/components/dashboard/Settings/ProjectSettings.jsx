@@ -4,6 +4,7 @@ import { appApi } from '../../../api/axios';
 import Cookies from 'js-cookie';
 import { AlertCircle, X, Check, Edit, Trash2, ChevronDown, ChevronUp, Plus, Save } from 'lucide-react';
 import styles from './ProjectSettings.module.css';
+import { useAuth } from '../../../context/AuthContext';
 
 const ProjectSettings = () => {
   const [searchParams] = useSearchParams();
@@ -22,10 +23,18 @@ const ProjectSettings = () => {
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const { user } = useAuth();
 
   // Fetch project data when component mounts or projectId changes
   useEffect(() => {
     const projectId = searchParams.get('project');
+    
+    // Clear any lingering UI states when project changes
+    setShowDeleteConfirm(false);
+    setDeleteConfirmText('');
+    setSuccess(null);
+    setError(null);
+    setIsEditing(false);
     
     if (!projectId) {
       setError('No project selected. Please select a project from the dashboard.');
@@ -305,6 +314,24 @@ const ProjectSettings = () => {
         throw new Error('Authentication required');
       }
       
+      // Step 1: Fetch all projects first to determine where to redirect later
+      const projectsResponse = await appApi.get('projects', {
+        headers: {
+          'X-User-Id': user_id,
+          'X-Session-Id': session_id
+        },
+        params: {
+          offset: 0,
+          limit: 100
+        }
+      });
+      
+      const allProjects = projectsResponse.data.projects || [];
+      
+      // Filter out the current project that's going to be deleted
+      const otherProjects = allProjects.filter(p => p.id !== project.id);
+      
+      // Step 2: Delete the current project
       await appApi.delete(`projects/${project.id}`, {
         headers: {
           'X-User-Id': user_id,
@@ -314,10 +341,21 @@ const ProjectSettings = () => {
       
       setSuccess('Project deleted successfully. Redirecting...');
       
-      // Redirect to dashboard after successful deletion
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000);
+      // Step 3: Immediately navigate to the next project without waiting
+      // Using replace: true to replace the current history entry
+      if (otherProjects.length > 0) {
+        // Sort by created_at descending to get the newest project
+        const sortedProjects = [...otherProjects].sort((a, b) => 
+          new Date(b.created_at) - new Date(a.created_at)
+        );
+        
+        // Immediately navigate with replace
+        navigate(`/dashboard/settings?project=${sortedProjects[0].id}`, { replace: true });
+      } else {
+        // If no projects left, redirect to dashboard without project param
+        navigate('/dashboard', { replace: true });
+      }
+      
     } catch (err) {
       console.error('Error deleting project:', err);
       
@@ -334,11 +372,10 @@ const ProjectSettings = () => {
       } else {
         setError('Failed to delete project. Please try again.');
       }
+      
+      setShowDeleteConfirm(false);
     } finally {
       setActionLoading(false);
-      if (error) {
-        setShowDeleteConfirm(false);
-      }
     }
   };
 
@@ -515,7 +552,10 @@ const ProjectSettings = () => {
                   {isEditing && (
                     <button 
                       className={styles.addItemButton}
-                      onClick={() => addArrayItem('recall_preferences.classifier.custom_instructions')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addArrayItem('recall_preferences.classifier.custom_instructions');
+                      }}
                     >
                       <Plus size={16} />
                       <span>Add Custom Instruction</span>
@@ -552,7 +592,10 @@ const ProjectSettings = () => {
                   {isEditing && (
                     <button 
                       className={styles.addItemButton}
-                      onClick={() => addArrayItem('recall_preferences.classifier.false_positive_examples')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addArrayItem('recall_preferences.classifier.false_positive_examples');
+                      }}
                     >
                       <Plus size={16} />
                       <span>Add False Positive Example</span>
@@ -589,7 +632,10 @@ const ProjectSettings = () => {
                   {isEditing && (
                     <button 
                       className={styles.addItemButton}
-                      onClick={() => addArrayItem('recall_preferences.classifier.false_negative_examples')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addArrayItem('recall_preferences.classifier.false_negative_examples');
+                      }}
                     >
                       <Plus size={16} />
                       <span>Add False Negative Example</span>
@@ -643,7 +689,10 @@ const ProjectSettings = () => {
                   {isEditing && (
                     <button 
                       className={styles.addItemButton}
-                      onClick={() => addArrayItem('recall_preferences.subquery_and_keywords_generator.custom_instructions')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addArrayItem('recall_preferences.subquery_and_keywords_generator.custom_instructions');
+                      }}
                     >
                       <Plus size={16} />
                       <span>Add Custom Instruction</span>
@@ -700,7 +749,10 @@ const ProjectSettings = () => {
                   {isEditing && (
                     <button 
                       className={styles.addItemButton}
-                      onClick={() => addArrayItem('recall_preferences.subquery_and_keywords_generator.example_subqueries')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addArrayItem('recall_preferences.subquery_and_keywords_generator.example_subqueries');
+                      }}
                     >
                       <Plus size={16} />
                       <span>Add Example Subquery</span>
@@ -757,7 +809,10 @@ const ProjectSettings = () => {
                   {isEditing && (
                     <button 
                       className={styles.addItemButton}
-                      onClick={() => addArrayItem('recall_preferences.subquery_and_keywords_generator.example_keywords')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addArrayItem('recall_preferences.subquery_and_keywords_generator.example_keywords');
+                      }}
                     >
                       <Plus size={16} />
                       <span>Add Example Keyword</span>
@@ -811,7 +866,10 @@ const ProjectSettings = () => {
                   {isEditing && (
                     <button 
                       className={styles.addItemButton}
-                      onClick={() => addArrayItem('generation_preferences.custom_instructions')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addArrayItem('generation_preferences.custom_instructions');
+                      }}
                     >
                       <Plus size={16} />
                       <span>Add Custom Instruction</span>
