@@ -1,0 +1,160 @@
+/* UsersInterface.css */
+:root {
+    --primary-bg: #131315;
+    --secondary-bg: #1A1A1E;
+    --border-color: #2A2A30;
+    --text-primary: #FFFFFF;
+    --text-secondary: #AAAAAA;
+    --accent-color: #4CAF50;
+    --inactive-color: #555555;
+    --danger-color: #FF5252;
+    --table-header-bg: #1F1F23;
+    --table-row-hover: #24242A;
+    --user-tag-bg: #EAF7D9;
+    --user-tag-text: #4D6E32;
+  }
+  
+  .users-container {
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .users-header {
+    margin-bottom: 24px;
+  }
+  
+  .users-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .users-subtitle {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  .users-table-container {
+    background-color: var(--secondary-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .users-table th {
+    background-color: var(--table-header-bg);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .sortable-header {
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .sortable-header:hover {
+    color: var(--text-primary);
+  }
+  
+  .users-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+  }
+  
+  .users-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .users-table tr:hover {
+    background-color: var(--table-row-hover);
+  }
+  
+  .user-tag {
+    background-color: var(--user-tag-bg);
+    color: var(--user-tag-text);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+  }
+  
+  .delete-button {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .delete-button:hover {
+    background-color: rgba(255, 82, 82, 0.1);
+  }
+  
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .pagination-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: var(--table-header-bg);
+  }
+  
+  .pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .page-number {
+    background-color: var(--secondary-bg);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 768px) {
+    .users-table-container {
+      overflow-x: auto;
+    }
+    
+    .users-table {
+      min-width: 600px;
+    }
+  }
