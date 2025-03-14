@@ -34,6 +34,7 @@
 .tableContainer {
   overflow-x: auto;
   margin-bottom: 1rem;
+  min-height: 100px;
 }
 
 .table {
@@ -74,10 +75,18 @@
   border-radius: 0.25rem;
   cursor: pointer;
   color: currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .iconButton:hover {
   background-color: #4a5568;
+}
+
+.deleteButton:hover {
+  background-color: rgba(231, 76, 60, 0.3);
+  color: #e74c3c;
 }
 
 .createButton {
@@ -89,8 +98,274 @@
   color: inherit;
   cursor: pointer;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .createButton:hover {
   background-color: #4a5568;
+}
+
+/* Modal styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 100%;
+  max-width: 500px;
+  background-color: #1F1F22;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #2d3748;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  color: #f7f7f7;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: #f7f7f7;
+}
+
+.modalBody {
+  padding: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  color: #f7f7f7;
+  font-size: 1rem;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.3);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.cancelButton, 
+.submitButton,
+.doneButton {
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background-color: transparent;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+.cancelButton:hover {
+  background-color: #2d3748;
+}
+
+.submitButton {
+  background-color: #667eea;
+  border: none;
+  color: white;
+}
+
+.submitButton:hover {
+  background-color: #5a67d8;
+}
+
+.submitButton:disabled {
+  background-color: #4a5568;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.doneButton {
+  background-color: #667eea;
+  border: none;
+  color: white;
+}
+
+.doneButton:hover {
+  background-color: #5a67d8;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-left: 3px solid #e74c3c;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  color: #e74c3c;
+}
+
+.successMessage {
+  background-color: rgba(72, 187, 120, 0.1);
+  border-left: 3px solid #48bb78;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #c6f6d5;
+}
+
+.keyDisplay {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border: 1px solid #4a5568;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.keyValue {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #2d3748;
+  color: #f7f7f7;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.copyButton {
+  padding: 0 1rem;
+  background-color: #4a5568;
+  border: none;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.copyButton:hover {
+  background-color: #667eea;
+}
+
+.copyButton.copied {
+  background-color: #48bb78;
+  color: white;
+}
+
+.keyDetails {
+  margin-top: 1rem;
+  border-top: 1px solid #4a5568;
+  padding-top: 1rem;
+}
+
+.keyDetail {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.keyDetailLabel {
+  width: 100px;
+  color: #a0aec0;
+}
+
+.keyDetailValue {
+  color: #f7f7f7;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem 0;
+  color: #a0aec0;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem 0;
+  color: #a0aec0;
+}
+
+/* Spinner for loading states */
+.buttonSpinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .modalActions {
+    flex-direction: column;
+  }
+  
+  .cancelButton, .submitButton, .doneButton {
+    width: 100%;
+  }
 }
