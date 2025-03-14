@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import Sidebar from "./Sidebar/Sidebar";
 import RequestsDashboard from "./RequestsDashboard";
 import ComingSoon from "../ComingSoon/ComingSoon";
-import Billing from "../Billing/Billing";
+
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
 import ProjectSettings from "./Settings/ProjectSettings";

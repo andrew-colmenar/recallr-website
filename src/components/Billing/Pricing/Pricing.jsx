@@ -1,12 +1,12 @@
 import React from 'react';
 import { Check, Sparkles, Shield } from "lucide-react";
-import styles from './Billing.module.css';
+import styles from './Pricing.module.css';
 
-const Billing = () => {
+const Pricing = () => {
   return (
-    <div className={styles['billing-container']}>
-      <div className={styles['billing-content']}>
-        <h1 className={styles['billing-title']}>Manage your plan</h1>
+    <div className={styles['pricing-container']}>
+      <div className={styles['pricing-content']}>
+        <h1 className={styles['pricing-title']}>Manage your plan</h1>
 
         <div className={styles['plans-grid']}>
           {/* Free Plan */}
@@ -143,4 +143,4 @@ const Billing = () => {
   );
 };
 
-export default Billing;
+export default Pricing;

@@ -6,7 +6,7 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
-import Billing from "./components/Billing/Billing";
+import Billing from "./components/Billing/Main/Billing";
 import "./App.css";
 import authService from "./services/authService";
 import Header from "./components/Header/Header";
