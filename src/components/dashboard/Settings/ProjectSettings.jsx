@@ -24,6 +24,7 @@ const ProjectSettings = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const { user } = useAuth();
+  const [isAddingItem, setIsAddingItem] = useState(false);
 
   // Fetch project data when component mounts or projectId changes
   useEffect(() => {
@@ -195,23 +196,42 @@ const ProjectSettings = () => {
 
   // Add a new item to an array
   const addArrayItem = (path, defaultValue = '') => {
+    // Prevent multiple rapid clicks from adding multiple items
+    if (isAddingItem) return;
+    
+    setIsAddingItem(true);
+    
     const pathParts = path.split('.');
     
     setEditedProject(prev => {
-      const newProject = { ...prev };
+      const newProject = JSON.parse(JSON.stringify(prev)); // Deep clone to avoid reference issues
       
       // Navigate to the correct nested property
       let current = newProject;
       for (let i = 0; i < pathParts.length - 1; i++) {
+        if (!current[pathParts[i]]) {
+          console.error(`Path ${pathParts[i]} not found in project structure`);
+          return prev; // Return previous state unchanged if path is invalid
+        }
         current = current[pathParts[i]];
       }
       
       // Add a new item to the array
       const arrayName = pathParts[pathParts.length - 1];
+      if (!Array.isArray(current[arrayName])) {
+        console.error(`${arrayName} is not an array in project structure`);
+        return prev; // Return previous state unchanged if target is not an array
+      }
+      
       current[arrayName] = [...current[arrayName], defaultValue];
       
       return newProject;
     });
+    
+    // Reset the flag after a short delay to prevent multiple rapid clicks
+    setTimeout(() => {
+      setIsAddingItem(false);
+    }, 300);
   };
 
   // Remove an item from an array
