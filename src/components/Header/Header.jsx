@@ -176,12 +176,15 @@ const Header = () => {
         >
           Dashboard
         </Link>
-        <Link
-          to="/playground"
-          className={`${styles.navLink} ${location.pathname === "/playground" ? styles.active : ""}`}
+        {/* Change from Link to anchor tag for external redirect */}
+        <a
+          href="https://recallrai.com/playground"
+          target="_blank"  // Opens in a new tab
+          rel="noopener noreferrer"  // Security best practice for external links
+          className={styles.navLink}
         >
           Playground
-        </Link>
+        </a>
         <Link
           to="/docs"
           className={`${styles.navLink} ${location.pathname === "/docs" ? styles.active : ""}`}
