@@ -8,6 +8,7 @@ import ComingSoon from "../ComingSoon/ComingSoon";
 import Billing from "../Billing/Billing";
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
+import ProjectSettings from "./Settings/ProjectSettings";
 
 // Default project to use when no project ID is specified or on error
 const DEFAULT_PROJECT = {
@@ -191,7 +192,7 @@ const Dashboard = () => {
             <Route path="usage" element={<ComingSoon project={currentProject} />} />
             <Route path="users" element={<ComingSoon project={currentProject} />} />
             <Route path="apikeys" element={<APIKeys project={currentProject} />} />
-            <Route path="settings" element={<ComingSoon project={currentProject} />} />
+            <Route path="settings" element={<ProjectSettings project={currentProject} />} />
             <Route path="*" element={<ComingSoon project={currentProject} />} />
           </Routes>
         </main>
