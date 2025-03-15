@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { ChevronDown, LogOut, Settings } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import ProjectModal from "../Projects/ProjectModal";
 import styles from './Header.module.css';
 import { useAuth } from '../../context/AuthContext';
@@ -208,11 +208,6 @@ const Header = () => {
                     <span className={styles.profileEmail}>{user.email}</span>
                   </div>
                 )}
-                
-                <Link to="/settings" className={styles.profileMenuItem}>
-                  <Settings size={16} />
-                  <span>Settings</span>
-                </Link>
                 
                 <button onClick={handleLogout} className={styles.profileMenuItem}>
                   <LogOut size={16} />
