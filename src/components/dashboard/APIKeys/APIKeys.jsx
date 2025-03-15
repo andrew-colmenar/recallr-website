@@ -108,11 +108,13 @@ const APIKeys = ({ project }) => {
       setNewKeyName('');
       setCopiedKey(false);
       
-      // Update apiKeys list with the newly created key (without showing the full key)
+      // Update apiKeys list with the newly created key 
+      // Show only the first 5 characters of the key without asterisks
+      // for consistency with how existing keys are displayed
       setApiKeys(prevKeys => [...prevKeys, {
         id: response.data.id,
         name: response.data.name,
-        prefix: response.data.key.substring(0, 5) + '*'.repeat(5),
+        prefix: response.data.key.substring(0, 8), // Only show first 5 characters, no asterisks
         created_at: response.data.created_at
       }]);
       
