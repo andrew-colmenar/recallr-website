@@ -42,7 +42,12 @@ function AppContent() {
 
   // Show loading while checking authentication and session
   if (loading || validatingSession) {
-    return <div className="loading-container">Loading...</div>;
+    return (
+      <div className="app-loading">
+<div className="loading-spinner"></div>
+        <p>Loading application...</p>
+</div>
+    );
   }
 
   return (
