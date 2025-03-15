@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Create two separate API instances for different endpoints
+// Create separate API instances for different endpoints
 const authApi = axios.create({
   baseURL: '/auth',  // This will be proxied correctly
   timeout: 15000
@@ -11,6 +11,12 @@ const appApi = axios.create({
   timeout: 15000
 });
 
+// New instance for api.recallrai.com
+const recallApi = axios.create({
+  baseURL: '/api',  // This will be proxied to https://api.recallrai.com
+  timeout: 15000
+});
+
 // Default export for backward compatibility
 const api = axios.create({
   baseURL: '',  // Empty base URL to be explicit about paths
@@ -18,5 +24,5 @@ const api = axios.create({
 });
 
 // Export all API instances
-export { authApi, appApi };
+export { authApi, appApi, recallApi };
 export default api;

@@ -17,7 +17,12 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/app/, '')
       },
+      '/api': {  // New proxy for api.recallrai.com
+        target: 'https://api.recallrai.com',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
     },
-    
   },
 });
