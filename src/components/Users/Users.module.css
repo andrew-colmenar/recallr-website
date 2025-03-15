@@ -1,0 +1,442 @@
+/* UsersInterface.css */
+:root {
+    --primary-bg: #131315;
+    --secondary-bg: #1A1A1E;
+    --border-color: #2A2A30;
+    --text-primary: #FFFFFF;
+    --text-secondary: #AAAAAA;
+    --accent-color: #4CAF50;
+    --inactive-color: #555555;
+    --danger-color: #FF5252;
+    --table-header-bg: #1F1F23;
+    --table-row-hover: #24242A;
+    --user-tag-bg: #EAF7D9;
+    --user-tag-text: #4D6E32;
+  }
+  
+  .users-container {
+    padding: 2rem;
+    background-color: #131315;
+    color: #ffffff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  
+  .users-header {
+    margin-bottom: 2rem;
+  }
+  
+  .users-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .users-subtitle {
+    color: #aaaaaa;
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  .users-table-container {
+    background-color: #1A1A1E;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+  }
+  
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #2A2A30;
+  }
+  
+  .users-table th {
+    background-color: #212125;
+    color: #aaaaaa;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+  
+  .sortable-header {
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .sortable-header:hover {
+    background-color: #2A2A30;
+  }
+  
+  .sort-indicator {
+    margin-left: 0.5rem;
+    display: inline-block;
+  }
+  
+  .users-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .users-table tr:hover {
+    background-color: var(--table-row-hover);
+  }
+  
+  .user-tag {
+    background-color: var(--user-tag-bg);
+    color: var(--user-tag-text);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+  }
+  
+  .delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .delete-button:hover {
+    background-color: rgba(231, 76, 60, 0.2);
+  }
+  
+  .delete-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .pagination-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #1A1A1E;
+    border: 1px solid #2A2A30;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: #2A2A30;
+  }
+  
+  .pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .page-info {
+    font-size: 0.875rem;
+    color: #aaaaaa;
+  }
+  
+  .total-count {
+    margin-left: 0.5rem;
+    color: #777777;
+  }
+  
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    color: #aaaaaa;
+  }
+  
+  .loading-spinner {
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top: 3px solid #ffffff;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .no-users {
+    text-align: center;
+    padding: 3rem 0;
+    color: #aaaaaa;
+  }
+  
+  .error-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .warning-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Delete confirmation modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .delete-modal {
+    background-color: #1A1A1E;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #2A2A30;
+  }
+  
+  .modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #e74c3c;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: #aaaaaa;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    color: #ffffff;
+  }
+  
+  .modal-content {
+    padding: 1.5rem;
+  }
+  
+  .warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #2A2A30;
+  }
+  
+  .cancel-button {
+    padding: 0.5rem 1rem;
+    background: none;
+    border: 1px solid #2A2A30;
+    border-radius: 4px;
+    color: #aaaaaa;
+    cursor: pointer;
+  }
+  
+  .cancel-button:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .confirm-delete-button {
+    padding: 0.5rem 1rem;
+    background-color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .confirm-delete-button:hover:not(:disabled) {
+    background-color: #d44637;
+  }
+  
+  .confirm-delete-button:disabled, 
+  .cancel-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .deleting {
+    opacity: 0.5;
+    background-color: rgba(231, 76, 60, 0.05);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .users-container {
+      padding: 1rem;
+    }
+    
+    .users-table-container {
+      overflow-x: auto;
+    }
+    
+    .users-table {
+      min-width: 600px;
+    }
+    
+    .pagination {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+    
+    .page-info {
+      text-align: center;
+    }
+  }
+
+  /* Add these styles to your existing CSS file */
+
+.api-key-form-container {
+  background-color: #1A1A1E;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #2A2A30;
+}
+
+.info-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background-color: rgba(45, 140, 240, 0.1);
+  color: #2d8cf0;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.api-key-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: #aaaaaa;
+}
+
+.form-input {
+  padding: 0.75rem;
+  border-radius: 4px;
+  background-color: #212125;
+  border: 1px solid #2A2A30;
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.submit-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #3ea042;
+}
+
+/* Add responsive styles for the form */
+@media (max-width: 768px) {
+  .api-key-form {
+    flex-direction: column;
+  }
+  
+  .submit-button {
+    align-self: stretch;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Warning message style */
+.warning-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}

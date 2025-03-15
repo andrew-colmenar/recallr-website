@@ -58,8 +58,6 @@ function Signup() {
       
       setStep('otp');
     } catch (error) {
-      console.error('Signup error:', error);
-      console.error('Response data:', error.response?.data);
       setError(error.response?.data?.detail || 'Failed to start signup process');
     } finally {
       setLoading(false);

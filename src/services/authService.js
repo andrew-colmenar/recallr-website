@@ -1,4 +1,4 @@
-import api from '../api/axios';
+import api, { authApi } from '../api/axios';
 import Cookies from 'js-cookie';
 
 // Helper to get device information
@@ -11,24 +11,53 @@ const getDeviceInfo = () => {
   };
 };
 
+// Get cookie settings from environment variables
+const getCookieSettings = () => {
+  return {
+    expirationDays: parseInt(import.meta.env.VITE_COOKIE_EXPIRATION_DAYS || '7'),
+    sameSite: import.meta.env.VITE_COOKIE_SAME_SITE || 'strict',
+    secure: import.meta.env.VITE_ENV === 'production',
+    path: import.meta.env.VITE_COOKIE_PATH || '/'
+  };
+};
+
 // Update your setSessionCookies function
 const setSessionCookies = (session) => {
-  const isProduction = 0; // Change to 1 when deploying to production
+  const cookieSettings = getCookieSettings();
+  
+  console.log('Setting cookies with settings:', cookieSettings);
+  console.log('Setting user_id cookie:', session.user_id);
+  
   Cookies.set('user_id', session.user_id, { 
-    expires: 7,
-    sameSite: 'strict',
-    secure: isProduction // Will be false on localhost, allowing cookies to work
+    expires: cookieSettings.expirationDays,
+    sameSite: cookieSettings.sameSite,
+    secure: cookieSettings.secure,
+    path: cookieSettings.path
   });
+  
   Cookies.set('session_id', session.session_id, { 
-    expires: 7,
-    sameSite: 'strict',
-    secure: isProduction
+    expires: cookieSettings.expirationDays,
+    sameSite: cookieSettings.sameSite,
+    secure: cookieSettings.secure,
+    path: cookieSettings.path
   });
 };
 
 const clearSessionCookies = () => {
-  Cookies.remove('user_id');
-  Cookies.remove('session_id');
+  console.log('Clearing session cookies');
+  const cookieSettings = getCookieSettings();
+  
+  Cookies.remove('user_id', {
+    path: cookieSettings.path,
+    sameSite: cookieSettings.sameSite,
+    secure: cookieSettings.secure
+  });
+  
+  Cookies.remove('session_id', {
+    path: cookieSettings.path,
+    sameSite: cookieSettings.sameSite,
+    secure: cookieSettings.secure
+  });
 };
 
 const getSessionFromCookies = () => {
@@ -44,7 +73,7 @@ const authService = {
   requestSignup: async (email) => {
     console.log('email', email);
     console.log('device_info', getDeviceInfo());
-    const response = await api.post('/api/v1/signup/request', {
+    const response = await authApi.post('signup/request', {
       email,
       device_info: getDeviceInfo(),
     });
@@ -54,7 +83,7 @@ const authService = {
 
   // Verify OTP code
   verifyOtp: async (transactionId, code) => {
-    const response = await api.post('/api/v1/otp/verify', {
+    const response = await authApi.post('otp/verify', {
       transaction_id: transactionId,
       code:code,
     });
@@ -63,7 +92,7 @@ const authService = {
 
   // Resend OTP code
   resendOtp: async (transactionId) => {
-    const response = await api.post('/api/v1/otp/resend', {
+    const response = await authApi.post('otp/resend', {
       transaction_id: transactionId,
     });
     return response.data;
@@ -71,7 +100,7 @@ const authService = {
 
   // Complete signup with user details
   completeSignup: async (email, firstName, lastName, password, transactionId) => {
-    const response = await api.post('/api/v1/signup/complete', {
+    const response = await authApi.post('signup/complete', {
       user: {
         email,
         first_name: firstName,
@@ -91,7 +120,7 @@ const authService = {
 
   // Request login (first step)
   requestLogin: async (email, password) => {
-    const response = await api.post('/api/v1/login/request', {
+    const response = await authApi.post('login/request', {
       email,
       password,
       device_info: getDeviceInfo(),
@@ -101,7 +130,7 @@ const authService = {
 
   // Complete login after OTP verification
   completeLogin: async (transactionId) => {
-    const response = await api.post('/api/v1/login/complete', {
+    const response = await authApi.post('login/complete', {
       transaction_id: transactionId,
     });
     
@@ -121,7 +150,7 @@ const authService = {
       return { detail: 'No active session' };
     }
     
-    const response = await api.post('/api/v1/logout', {
+    const response = await authApi.post('logout', {
       user_id,
       session_id,
     });
@@ -139,13 +168,26 @@ const authService = {
     }
     
     try {
-      const response = await api.post('/api/v1/sessions/current', {
+      // Debug log to see what URL is being called
+      console.log('Fetching current session from:', '/auth/sessions/current');
+      
+      const response = await authApi.post('sessions/current', {
         user_id,
         session_id,
       });
       return response.data;
     } catch (error) {
-      clearSessionCookies();
+      // Log the full error for debugging
+      console.error('Full error when fetching session:', error);
+      
+      // Only clear cookies for authentication errors (401/403)
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        console.log('Session invalid, clearing cookies');
+        clearSessionCookies();
+      } else {
+        // Log other errors but don't clear session
+        console.error('Error fetching session:', error);
+      }
       return null;
     }
   },
@@ -158,7 +200,7 @@ const authService = {
       return null;
     }
     
-    const response = await api.post('/api/v1/sessions/all', {
+    const response = await authApi.post('sessions/all', {
       user_id,
       session_id,
       device_info: getDeviceInfo(),
@@ -174,7 +216,7 @@ const authService = {
       return null;
     }
     
-    const response = await api.post(`/api/v1/sessions/${targetUserId}/${targetSessionId}/revoke`, {});
+    const response = await authApi.post(`sessions/${targetUserId}/${targetSessionId}/revoke`, {});
     return response.data;
   },
 
@@ -183,16 +225,32 @@ const authService = {
     const { user_id, session_id } = getSessionFromCookies();
     
     if (!user_id || !session_id) {
+      console.log("No session cookies found");
       return false;
     }
     
     try {
-      await api.post('/api/v1/sessions/validate-session', {
+      const response = await authApi.post('sessions/validate-session', {
         user_id,
         session_id,
       });
+      
+      // If server returns a refreshed session, update cookies
+      if (response.data?.session?.session_id) {
+        console.log('Session refreshed by server');
+        setSessionCookies(response.data.session);
+      }
+      
       return true;
     } catch (error) {
+      console.error('Session validation error:', error);
+      
+      // Only clear cookies for authentication errors
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        console.log('Session invalid (401/403), clearing cookies');
+        clearSessionCookies();
+      }
+      
       return false;
     }
   },

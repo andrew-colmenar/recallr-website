@@ -119,20 +119,117 @@
   border-color: #f44336;
 }
 
+/* Dashboard layout improvements */
+
+/* Main container for the entire dashboard */
 .mainContainer {
-  display: flex; 
-  height: 100vh;
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #131315;
 }
 
+/* Content area that holds everything except sidebar */
 .contentContainer {
+  margin-left: 16rem; /* Same as sidebar width */
+  width: calc(100% - 16rem); /* Full width minus sidebar */
+  min-height: 100vh;
+  padding-top: 72px; /* Same as header height */
+}
+
+/* Main content area where routes are rendered */
+.main {
+  padding: 1.5rem;
+  min-height: calc(100vh - 72px); /* Minus header height */
+  width: 100%;
+}
+
+/* Fix header position */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 72px;
+}
+
+/* Error banner with improved visibility */
+.errorBanner {
+  background-color: rgba(255, 69, 58, 0.1);
+  color: #ff453a;
+  padding: 12px 16px;
+  border-left: 3px solid #ff453a;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+
+/* Update loading container positioning */
+
+/* Loading state container - centered properly */
+.loadingContainer {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  position: fixed; /* Fixed position instead of relative */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  width: 100vw; /* Full viewport width */
+  background-color: #131315;
+  color: #ffffff;
+  padding: 2rem;
+  text-align: center;
+  z-index: 100; /* Above other elements */
+  margin-left: 0; /* Remove margin */
 }
 
-.main {
-  flex: 1;
-  overflow: auto;
-  padding: 1.5rem;
+/* Loading spinner animation */
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid #4CAF50;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingMessage {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.loadingSubtext {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentContainer {
+    margin-left: 4.5rem; /* Smaller margin for collapsed sidebar */
+    width: calc(100% - 4.5rem);
+  }
+  
+  .main {
+    padding: 1rem;
+  }
+  
+  .loadingContainer {
+    margin-left: 4.5rem;
+    width: calc(100% - 4.5rem);
+  }
 }
