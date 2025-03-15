@@ -397,6 +397,57 @@
   color: #aaaaaa;
 }
 
+/* Add these styles for the delete confirmation modal */
+
+.warningMessage {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: rgba(255, 87, 34, 0.1);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.warningMessage svg {
+  color: #FF5722;
+  min-width: 20px;
+}
+
+.warningMessage p {
+  margin: 0 0 0.5rem 0;
+  color: #ddd;
+}
+
+.warningMessage strong {
+  color: #fff;
+}
+
+.deleteConfirmButton {
+  background-color: #FF5722;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.deleteConfirmButton:hover {
+  background-color: #E64A19;
+}
+
+.deleteConfirmButton:disabled {
+  background-color: #664a46;
+  cursor: not-allowed;
+}
+
 /* Responsive adjustments */
 @media (max-width: 640px) {
   .header {

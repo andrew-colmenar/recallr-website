@@ -15,6 +15,9 @@ const APIKeys = ({ project }) => {
   const [newKey, setNewKey] = useState(null);
   const [copiedKey, setCopiedKey] = useState(false);
   const [deletingKeyId, setDeletingKeyId] = useState(null);
+  // New state for delete confirmation
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [keyToDelete, setKeyToDelete] = useState(null);
 
   // Function to format date string
   const formatDate = (dateString) => {
@@ -108,13 +111,10 @@ const APIKeys = ({ project }) => {
       setNewKeyName('');
       setCopiedKey(false);
       
-      // Update apiKeys list with the newly created key 
-      // Show only the first 5 characters of the key without asterisks
-      // for consistency with how existing keys are displayed
       setApiKeys(prevKeys => [...prevKeys, {
         id: response.data.id,
         name: response.data.name,
-        prefix: response.data.key.substring(0, 8), // Only show first 5 characters, no asterisks
+        prefix: response.data.key.substring(0, 8), // Show first 8 characters consistently
         created_at: response.data.created_at
       }]);
       
@@ -140,10 +140,24 @@ const APIKeys = ({ project }) => {
     }
   };
 
-  // Revoke (delete) an API key
-  const handleRevokeKey = async (keyId) => {
+  // Show delete confirmation dialog
+  const confirmDeleteKey = (key) => {
+    setKeyToDelete(key);
+    setShowDeleteConfirmation(true);
+  };
+
+  // Cancel delete operation
+  const cancelDelete = () => {
+    setKeyToDelete(null);
+    setShowDeleteConfirmation(false);
+  };
+
+  // Revoke (delete) an API key after confirmation
+  const handleRevokeKey = async () => {
+    if (!keyToDelete) return;
+    
     try {
-      setDeletingKeyId(keyId);
+      setDeletingKeyId(keyToDelete.id);
       
       const user_id = Cookies.get('user_id');
       const session_id = Cookies.get('session_id');
@@ -152,7 +166,7 @@ const APIKeys = ({ project }) => {
         throw new Error('Authentication required');
       }
       
-      await appApi.delete(`projects/${project.id}/api-keys/${keyId}`, {
+      await appApi.delete(`projects/${project.id}/api-keys/${keyToDelete.id}`, {
         headers: {
           'X-User-Id': user_id,
           'X-Session-Id': session_id
@@ -160,16 +174,20 @@ const APIKeys = ({ project }) => {
       });
       
       // Update the list by removing the revoked key
-      setApiKeys(prevKeys => prevKeys.filter(key => key.id !== keyId));
+      setApiKeys(prevKeys => prevKeys.filter(key => key.id !== keyToDelete.id));
       
       // Check if the deleted key is stored in localStorage
-      const storedKeyPrefix = localStorage.getItem('api_key')?.substring(0, 5);
-      const deletedKeyPrefix = apiKeys.find(k => k.id === keyId)?.prefix?.substring(0, 5);
+      const storedKeyPrefix = localStorage.getItem('api_key')?.substring(0, 8);
+      const deletedKeyPrefix = keyToDelete.prefix;
       
       if (storedKeyPrefix === deletedKeyPrefix) {
         localStorage.removeItem('api_key');
         console.log('Removed revoked API key from localStorage');
       }
+      
+      // Close the confirmation dialog
+      setShowDeleteConfirmation(false);
+      setKeyToDelete(null);
       
     } catch (err) {
       console.error('Error revoking API key:', err);
@@ -190,7 +208,6 @@ const APIKeys = ({ project }) => {
       
       setError(errorMessage);
       
-      // Error notification or toast could be added here
     } finally {
       setDeletingKeyId(null);
     }
@@ -268,7 +285,7 @@ const APIKeys = ({ project }) => {
                     <td className={styles.cell}>
                       <button 
                         className={`${styles.iconButton} ${styles.deleteButton}`}
-                        onClick={() => handleRevokeKey(keyItem.id)}
+                        onClick={() => confirmDeleteKey(keyItem)}
                         disabled={deletingKeyId === keyItem.id}
                         title="Revoke API key"
                       >
@@ -392,7 +409,7 @@ const APIKeys = ({ project }) => {
                   <p>
                     <strong>This is the only time you'll see the complete API key.</strong> Please copy it now as you won't be able to see it again!
                   </p>
-                </div>
+                                  </div>
                 
                 <div className={styles.keyDisplay}>
                   <div className={styles.keyValue}>
@@ -437,6 +454,74 @@ const APIKeys = ({ project }) => {
                     }}
                   >
                     Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirmation && keyToDelete && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+              <div className={styles.modalHeader}>
+                <h3>Revoke API Key</h3>
+                <button 
+                  className={styles.closeButton}
+                  onClick={cancelDelete}
+                  disabled={deletingKeyId === keyToDelete.id}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              
+              <div className={styles.modalBody}>
+                <div className={styles.warningMessage}>
+                  <AlertCircle size={20} />
+                  <div>
+                    <p><strong>Are you sure you want to revoke this API key?</strong></p>
+                    <p>This action cannot be undone. Any applications using this key will no longer be able to access the API.</p>
+                  </div>
+                </div>
+                
+                <div className={styles.keyDetails}>
+                  <div className={styles.keyDetail}>
+                    <span className={styles.keyDetailLabel}>Name:</span>
+                    <span className={styles.keyDetailValue}>{keyToDelete.name}</span>
+                  </div>
+                  <div className={styles.keyDetail}>
+                    <span className={styles.keyDetailLabel}>Prefix:</span>
+                    <span className={styles.keyDetailValue}>{keyToDelete.prefix}</span>
+                  </div>
+                  <div className={styles.keyDetail}>
+                    <span className={styles.keyDetailLabel}>Created:</span>
+                    <span className={styles.keyDetailValue}>{formatDate(keyToDelete.created_at)}</span>
+                  </div>
+                </div>
+                
+                <div className={styles.modalActions}>
+                  <button
+                    className={styles.cancelButton}
+                    onClick={cancelDelete}
+                    disabled={deletingKeyId === keyToDelete.id}
+                  >
+                    Cancel
+                  </button>
+                  
+                  <button
+                    className={styles.deleteConfirmButton}
+                    onClick={handleRevokeKey}
+                    disabled={deletingKeyId === keyToDelete.id}
+                  >
+                    {deletingKeyId === keyToDelete.id ? (
+                      <>
+                        <div className={styles.buttonSpinner}></div>
+                        <span>Revoking...</span>
+                      </>
+                    ) : (
+                      'Revoke API Key'
+                    )}
                   </button>
                 </div>
               </div>
