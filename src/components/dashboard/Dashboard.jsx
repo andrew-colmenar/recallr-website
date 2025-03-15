@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, useSearchParams, useNavigate, Navigate } from "react-router-dom";
 import { appApi } from "../../api/axios";
 import Cookies from 'js-cookie';
@@ -40,24 +40,60 @@ const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const [currentProject, setCurrentProject] = useState(DEFAULT_PROJECT);
   const [loading, setLoading] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState(null);
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
   
   const projectId = searchParams.get('project');
+
+  // Check if authentication is ready
+  const checkAuth = useCallback(() => {
+    const user_id = Cookies.get('user_id');
+    const session_id = Cookies.get('session_id');
+    
+    return {
+      isAuthenticated: !!(user_id && session_id),
+      user_id,
+      session_id
+    };
+  }, []);
   
-  // First, fetch all projects to determine if user has any
+  // First, check if authentication is ready
   useEffect(() => {
+    const waitForAuth = () => {
+      const { isAuthenticated } = checkAuth();
+      
+      if (isAuthenticated) {
+        setAuthChecked(true);
+      } else {
+        // Check again after a short delay
+        setTimeout(waitForAuth, 500);
+      }
+    };
+    
+    waitForAuth();
+  }, [checkAuth]);
+  
+  // Once authentication is ready, fetch projects
+  useEffect(() => {
+    if (!authChecked) {
+      return; // Wait until auth is checked
+    }
+    
     const fetchProjects = async () => {
       try {
-        const user_id = Cookies.get('user_id');
-        const session_id = Cookies.get('session_id');
+        const { isAuthenticated, user_id, session_id } = checkAuth();
         
-        if (!user_id || !session_id) {
-          throw new Error('Authentication required');
+        if (!isAuthenticated) {
+          console.log("Auth not ready, delaying project fetch");
+          setTimeout(fetchProjects, 1000);
+          return;
         }
         
-        const response = await appApi.get('projects', {
+        console.log("Fetching projects with auth:", { user_id, session_id });
+        
+        const response = await appApi.get('/projects', {
           headers: {
             'X-User-Id': user_id,
             'X-Session-Id': session_id
@@ -68,6 +104,7 @@ const Dashboard = () => {
           }
         });
         
+        console.log("Projects response:", response.data);
         const { projects: projectsList } = response.data;
         
         setProjects(projectsList || []);
@@ -89,107 +126,125 @@ const Dashboard = () => {
           return;
         }
         
+        // If projects exist and a project ID is provided, fetch that project's details
+        if (projectId) {
+          fetchProjectDetails();
+        }
       } catch (error) {
         console.error('Error fetching projects:', error);
-        // In case of error, we'll continue with project details fetching
+        
+        if (error.response?.status === 401) {
+          // Redirect to login if unauthorized
+          navigate('/login', { replace: true });
+          return;
+        }
+        
+        // For other errors, proceed to project details
+        if (projectId) {
+          fetchProjectDetails();
+        } else {
+          setLoading(false);
+        }
       }
     };
     
     fetchProjects();
-  }, []);
+  }, [authChecked, projectId]);
   
-  useEffect(() => {
-    const fetchProjectDetails = async () => {
-      // If no project is selected, use default
-      if (!projectId) {
-        setCurrentProject(DEFAULT_PROJECT);
-        setLoading(false);
-        return;
-      }
-      
-      // Set timeout for project loading
-      const timeoutId = setTimeout(() => {
-        if (loading) {
-          setError('Loading is taking longer than expected. Please wait...');
-        }
-      }, 10000); // Increase to 10 seconds from what appears to be immediate error
-      
-      // Otherwise fetch the specific project
-      try {
-        const user_id = Cookies.get('user_id');
-        const session_id = Cookies.get('session_id');
-        
-        if (!user_id || !session_id) {
-          throw new Error('Authentication required');
-        }
-        
-        const response = await appApi.get(`projects/${projectId}`, {
-          headers: {
-            'X-User-Id': user_id,
-            'X-Session-Id': session_id
-          }
-        });
-        
-        setCurrentProject(response.data);
-        setError(null); // Clear any previous errors
-      } catch (err) {
-        console.error('Error fetching project details:', err);
-        
-        // Only set error state if we're still loading (prevents flashing errors)
-        if (loading) {
-          // Handle different error responses
-          if (err.response) {
-            switch (err.response.status) {
-              case 400:
-                setError('Bad request. Please check your request parameters.');
-                break;
-              case 401:
-                setError('Authentication required. Please log in again.');
-                // Increased timeout before redirecting
-                setTimeout(() => navigate('/login'), 3000);
-                break;
-              case 403:
-                setError('You don\'t have access to this project or subscription required.');
-                break;
-              case 404:
-                setError(`Project not found: ${projectId}`);
-                // Increased timeout before redirecting
-                setTimeout(() => navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`), 3000);
-                break;
-              case 422:
-                const validationErrors = err.response.data.detail;
-                setError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
-                break;
-              case 500:
-                setError('Server error. Please try again later.');
-                break;
-              default:
-                setError(`Error: ${err.response.status} - ${err.response.statusText}`);
-            }
-          } else if (err.request) {
-            setError('Network error. Please check your connection.');
-          } else {
-            setError(err.message || 'An error occurred while loading the project.');
-          }
-        }
-        
-        // Don't use default project right away - give the API time to respond
-        // Only use default after timeout
-        setTimeout(() => {
-          if (loading) {
-            // Use the default project on error after waiting
-            setCurrentProject(DEFAULT_PROJECT);
-            setLoading(false);
-          }
-        }, 15000); // 15 second timeout before falling back to default
-      } finally {
-        clearTimeout(timeoutId);
-        setLoading(false);
-      }
-    };
+  const fetchProjectDetails = useCallback(async () => {
+    // If no project is selected, use default
+    if (!projectId) {
+      setCurrentProject(DEFAULT_PROJECT);
+      setLoading(false);
+      return;
+    }
     
-    fetchProjectDetails();
-  }, [projectId, navigate]);
+    const { isAuthenticated, user_id, session_id } = checkAuth();
+    
+    if (!isAuthenticated) {
+      console.log("Auth not ready for project details, using default");
+      setCurrentProject(DEFAULT_PROJECT);
+      setLoading(false);
+      return;
+    }
+    
+    // Set timeout for project loading
+    const timeoutId = setTimeout(() => {
+      if (loading) {
+        setError('Loading is taking longer than expected. Please wait...');
+      }
+    }, 10000);
+    
+    try {
+      console.log(`Fetching project ${projectId} details with auth:`, { user_id, session_id });
+      
+      const response = await appApi.get(`/projects/${projectId}`, {
+        headers: {
+          'X-User-Id': user_id,
+          'X-Session-Id': session_id
+        }
+      });
+      
+      console.log("Project details response:", response.data);
+      setCurrentProject(response.data);
+      setError(null); // Clear any previous errors
+    } catch (err) {
+      console.error('Error fetching project details:', err);
+      console.log('Error response:', err.response?.data);
+      
+      // Handle different error responses
+      if (err.response) {
+        switch (err.response.status) {
+          case 400:
+            setError('Bad request. Please check your request parameters.');
+            break;
+          case 401:
+            setError('Authentication required. Please log in again.');
+            setTimeout(() => navigate('/login'), 3000);
+            break;
+          case 403:
+            setError('You don\'t have access to this project or subscription required.');
+            break;
+          case 404:
+            setError(`Project not found: ${projectId}`);
+            setTimeout(() => navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`), 3000);
+            break;
+          case 422:
+            const validationErrors = err.response.data.detail;
+            setError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
+            
+            // Log the validation error details
+            if (validationErrors) {
+              console.log('Validation error details:', validationErrors);
+            }
+            
+            // Use default project for now
+            setCurrentProject(DEFAULT_PROJECT);
+            break;
+          case 500:
+            setError('Server error. Please try again later.');
+            break;
+          default:
+            setError(`Error: ${err.response.status} - ${err.response.statusText}`);
+        }
+      } else if (err.request) {
+        setError('Network error. Please check your connection.');
+      } else {
+        setError(err.message || 'An error occurred while loading the project.');
+      }
+      
+      // Use default project after timeout
+      setTimeout(() => {
+        if (loading) {
+          setCurrentProject(DEFAULT_PROJECT);
+          setLoading(false);
+        }
+      }, 2000); // Reduced timeout for better UX
+    } finally {
+      clearTimeout(timeoutId);
+      setLoading(false);
+    }
+  }, [projectId, navigate, checkAuth, loading]);
 
   if (loading) {
     return (
@@ -199,7 +254,7 @@ const Dashboard = () => {
           {error ? error : 'Loading project data...'}
         </p>
         <p className={styles.loadingSubtext}>
-          This might take a moment. Please wait...
+          {!authChecked ? 'Verifying your session...' : 'This might take a moment. Please wait...'}
         </p>
       </div>
     );
