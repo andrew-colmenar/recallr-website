@@ -130,7 +130,6 @@ const ProjectSettings = () => {
       setProject(response.data);
       setEditedProject(JSON.parse(JSON.stringify(response.data))); // Deep clone
     } catch (err) {
-      console.error('Error fetching project:', err);
       
       if (err.response?.status === 404) {
         setError('Project not found. It may have been deleted.');
@@ -392,7 +391,6 @@ const ProjectSettings = () => {
         setSuccess(null);
       }, 5000);
     } catch (err) {
-      console.error('Error updating project:', err);
       
       if (err.response?.status === 404) {
         setError('Project not found. It may have been deleted.');
@@ -473,7 +471,6 @@ const ProjectSettings = () => {
       }
       
     } catch (err) {
-      console.error('Error deleting project:', err);
       
       if (err.response?.status === 404) {
         setError('Project not found. It may have been already deleted.');

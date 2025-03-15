@@ -87,12 +87,9 @@ const Dashboard = () => {
         const { isAuthenticated, user_id, session_id } = checkAuth();
         
         if (!isAuthenticated) {
-          console.log("Auth not ready, delaying project fetch");
           setTimeout(fetchProjects, 1000);
           return;
         }
-        
-        console.log("Fetching projects with auth:", { user_id, session_id });
         
         const response = await appApi.get('/projects', {
           headers: {
@@ -105,7 +102,6 @@ const Dashboard = () => {
           }
         });
         
-        console.log("Projects response:", response.data);
         const { projects: projectsList } = response.data;
         
         setProjects(projectsList || []);
@@ -138,8 +134,6 @@ const Dashboard = () => {
           fetchProjectDetails();
         }
       } catch (error) {
-        console.error('Error fetching projects:', error);
-        
         if (error.response?.status === 401) {
           // Redirect to login if unauthorized
           navigate('/login', { replace: true });
@@ -156,7 +150,7 @@ const Dashboard = () => {
     };
     
     fetchProjects();
-  }, [authChecked, projectId]);
+  }, [authChecked, projectId, navigate, checkAuth]);
   
   const fetchProjectDetails = useCallback(async () => {
     // If no project is selected, use default without API call
@@ -176,7 +170,6 @@ const Dashboard = () => {
     const { isAuthenticated, user_id, session_id } = checkAuth();
     
     if (!isAuthenticated) {
-      console.log("Auth not ready for project details, using default");
       setCurrentProject(DEFAULT_PROJECT);
       setLoading(false);
       return;
@@ -190,8 +183,6 @@ const Dashboard = () => {
     }, 10000);
     
     try {
-      console.log(`Fetching project ${projectId} details with auth:`, { user_id, session_id });
-      
       const response = await appApi.get(`/projects/${projectId}`, {
         headers: {
           'X-User-Id': user_id,
@@ -199,13 +190,9 @@ const Dashboard = () => {
         }
       });
       
-      console.log("Project details response:", response.data);
       setCurrentProject(response.data);
       setError(null); // Clear any previous errors
     } catch (err) {
-      console.error('Error fetching project details:', err);
-      console.log('Error response:', err.response?.data);
-      
       // Handle different error responses
       if (err.response) {
         switch (err.response.status) {
@@ -237,11 +224,6 @@ const Dashboard = () => {
           case 422:
             const validationErrors = err.response.data.detail;
             setError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
-            
-            // Log the validation error details
-            if (validationErrors) {
-              console.log('Validation error details:', validationErrors);
-            }
             
             // Use default project for now, but don't try to load it from the backend
             setCurrentProject(DEFAULT_PROJECT);

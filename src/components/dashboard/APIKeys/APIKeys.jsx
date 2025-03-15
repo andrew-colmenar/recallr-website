@@ -58,7 +58,6 @@ const APIKeys = ({ project }) => {
         
         setApiKeys(response.data.keys || []);
       } catch (err) {
-        console.error('Error fetching API keys:', err);
         
         if (err.response?.status === 404) {
           setError('Project not found or API keys feature is not available.');
@@ -120,9 +119,7 @@ const APIKeys = ({ project }) => {
       
       // Store the created API key in localStorage for use with the Users component
       localStorage.setItem('api_key', response.data.key);
-      console.log('API key saved to localStorage');
     } catch (err) {
-      console.error('Error creating API key:', err);
       
       if (err.response?.data?.detail) {
         if (Array.isArray(err.response.data.detail)) {
@@ -182,7 +179,6 @@ const APIKeys = ({ project }) => {
       
       if (storedKeyPrefix === deletedKeyPrefix) {
         localStorage.removeItem('api_key');
-        console.log('Removed revoked API key from localStorage');
       }
       
       // Close the confirmation dialog
@@ -190,7 +186,6 @@ const APIKeys = ({ project }) => {
       setKeyToDelete(null);
       
     } catch (err) {
-      console.error('Error revoking API key:', err);
       
       let errorMessage = 'Failed to revoke API key';
       
@@ -224,7 +219,7 @@ const APIKeys = ({ project }) => {
         setCopiedKey(false);
       }, 3000);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      
     }
   };
 

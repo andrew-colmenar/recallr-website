@@ -102,7 +102,7 @@ const Header = () => {
       await logout();
       // Redirect is likely handled in the AuthContext or by a route guard
     } catch (error) {
-      console.error("Logout failed:", error);
+      // Remove this console log:
     }
   };
 

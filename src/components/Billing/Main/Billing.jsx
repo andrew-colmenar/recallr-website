@@ -46,11 +46,6 @@ const Billing = () => {
         throw new Error('Authentication required');
       }
       
-      console.log('Fetching balance with headers:', {
-        'X-User-Id': user_id,
-        'X-Session-Id': session_id
-      });
-      
       // Fix the path - Add a LEADING SLASH to ensure proper proxy routing
       const response = await appApi.get('/billing/balance', {
         headers: {
@@ -59,10 +54,8 @@ const Billing = () => {
         }
       });
       
-      console.log('Balance response:', response.data);
       setBalance(response.data);
     } catch (error) {
-      console.error('Error fetching balance:', error);
       if (error.response) {
         console.error('Response status:', error.response.status);
         console.error('Response data:', error.response.data);
@@ -94,11 +87,6 @@ const Billing = () => {
         throw new Error('Authentication required');
       }
       
-      console.log('Fetching transactions with headers:', {
-        'X-User-Id': user_id,
-        'X-Session-Id': session_id
-      });
-      
       // Fix the path - Add a LEADING SLASH to ensure proper proxy routing
       const response = await appApi.get('/billing/transactions', {
         headers: {
@@ -111,7 +99,6 @@ const Billing = () => {
         }
       });
       
-      console.log('Transactions response:', response.data);
       const { transactions: newTransactions, total, has_more } = response.data;
       
       if (append) {
@@ -123,7 +110,6 @@ const Billing = () => {
       setHasMoreTransactions(has_more || false);
       setTransactionPage(Math.floor(offset / TRANSACTION_LIMIT));
     } catch (error) {
-      console.error('Error fetching transactions:', error);
       if (error.response) {
         console.error('Response status:', error.response.status);
         console.error('Response data:', error.response.data);
@@ -155,8 +141,6 @@ const Billing = () => {
         throw new Error('Authentication required');
       }
       
-      console.log('Sending top-up request with amount:', topUpAmount);
-      
       // Fix the path - Add a LEADING SLASH to ensure proper proxy routing
       const response = await appApi.post('/billing/top-up', {
         amount: parseInt(topUpAmount), // Ensure it's an integer
@@ -169,8 +153,6 @@ const Billing = () => {
         }
       });
       
-      console.log('Top-up response:', response.data);
-      
       // Redirect to checkout URL from response
       if (response.data && response.data.checkout_url) {
         window.location.href = response.data.checkout_url;
@@ -178,8 +160,6 @@ const Billing = () => {
         throw new Error('Invalid checkout URL received');
       }
     } catch (error) {
-      console.error('Error creating top-up session:', error);
-      
       if (error.response) {
         console.error('Response status:', error.response.status);
         console.error('Response data:', error.response.data);

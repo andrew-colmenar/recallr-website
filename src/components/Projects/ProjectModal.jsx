@@ -47,12 +47,6 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
   const [creatingProject, setCreatingProject] = useState(false);
   const navigate = useNavigate();
   
-  // Debug log when the modal opens/closes
-  useEffect(() => {
-    console.log("ProjectModal isOpen:", isOpen);
-    console.log("Current project ID:", currentProjectId);
-  }, [isOpen, currentProjectId]);
-  
   useEffect(() => {
     if (isOpen) {
       fetchProjects();
@@ -60,7 +54,6 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
   }, [isOpen]);
   
   const fetchProjects = async () => {
-    console.log("Fetching projects...");
     setLoading(true);
     setError(null);
     
@@ -88,7 +81,6 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
       
       // The rest of your code remains the same
       const { projects: projectsList, total, has_more } = response.data;
-      console.log("Projects fetched:", projectsList);
       
       setTotal(total || 0);
       setHasMore(has_more || false);
@@ -103,8 +95,6 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
         setProjects(sortedProjects);
       }
     } catch (error) {
-      console.error('Error fetching projects:', error);
-      
       // Set default project on error
       setProjects([DEFAULT_PROJECT]);
       
@@ -144,7 +134,6 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
   };
   
   const handleProjectSelect = (project) => {
-    console.log("Project selected in modal:", project);
     if (onProjectSelect) {
       onProjectSelect(project);
     }
@@ -221,8 +210,6 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
         }
       );
       
-      console.log('Project creation response:', response.data);
-      
       // The response contains project_id, not the full project data
       const { project_id } = response.data;
       
@@ -254,14 +241,8 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
       fetchProjects();
       
     } catch (error) {
-      console.error('Error creating project:', error);
-      
       // Add detailed logging to see exactly what's failing
       if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        console.error('Request sent to:', error.response.request.responseURL);
-        
         switch (error.response.status) {
           case 400:
             setError('Invalid project data. Please check your inputs.');
@@ -290,10 +271,8 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
             setError(`Error (${error.response.status}): ${error.response.statusText}`);
         }
       } else if (error.request) {
-        console.error('No response received:', error.request);
         setError('Network error. Please check your connection.');
       } else {
-        console.error('Error setting up request:', error.message);
         setError('An error occurred while creating the project.');
       }
     } finally {

@@ -40,7 +40,6 @@ export const getUserPreferences = () => {
     const preferencesStr = getCookie('user_preferences');
     return preferencesStr ? JSON.parse(preferencesStr) : {};
   } catch (error) {
-    console.error('Error parsing preferences:', error);
     return {};
   }
 };

@@ -13,9 +13,7 @@ const SessionRefresher = () => {
     const validateCurrentSession = async () => {
       try {
         await authService.validateSession();
-        console.log('Session validated');
       } catch (error) {
-        console.error('Session validation failed:', error);
       }
     };
     

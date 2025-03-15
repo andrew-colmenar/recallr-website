@@ -33,10 +33,8 @@ const Users = ({ project }) => {
     
     if (storedApiKey) {
       setApiKey(storedApiKey);
-      console.log('API key found in storage');
     } else {
       // Show a form to enter API key if not found
-      console.log('No API key found in storage');
       setError('API key is required to view users. Please enter your API key below.');
       setLoading(false);
     }
@@ -81,11 +79,6 @@ const Users = ({ project }) => {
       
       const offset = (currentPage - 1) * USERS_PER_PAGE;
       
-      console.log('Fetching users with headers:', {
-        'X-Project-Id': projectId,
-        'X-Api-Key': apiKey.substring(0, 3) + '...' // Log partial key for security
-      });
-      
       // Make the request to the API
       const response = await recallApi.get('/api/v1/users', {
         headers: {
@@ -98,14 +91,11 @@ const Users = ({ project }) => {
         }
       });
       
-      console.log('Users API response received');
-      
       // Extract data from response
       const { users: fetchedUsers, total, has_more } = response.data;
       
       // Handle the case where no users are returned
       if (!Array.isArray(fetchedUsers)) {
-        console.error('API did not return an array of users:', response.data);
         setUsers([]);
         setTotalUsers(0);
         setHasMore(false);
@@ -121,11 +111,8 @@ const Users = ({ project }) => {
       setHasMore(has_more || false);
       setError(null);
     } catch (err) {
-      console.error('Error fetching users:', err);
-      
       if (err.response) {
         const errorData = err.response.data;
-        console.log('Error response data:', errorData);
         
         switch (err.response.status) {
           case 401:
@@ -167,9 +154,8 @@ const Users = ({ project }) => {
     }
   };
 
-  // Rest of your component code (sortUsers, handleSort, etc.)
+  // Sort users based on current sort field and direction
   const sortUsers = (usersList) => {
-    // Your existing sort function
     return [...usersList].sort((a, b) => {
       let valueA = a[sortField];
       let valueB = b[sortField];
@@ -250,16 +236,12 @@ const Users = ({ project }) => {
         throw new Error('Authentication or project ID missing');
       }
       
-      console.log(`Deleting user: ${userToDelete.user_id}`);
-      
       await recallApi.delete(`/api/v1/users/${userToDelete.user_id}`, {
         headers: {
           'X-Project-Id': projectId,
           'X-Api-Key': apiKey
         }
       });
-      
-      console.log(`User ${userToDelete.user_id} deleted successfully`);
       
       // Remove deleted user from the list
       setUsers(users.filter(user => user.user_id !== userToDelete.user_id));
@@ -279,12 +261,8 @@ const Users = ({ project }) => {
         fetchUsers();
       }
     } catch (err) {
-      // Your existing error handling
-      console.error('Error deleting user:', err);
-      
       if (err.response) {
         const errorData = err.response.data;
-        console.log('Delete error response data:', errorData);
         
         switch (err.response.status) {
           case 401:
@@ -338,7 +316,6 @@ const Users = ({ project }) => {
         minute: '2-digit'
       });
     } catch (err) {
-      console.error('Date formatting error:', err);
       return 'Error formatting date';
     }
   };
