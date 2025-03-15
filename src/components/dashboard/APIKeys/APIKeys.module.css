@@ -266,6 +266,14 @@
   color: #c6f6d5;
 }
 
+.successMessage p {
+  margin-bottom: 0.75rem;
+}
+
+.successMessage strong {
+  color: #ff9800;
+}
+
 .keyDisplay {
   display: flex;
   margin-bottom: 1.5rem;
@@ -332,25 +340,61 @@
 }
 
 .loading {
-  text-align: center;
-  padding: 2rem 0;
-  color: #a0aec0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  color: #aaaaaa;
+  gap: 1rem;
 }
 
 /* Spinner for loading states */
 .buttonSpinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  border-top-color: white;
+  border-top: 2px solid #ffffff;
   animation: spin 1s linear infinite;
 }
 
+.loadingSpinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top: 3px solid #ffffff;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+  display: inline-block;
+}
+
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add this class for the info box */
+.infoBox {
+  background-color: rgba(45, 140, 240, 0.1);
+  border-left: 4px solid #2d8cf0;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.infoBox h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.infoBox p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #aaaaaa;
 }
 
 /* Responsive adjustments */

@@ -115,6 +115,10 @@ const APIKeys = ({ project }) => {
         prefix: response.data.key.substring(0, 5) + '*'.repeat(5),
         created_at: response.data.created_at
       }]);
+      
+      // Store the created API key in localStorage for use with the Users component
+      localStorage.setItem('api_key', response.data.key);
+      console.log('API key saved to localStorage');
     } catch (err) {
       console.error('Error creating API key:', err);
       
@@ -155,6 +159,15 @@ const APIKeys = ({ project }) => {
       
       // Update the list by removing the revoked key
       setApiKeys(prevKeys => prevKeys.filter(key => key.id !== keyId));
+      
+      // Check if the deleted key is stored in localStorage
+      const storedKeyPrefix = localStorage.getItem('api_key')?.substring(0, 5);
+      const deletedKeyPrefix = apiKeys.find(k => k.id === keyId)?.prefix?.substring(0, 5);
+      
+      if (storedKeyPrefix === deletedKeyPrefix) {
+        localStorage.removeItem('api_key');
+        console.log('Removed revoked API key from localStorage');
+      }
       
     } catch (err) {
       console.error('Error revoking API key:', err);
@@ -206,6 +219,17 @@ const APIKeys = ({ project }) => {
           </div>
         </div>
         
+        {/* Info box explaining API keys */}
+        <div className={styles.infoBox}>
+          <h3>About API Keys</h3>
+          <p>
+            API keys are used to authenticate requests to the Recall API. You can create multiple keys for different environments.
+          </p>
+          <p>
+            For security reasons, you can only view and copy the full API key once when it's created.
+          </p>
+        </div>
+        
         {/* Error message display */}
         {error && (
           <div className={styles.errorMessage}>
@@ -217,13 +241,16 @@ const APIKeys = ({ project }) => {
         {/* API Keys Table */}
         <div className={styles.tableContainer}>
           {loading ? (
-            <div className={styles.loading}>Loading API keys...</div>
+            <div className={styles.loading}>
+              <div className={styles.loadingSpinner}></div>
+              <p>Loading API keys...</p>
+            </div>
           ) : apiKeys.length > 0 ? (
             <table className={styles.table}>
               <thead>
                 <tr className={styles.tableHeader}>
                   <th className={styles.headerCell}>Name</th>
-                  <th className={styles.headerCell}>API Key</th>
+                  <th className={styles.headerCell}>Prefix</th>
                   <th className={styles.headerCell}>Created At</th>
                   <th className={styles.headerCell}>Actions</th>
                 </tr>
@@ -233,16 +260,7 @@ const APIKeys = ({ project }) => {
                   <tr key={keyItem.id} className={styles.tableRow}>
                     <td className={styles.cell}>{keyItem.name}</td>
                     <td className={styles.cell}>
-                      <div className={styles.keyContainer}>
-                        <span className={styles.mono}>{keyItem.prefix}</span>
-                        <button 
-                          className={styles.iconButton}
-                          onClick={() => copyToClipboard(keyItem.prefix)}
-                          title="Copy key prefix"
-                        >
-                          <Copy size={16} />
-                        </button>
-                      </div>
+                      <span className={styles.mono}>{keyItem.prefix}</span>
                     </td>
                     <td className={styles.cell}>{formatDate(keyItem.created_at)}</td>
                     <td className={styles.cell}>
@@ -336,7 +354,12 @@ const APIKeys = ({ project }) => {
                       className={styles.submitButton}
                       disabled={isCreating}
                     >
-                      {isCreating ? 'Creating...' : 'Create Key'}
+                      {isCreating ? (
+                        <>
+                          <div className={styles.buttonSpinner}></div>
+                          <span>Creating...</span>
+                        </>
+                      ) : 'Create Key'}
                     </button>
                   </div>
                 </form>
@@ -365,7 +388,7 @@ const APIKeys = ({ project }) => {
               <div className={styles.modalBody}>
                 <div className={styles.successMessage}>
                   <p>
-                    Your new API key has been created. Please copy this key now as you won't be able to see it again!
+                    <strong>This is the only time you'll see the complete API key.</strong> Please copy it now as you won't be able to see it again!
                   </p>
                 </div>
                 
