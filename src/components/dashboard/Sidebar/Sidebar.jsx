@@ -9,6 +9,7 @@ import {
   Settings,
   AlertCircle,
   LifeBuoy,
+  ChevronRight
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
@@ -16,12 +17,32 @@ const Sidebar = ({ projectId }) => {
   const location = useLocation();
 
   const isActive = (path) => {
-    return location.pathname === path ? styles.active : "";
+    return location.pathname.includes(path) ? styles.active : "";
+  };
+
+  // More precise active check for exact path matches
+  const isExactActive = (path) => {
+    const currentPath = location.pathname + location.search;
+    const targetPath = path + location.search;
+    return currentPath === targetPath ? styles.active : "";
   };
 
   // Helper function to create project-specific URLs for dashboard routes
   const projectUrl = (path) => {
     return `/dashboard/${path}?project=${projectId}`;
+  };
+  
+  // Get the current section name for display in header
+  const getCurrentSectionName = () => {
+    const path = location.pathname;
+    if (path.includes("/usage")) return "Usage";
+    if (path.includes("/users")) return "Users";
+    if (path.includes("/apikeys")) return "API Keys";
+    if (path.includes("/settings")) return "Settings";
+    if (path.includes("/billing")) return "Billing";
+    if (path.includes("/getstarted")) return "Get Started";
+    if (path.includes("/status")) return "Status";
+    return "Dashboard";
   };
 
   return (
@@ -32,10 +53,10 @@ const Sidebar = ({ projectId }) => {
             <li>
               <Link
                 to={projectUrl("usage")}
-                className={`${styles.navItem} ${isActive(projectUrl("usage"))}`}
+                className={`${styles.navItem} ${isActive("/usage")}`}
               >
                 <div className={styles.iconContainer}>
-                  <Activity className="w-4 h-4" />
+                  <Activity size={18} />
                 </div>
                 <span>Usage</span>
               </Link>
@@ -43,10 +64,10 @@ const Sidebar = ({ projectId }) => {
             <li>
               <Link
                 to={projectUrl("users")}
-                className={`${styles.navItem} ${isActive(projectUrl("users"))}`}
+                className={`${styles.navItem} ${isActive("/users")}`}
               >
                 <div className={styles.iconContainer}>
-                  <User className="w-4 h-4" />
+                  <User size={18} />
                 </div>
                 <span>Users</span>
               </Link>
@@ -54,10 +75,10 @@ const Sidebar = ({ projectId }) => {
             <li>
               <Link
                 to={projectUrl("apikeys")}
-                className={`${styles.navItem} ${isActive(projectUrl("apikeys"))}`}
+                className={`${styles.navItem} ${isActive("/apikeys")}`}
               >
                 <div className={styles.iconContainer}>
-                  <Key className="w-4 h-4" />
+                  <Key size={18} />
                 </div>
                 <span>API Keys</span>
               </Link>
@@ -65,10 +86,10 @@ const Sidebar = ({ projectId }) => {
             <li>
               <Link
                 to={projectUrl("settings")}
-                className={`${styles.navItem} ${isActive(projectUrl("settings"))}`}
+                className={`${styles.navItem} ${isActive("/settings")}`}
               >
                 <div className={styles.iconContainer}>
-                  <Settings className="w-4 h-4" />
+                  <Settings size={18} />
                 </div>
                 <span>Settings</span>
               </Link>
@@ -86,7 +107,7 @@ const Sidebar = ({ projectId }) => {
                 className={`${styles.navItem} ${isActive("/billing")}`}
               >
                 <div className={styles.iconContainer}>
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare size={18} />
                 </div>
                 <span>Billing</span>
               </Link>
@@ -97,7 +118,7 @@ const Sidebar = ({ projectId }) => {
                 className={`${styles.navItem} ${isActive("/getstarted")}`}
               >
                 <div className={styles.iconContainer}>
-                  <AlertCircle className="w-4 h-4" />
+                  <AlertCircle size={18} />
                 </div>
                 <span>Get Started</span>
               </Link>
@@ -108,7 +129,7 @@ const Sidebar = ({ projectId }) => {
                 className={`${styles.navItem} ${isActive("/status")}`}
               >
                 <div className={styles.iconContainer}>
-                  <LifeBuoy className="w-4 h-4" />
+                  <LifeBuoy size={18} />
                 </div>
                 <span>Status</span>
               </Link>
