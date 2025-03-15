@@ -167,30 +167,38 @@
   border-radius: 8px;
 }
 
-/* Loading state container */
+/* Update loading container positioning */
+
+/* Loading state container - centered properly */
 .loadingContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: fixed; /* Fixed position instead of relative */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 100vh;
+  width: 100vw; /* Full viewport width */
   background-color: #131315;
   color: #ffffff;
   padding: 2rem;
   text-align: center;
-  margin-left: 16rem; /* Same as sidebar width */
-  width: calc(100% - 16rem); /* Full width minus sidebar */
+  z-index: 100; /* Above other elements */
+  margin-left: 0; /* Remove margin */
 }
 
 /* Loading spinner animation */
 .loadingSpinner {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border: 3px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   border-top: 3px solid #4CAF50;
   animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 @keyframes spin {
@@ -201,7 +209,7 @@
 .loadingMessage {
   font-size: 1.25rem;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .loadingSubtext {
