@@ -7,9 +7,6 @@ const ComingSoon = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.logo}>
-          <span className={styles.logoText}>Recallr AI</span>
-        </div>
         
         <h1 className={styles.title}>Coming Soon</h1>
         

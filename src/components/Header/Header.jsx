@@ -29,18 +29,15 @@ const Header = () => {
   const profileRef = useRef(null);
   const projectIdRef = useRef(null);
 
-  // Log when component renders
-  console.log("Header component rendered");
+  // Check if current path is dashboard or starts with dashboard
+  const isDashboardActive = location.pathname === "/dashboard" || location.pathname.startsWith("/dashboard");
 
-  // Update current project when URL search params change
   useEffect(() => {
     // Get project ID from URL
     const projectId = searchParams.get('project');
-    console.log("Project ID from URL:", projectId);
     
     // Skip re-fetching if we already have this project loaded
     if (projectId === projectIdRef.current) {
-      console.log("Project already loaded, skipping fetch");
       return;
     }
     
@@ -48,14 +45,12 @@ const Header = () => {
     projectIdRef.current = projectId;
     
     if (!projectId) {
-      console.log("No project ID, using default project");
       setCurrentProject(DEFAULT_PROJECT);
       return;
     }
     
     // If there's a project ID, fetch the project details
     const fetchProjectDetails = async () => {
-      console.log("Fetching project details for ID:", projectId);
       setLoading(true);
       setError(null);
       
@@ -74,10 +69,8 @@ const Header = () => {
           }
         });
         
-        console.log("Project details fetched:", response.data);
         setCurrentProject(response.data);
       } catch (err) {
-        console.error('Error fetching project details:', err);
         setError(err.message || 'Failed to load project details');
       } finally {
         setLoading(false);
@@ -85,15 +78,9 @@ const Header = () => {
     };
     
     fetchProjectDetails();
-  }, [searchParams, location.search]); // Watch for changes in location.search as well
-
-  // Debug logging of current project state
-  useEffect(() => {
-    console.log("Current project state:", currentProject);
-  }, [currentProject]);
+  }, [searchParams, location.search]);
 
   const handleProjectSelect = (project) => {
-    console.log("Project selected:", project);
     setCurrentProject(project);
     projectIdRef.current = project.id;
     
@@ -138,22 +125,22 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.LogoContainer}>
-        <div className={styles.Logo}>
-          <span className="text-black text-xs"></span>
-        </div>
-        <span className={styles.Title}>Recallr AI</span>
-      </div>
       <div className={styles.headerLeft}>
-        {/* Only show project dropdown on dashboard pages */}
+        <div className={styles.LogoContainer}>
+          <div className={styles.Logo}>
+            <span className="text-black text-xs"></span>
+          </div>
+          <span className={styles.Title}>Recallr AI</span>
+        </div>
+        
+        {/* Project selector - moved to the left side */}
         {location.pathname.startsWith('/dashboard/') && (
-          <div className={styles.projectDropdown}>
+          <div className={styles.projectSelector}>
             <button
-              className={styles.projectDropdownButton}
+              className={styles.projectSelectorButton}
               onClick={() => setIsProjectModalOpen(true)}
-              title={loading ? "Loading project..." : currentProject.name}
             >
-              <span className={styles.orgName}>
+              <span className={styles.projectName}>
                 {loading ? "Loading..." : currentProject.name || "Select Project"}
               </span>
               <ChevronDown className={styles.dropdownIcon} />
@@ -172,25 +159,28 @@ const Header = () => {
       <div className={styles.headerRight}>
         <Link 
           to={currentProject.id !== DEFAULT_PROJECT.id ? `/dashboard?project=${currentProject.id}` : "/dashboard"}
-          className={`${styles.navLink} ${location.pathname === "/dashboard" ? styles.active : ""}`}
+          className={`${styles.navLink} ${isDashboardActive ? styles.active : ""}`}
         >
-          Dashboard
+          <span className={styles.navLinkText}>Dashboard</span>
         </Link>
-        {/* Change from Link to anchor tag for external redirect */}
+        
+        {/* External link to playground */}
         <a
           href="https://recallrai.com/playground"
-          target="_blank"  // Opens in a new tab
-          rel="noopener noreferrer"  // Security best practice for external links
+          target="_blank"
+          rel="noopener noreferrer"
           className={styles.navLink}
         >
-          Playground
+          <span className={styles.navLinkText}>Playground</span>
         </a>
+        
         <Link
           to="/docs"
           className={`${styles.navLink} ${location.pathname === "/docs" ? styles.active : ""}`}
         >
-          Docs
+          <span className={styles.navLinkText}>Docs</span>
         </Link>
+        
         <div className={styles.userProfile} ref={profileRef}>
           <div 
             className={styles.avatar}
