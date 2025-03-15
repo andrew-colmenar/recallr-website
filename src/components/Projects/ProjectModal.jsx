@@ -7,7 +7,7 @@ import styles from './ProjectModal.module.css';
 
 // Default project to show when no projects are available
 const DEFAULT_PROJECT = {
-  id: "default-project-id", // Updated to match Dashboard component
+  id: "00000000-0000-0000-0000-000000000000", // Valid UUID format
   name: "Default Project",
   description: "Default project for new users",
   created_at: new Date().toISOString(),

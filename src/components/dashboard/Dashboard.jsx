@@ -10,8 +10,9 @@ import APIKeys from "./APIKeys/APIKeys";
 import ProjectSettings from "./Settings/ProjectSettings";
 
 // Default project to use when no project ID is specified or on error
+// Using a valid UUID format for the default project ID
 const DEFAULT_PROJECT = {
-  id: "default-id",
+  id: "00000000-0000-0000-0000-000000000000", // Valid UUID format
   name: "Default Project",
   description: "Default project for new users",
   recall_preferences: {
@@ -120,9 +121,15 @@ const Dashboard = () => {
           return;
         }
         
-        // If no projects exist and no project is selected, use default project and go to settings
+        // If no projects exist and no project is selected, show the create project page
+        // instead of trying to fetch a non-existent default project
         if ((!projectsList || projectsList.length === 0) && !projectId) {
-          navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`, { replace: true });
+          // Just use the default project without fetching from backend
+          setCurrentProject(DEFAULT_PROJECT);
+          setLoading(false);
+          
+          // Navigate to settings with a special query param indicating new user
+          navigate(`/dashboard/settings?newUser=true`, { replace: true });
           return;
         }
         
@@ -152,8 +159,15 @@ const Dashboard = () => {
   }, [authChecked, projectId]);
   
   const fetchProjectDetails = useCallback(async () => {
-    // If no project is selected, use default
+    // If no project is selected, use default without API call
     if (!projectId) {
+      setCurrentProject(DEFAULT_PROJECT);
+      setLoading(false);
+      return;
+    }
+    
+    // If the project ID is our default ID, don't try to fetch it from the backend
+    if (projectId === DEFAULT_PROJECT.id) {
       setCurrentProject(DEFAULT_PROJECT);
       setLoading(false);
       return;
@@ -207,7 +221,18 @@ const Dashboard = () => {
             break;
           case 404:
             setError(`Project not found: ${projectId}`);
-            setTimeout(() => navigate(`/dashboard/settings?project=${DEFAULT_PROJECT.id}`), 3000);
+            
+            // Check if there are other projects to redirect to
+            if (projects.length > 0) {
+              // Sort by creation date (newest first)
+              const sortedProjects = [...projects].sort((a, b) => 
+                new Date(b.created_at) - new Date(a.created_at)
+              );
+              setTimeout(() => navigate(`/dashboard/settings?project=${sortedProjects[0].id}`), 3000);
+            } else {
+              // No projects, show the create project view
+              setTimeout(() => navigate(`/dashboard/settings?newUser=true`), 3000);
+            }
             break;
           case 422:
             const validationErrors = err.response.data.detail;
@@ -218,7 +243,7 @@ const Dashboard = () => {
               console.log('Validation error details:', validationErrors);
             }
             
-            // Use default project for now
+            // Use default project for now, but don't try to load it from the backend
             setCurrentProject(DEFAULT_PROJECT);
             break;
           case 500:
@@ -244,7 +269,7 @@ const Dashboard = () => {
       clearTimeout(timeoutId);
       setLoading(false);
     }
-  }, [projectId, navigate, checkAuth, loading]);
+  }, [projectId, navigate, checkAuth, loading, projects]);
 
   if (loading) {
     return (
@@ -262,7 +287,7 @@ const Dashboard = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <Sidebar projectId={projectId || DEFAULT_PROJECT.id} />
+      <Sidebar projectId={projectId || ''} />
       <div className={styles.contentContainer}>
         {error && (
           <div className={styles.errorBanner}>
@@ -271,7 +296,7 @@ const Dashboard = () => {
         )}
         <main className={styles.main}>
           <Routes>
-            <Route index element={<Navigate to={`settings?project=${projectId || DEFAULT_PROJECT.id}`} replace />} />
+            <Route index element={<Navigate to={`settings${projectId ? `?project=${projectId}` : '?newUser=true'}`} replace />} />
             <Route path="usage" element={<ComingSoon project={currentProject} />} />
             <Route path="users" element={<Users project={currentProject} />} />
             <Route path="apikeys" element={<APIKeys project={currentProject} />} />

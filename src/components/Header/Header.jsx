@@ -8,7 +8,7 @@ import { appApi } from "../../api/axios";
 import Cookies from 'js-cookie';
 
 const DEFAULT_PROJECT = {
-  id: "default-project-id",
+  id: "00000000-0000-0000-0000-000000000000", // Valid UUID format
   name: "Default Project",
   description: "Default project for new users",
   created_at: new Date().toISOString(),

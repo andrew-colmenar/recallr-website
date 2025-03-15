@@ -29,6 +29,7 @@ const ProjectSettings = () => {
   // Fetch project data when component mounts or projectId changes
   useEffect(() => {
     const projectId = searchParams.get('project');
+    const isNewUser = searchParams.get('newUser') === 'true';
     
     // Clear any lingering UI states when project changes
     setShowDeleteConfirm(false);
@@ -36,6 +37,66 @@ const ProjectSettings = () => {
     setSuccess(null);
     setError(null);
     setIsEditing(false);
+    
+    // For new users with no projects yet, show create project view
+    if (isNewUser) {
+      setLoading(false);
+      setIsEditing(true); // Enable editing mode
+      setProject({
+        id: "00000000-0000-0000-0000-000000000000", // Valid UUID format
+        name: "My First Project",
+        description: "",
+        recall_preferences: {
+          classifier: {
+            custom_instructions: [],
+            false_positive_examples: [],
+            false_negative_examples: []
+          },
+          subquery_and_keywords_generator: {
+            custom_instructions: [],
+            subqueries_candidate_nodes_weight: 0,
+            example_subqueries: [],
+            keywords_candidate_nodes_weight: 0,
+            example_keywords: []
+          }
+        },
+        generation_preferences: {
+          custom_instructions: [],
+          top_k_symantic_similarity_check: 0,
+          raise_merge_conflict: false
+        },
+        created_at: new Date().toISOString()
+      });
+      setEditedProject({
+        id: "00000000-0000-0000-0000-000000000000",
+        name: "My First Project",
+        description: "",
+        recall_preferences: {
+          classifier: {
+            custom_instructions: [],
+            false_positive_examples: [],
+            false_negative_examples: []
+          },
+          subquery_and_keywords_generator: {
+            custom_instructions: [],
+            subqueries_candidate_nodes_weight: 0,
+            example_subqueries: [],
+            keywords_candidate_nodes_weight: 0,
+            example_keywords: []
+          }
+        },
+        generation_preferences: {
+          custom_instructions: [],
+          top_k_symantic_similarity_check: 0,
+          raise_merge_conflict: false
+        },
+        created_at: new Date().toISOString()
+      });
+      
+      // Add a welcome message
+      setSuccess("Welcome to Recallr AI! Create your first project to get started.");
+      return;
+    }
     
     if (!projectId) {
       setError('No project selected. Please select a project from the dashboard.');
@@ -277,18 +338,53 @@ const ProjectSettings = () => {
         generation_preferences: editedProject.generation_preferences
       };
       
-      const response = await appApi.put(`projects/${project.id}`, updatePayload, {
-        headers: {
-          'X-User-Id': user_id,
-          'X-Session-Id': session_id
+      let response;
+      
+      // If this is a default/new project, create a new one instead of updating
+      if (project.id === "00000000-0000-0000-0000-000000000000") {
+        // Creating a new project
+        response = await appApi.post('projects', updatePayload, {
+          headers: {
+            'X-User-Id': user_id,
+            'X-Session-Id': session_id
+          }
+        });
+        
+        // The response contains project_id, not the full project data
+        const { project_id } = response.data;
+        
+        if (!project_id) {
+          throw new Error('Project ID not received from server');
         }
-      });
+        
+        // Now fetch the full project details
+        response = await appApi.get(`projects/${project_id}`, {
+          headers: {
+            'X-User-Id': user_id,
+            'X-Session-Id': session_id
+          }
+        });
+        
+        // Navigate to the newly created project
+        navigate(`/dashboard/settings?project=${project_id}`, { replace: true });
+        
+        setSuccess('Project created successfully!');
+      } else {
+        // Normal update for existing project
+        response = await appApi.put(`projects/${project.id}`, updatePayload, {
+          headers: {
+            'X-User-Id': user_id,
+            'X-Session-Id': session_id
+          }
+        });
+        
+        setSuccess('Project updated successfully');
+      }
       
       // Update the project state with the response data
       setProject(response.data);
       setEditedProject(JSON.parse(JSON.stringify(response.data))); // Deep clone
       
-      setSuccess('Project updated successfully');
       setIsEditing(false);
       
       // Hide success message after 5 seconds
