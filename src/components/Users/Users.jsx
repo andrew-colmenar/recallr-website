@@ -4,11 +4,11 @@ import { recallApi } from '../../api/axios';
 import Cookies from 'js-cookie';
 import styles from './Users.module.css';
 import { AlertCircle, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 const USERS_PER_PAGE = 10;
 
-const Users = () => {
+const Users = ({ project }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,32 +21,72 @@ const Users = () => {
   const [deletingUser, setDeletingUser] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [apiKey, setApiKey] = useState('');
   const [searchParams] = useSearchParams();
-  const projectId = searchParams.get('project');
-  
-  // Fetch users on component mount and when page, sort, or project changes
+  const projectId = searchParams.get('project') || (project && project.id);
+
+  // First, try to get the API key when component mounts
   useEffect(() => {
-    if (projectId) {
-      fetchUsers();
+    // Try to get API key from localStorage or sessionStorage or a prop
+    const storedApiKey = localStorage.getItem('api_key') || 
+                         sessionStorage.getItem('api_key');
+    
+    if (storedApiKey) {
+      setApiKey(storedApiKey);
+      console.log('API key found in storage');
     } else {
+      // Show a form to enter API key if not found
+      console.log('No API key found in storage');
+      setError('API key is required to view users. Please enter your API key below.');
+      setLoading(false);
+    }
+  }, []);
+
+  // Fetch users when we have both projectId and apiKey
+  useEffect(() => {
+    if (projectId && apiKey) {
+      fetchUsers();
+    } else if (projectId && !apiKey) {
+      // Only show loading if we're still trying to get the API key
+      setLoading(false);
+    } else if (!projectId) {
       setError('No project selected. Please select a project.');
       setLoading(false);
     }
-  }, [projectId, currentPage, sortField, sortDirection]);
+  }, [projectId, apiKey, currentPage, sortField, sortDirection]);
+
+  const handleApiKeySubmit = (e) => {
+    e.preventDefault();
+    const formApiKey = e.target.apiKey.value.trim();
+    
+    if (formApiKey) {
+      // Save the API key to localStorage for future use
+      localStorage.setItem('api_key', formApiKey);
+      setApiKey(formApiKey);
+      setError(null);
+      setLoading(true); // Reset loading state to fetch users
+    } else {
+      setError('Please enter a valid API key.');
+    }
+  };
 
   const fetchUsers = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      const apiKey = Cookies.get('api_key');
-      
       if (!apiKey || !projectId) {
         throw new Error('Authentication or project ID missing');
       }
       
       const offset = (currentPage - 1) * USERS_PER_PAGE;
       
+      console.log('Fetching users with headers:', {
+        'X-Project-Id': projectId,
+        'X-Api-Key': apiKey.substring(0, 3) + '...' // Log partial key for security
+      });
+      
+      // Make the request to the API
       const response = await recallApi.get('/api/v1/users', {
         headers: {
           'X-Project-Id': projectId,
@@ -58,9 +98,22 @@ const Users = () => {
         }
       });
       
+      console.log('Users API response received');
+      
+      // Extract data from response
       const { users: fetchedUsers, total, has_more } = response.data;
       
-      // Sort users if needed (API might already sort them)
+      // Handle the case where no users are returned
+      if (!Array.isArray(fetchedUsers)) {
+        console.error('API did not return an array of users:', response.data);
+        setUsers([]);
+        setTotalUsers(0);
+        setHasMore(false);
+        setError('No user data found.');
+        return;
+      }
+      
+      // Sort users if needed
       const sortedUsers = sortUsers(fetchedUsers || []);
       
       setUsers(sortedUsers);
@@ -71,40 +124,65 @@ const Users = () => {
       console.error('Error fetching users:', err);
       
       if (err.response) {
+        const errorData = err.response.data;
+        console.log('Error response data:', errorData);
+        
         switch (err.response.status) {
           case 401:
             setError('Authentication failed. Please check your API key.');
+            // Clear invalid API key
+            localStorage.removeItem('api_key');
+            setApiKey('');
             break;
           case 422:
-            const validationErrors = err.response.data.detail;
-            setError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
+            // Handle validation errors from the API
+            let errorMsg = 'Invalid request parameters.';
+            if (errorData && errorData.detail) {
+              if (Array.isArray(errorData.detail)) {
+                errorMsg = errorData.detail.map(e => e.msg || 'Unknown error').join(', ');
+              } else if (typeof errorData.detail === 'string') {
+                errorMsg = errorData.detail;
+              }
+            }
+            setError(`Validation error: ${errorMsg}`);
             break;
           case 500:
             setError('Server error. Please try again later.');
             break;
           default:
-            setError(`Error: ${err.response.status} - ${err.response.statusText || 'Unknown error'}`);
+            setError(`Error ${err.response.status}: ${err.response.statusText || 'Unknown error'}`);
         }
       } else if (err.request) {
         setError('Network error. Please check your connection.');
       } else {
         setError(err.message || 'An error occurred while loading users.');
       }
+      
+      // Set empty array to prevent rendering issues
+      setUsers([]);
+      setTotalUsers(0);
+      setHasMore(false);
     } finally {
       setLoading(false);
     }
   };
 
+  // Rest of your component code (sortUsers, handleSort, etc.)
   const sortUsers = (usersList) => {
+    // Your existing sort function
     return [...usersList].sort((a, b) => {
       let valueA = a[sortField];
       let valueB = b[sortField];
       
       // Handle dates
       if (sortField === 'created_at' || sortField === 'last_active_at') {
-        valueA = new Date(valueA).getTime();
-        valueB = new Date(valueB).getTime();
+        valueA = new Date(valueA || 0).getTime();
+        valueB = new Date(valueB || 0).getTime();
       }
+      
+      // Handle nulls/undefined values
+      if (valueA === undefined || valueA === null) valueA = '';
+      if (valueB === undefined || valueB === null) valueB = '';
       
       if (sortDirection === 'asc') {
         return valueA > valueB ? 1 : -1;
@@ -162,17 +240,17 @@ const Users = () => {
   };
 
   const handleDeleteUser = async () => {
-    if (!userToDelete) return;
+    if (!userToDelete || !apiKey) return;
     
     setDeletingUser(userToDelete.user_id);
     setDeleteError(null);
     
     try {
-      const apiKey = Cookies.get('api_key');
-      
       if (!apiKey || !projectId) {
         throw new Error('Authentication or project ID missing');
       }
+      
+      console.log(`Deleting user: ${userToDelete.user_id}`);
       
       await recallApi.delete(`/api/v1/users/${userToDelete.user_id}`, {
         headers: {
@@ -180,6 +258,8 @@ const Users = () => {
           'X-Api-Key': apiKey
         }
       });
+      
+      console.log(`User ${userToDelete.user_id} deleted successfully`);
       
       // Remove deleted user from the list
       setUsers(users.filter(user => user.user_id !== userToDelete.user_id));
@@ -199,9 +279,13 @@ const Users = () => {
         fetchUsers();
       }
     } catch (err) {
+      // Your existing error handling
       console.error('Error deleting user:', err);
       
       if (err.response) {
+        const errorData = err.response.data;
+        console.log('Delete error response data:', errorData);
+        
         switch (err.response.status) {
           case 401:
             setDeleteError('Authentication failed. Please check your API key.');
@@ -212,14 +296,21 @@ const Users = () => {
             setUsers(users.filter(user => user.user_id !== userToDelete.user_id));
             break;
           case 422:
-            const validationErrors = err.response.data.detail;
-            setDeleteError(`Validation error: ${validationErrors?.[0]?.msg || 'Please check your request.'}`);
+            let errorMsg = 'Invalid request parameters.';
+            if (errorData && errorData.detail) {
+              if (Array.isArray(errorData.detail)) {
+                errorMsg = errorData.detail.map(e => e.msg || 'Unknown error').join(', ');
+              } else if (typeof errorData.detail === 'string') {
+                errorMsg = errorData.detail;
+              }
+            }
+            setDeleteError(`Validation error: ${errorMsg}`);
             break;
           case 500:
             setDeleteError('Server error. Please try again later.');
             break;
           default:
-            setDeleteError(`Error: ${err.response.status} - ${err.response.statusText || 'Unknown error'}`);
+            setDeleteError(`Error ${err.response.status}: ${err.response.statusText || 'Unknown error'}`);
         }
       } else if (err.request) {
         setDeleteError('Network error. Please check your connection.');
@@ -235,16 +326,21 @@ const Users = () => {
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return 'Invalid date';
-    
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Invalid date';
+      
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (err) {
+      console.error('Date formatting error:', err);
+      return 'Error formatting date';
+    }
   };
 
   // Truncate user ID for display
@@ -266,6 +362,35 @@ const Users = () => {
         </p>
       </div>
 
+      {/* API key form when no API key is available */}
+      {!apiKey && (
+        <div className={styles['api-key-form-container']}>
+          <div className={styles['info-message']}>
+            <AlertCircle size={16} />
+            <span>
+              An API key is required to manage users. Please enter your API key below.
+            </span>
+          </div>
+          
+          <form onSubmit={handleApiKeySubmit} className={styles['api-key-form']}>
+            <div className={styles['form-group']}>
+              <label htmlFor="apiKey" className={styles['form-label']}>API Key</label>
+              <input
+                type="password"
+                id="apiKey"
+                name="apiKey"
+                className={styles['form-input']}
+                placeholder="Enter your API key"
+                required
+              />
+            </div>
+            <button type="submit" className={styles['submit-button']}>
+              Save API Key
+            </button>
+          </form>
+        </div>
+      )}
+
       {error && (
         <div className={styles['error-message']}>
           <AlertCircle size={16} />
@@ -273,62 +398,68 @@ const Users = () => {
         </div>
       )}
 
-      <div className={styles['users-table-container']}>
-        {loading && users.length === 0 ? (
-          <div className={styles['loading']}>Loading users...</div>
-        ) : users.length === 0 ? (
-          <div className={styles['no-users']}>
-            <p>No users found for this project.</p>
-          </div>
-        ) : (
-          <table className={styles['users-table']}>
-            <thead>
-              <tr>
-                <th 
-                  onClick={() => handleSort('user_id')}
-                  className={styles['sortable-header']}
-                >
-                  User ID {getSortIndicator('user_id')}
-                </th>
-                <th 
-                  onClick={() => handleSort('created_at')}
-                  className={styles['sortable-header']}
-                >
-                  Created At {getSortIndicator('created_at')}
-                </th>
-                <th 
-                  onClick={() => handleSort('last_active_at')}
-                  className={styles['sortable-header']}
-                >
-                  Last Active {getSortIndicator('last_active_at')}
-                </th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.user_id} className={deletingUser === user.user_id ? styles['deleting'] : ''}>
-                  <td title={user.user_id}>{truncateId(user.user_id)}</td>
-                  <td title={user.created_at}>{formatDate(user.created_at)}</td>
-                  <td title={user.last_active_at}>{formatDate(user.last_active_at)}</td>
-                  <td>
-                    <button 
-                      className={styles['delete-button']}
-                      onClick={() => openDeleteConfirm(user)}
-                      disabled={!!deletingUser}
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </td>
+      {apiKey && (
+        <div className={styles['users-table-container']}>
+          {loading ? (
+            <div className={styles['loading']}>
+              <div className={styles['loading-spinner']}></div>
+              <p>Loading users...</p>
+            </div>
+          ) : users.length === 0 ? (
+            <div className={styles['no-users']}>
+              <p>No users found for this project.</p>
+            </div>
+          ) : (
+            <table className={styles['users-table']}>
+              <thead>
+                <tr>
+                  <th 
+                    onClick={() => handleSort('user_id')}
+                    className={styles['sortable-header']}
+                  >
+                    User ID {getSortIndicator('user_id')}
+                  </th>
+                  <th 
+                    onClick={() => handleSort('created_at')}
+                    className={styles['sortable-header']}
+                  >
+                    Created At {getSortIndicator('created_at')}
+                  </th>
+                  <th 
+                    onClick={() => handleSort('last_active_at')}
+                    className={styles['sortable-header']}
+                  >
+                    Last Active {getSortIndicator('last_active_at')}
+                  </th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.user_id} className={deletingUser === user.user_id ? styles['deleting'] : ''}>
+                    <td title={user.user_id}>{truncateId(user.user_id)}</td>
+                    <td title={user.created_at}>{formatDate(user.created_at)}</td>
+                    <td title={user.last_active_at}>{formatDate(user.last_active_at)}</td>
+                    <td>
+                      <button 
+                        className={styles['delete-button']}
+                        onClick={() => openDeleteConfirm(user)}
+                        disabled={!!deletingUser}
+                        aria-label={`Delete user ${truncateId(user.user_id)}`}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
 
       {/* Pagination */}
-      {users.length > 0 && (
+      {apiKey && !loading && users.length > 0 && (
         <div className={styles['pagination']}>
           <button 
             className={styles['pagination-button']}
@@ -355,7 +486,7 @@ const Users = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal - Same as before */}
       {showDeleteConfirm && (
         <div className={styles['modal-overlay']}>
           <div className={styles['delete-modal']}>
@@ -365,6 +496,7 @@ const Users = () => {
                 className={styles['close-button']}
                 onClick={closeDeleteConfirm}
                 disabled={deletingUser}
+                aria-label="Close"
               >
                 &times;
               </button>
