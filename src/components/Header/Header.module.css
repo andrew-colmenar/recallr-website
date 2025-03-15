@@ -241,7 +241,7 @@
 .profileDropdown {
   right: 0;
   left: auto;
-  width: 12rem; /* w-48 */
+  width: 17rem; /* w-48 */
   animation: fadeIn 0.2s ease-out;
 }
 
