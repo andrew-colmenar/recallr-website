@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
 import Billing from "./components/Billing/Main/Billing";
 import "./App.css";
