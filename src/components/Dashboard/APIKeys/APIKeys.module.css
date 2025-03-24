@@ -32,6 +32,7 @@
   letter-spacing: -0.01em;
 }
 
+/* Update the projectId styling to accommodate the copy button */
 .projectId {
   font-size: 0.75rem;
   color: #a0aec0;
@@ -40,15 +41,42 @@
   border-radius: 6px;
   display: flex;
   align-items: center;
+  gap: 0.4rem;
 }
 
 .mono {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  margin-left: 0.4rem;
   color: #e2e8f0;
   font-size: 0.75rem;
 }
 
+/* Add styling for the copy icon button in the project ID */
+.projectId .iconButton {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #a0aec0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin-left: 0.4rem;
+}
+
+.projectId .iconButton:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+}
+
+.projectId .iconButton.copied {
+  background-color: #4CAF50;
+  color: white;
+}
 
 /* Error and success message styles */
 .errorMessage {

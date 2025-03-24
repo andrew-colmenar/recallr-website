@@ -14,6 +14,7 @@ const APIKeys = ({ project }) => {
   const [createError, setCreateError] = useState(null);
   const [newKey, setNewKey] = useState(null);
   const [copiedKey, setCopiedKey] = useState(false);
+  const [copiedProjectId, setCopiedProjectId] = useState(false); // New state for project ID copy
   const [deletingKeyId, setDeletingKeyId] = useState(null);
   // New state for delete confirmation
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -209,17 +210,17 @@ const APIKeys = ({ project }) => {
   };
 
   // Copy key to clipboard
-  const copyToClipboard = async (text) => {
+  const copyToClipboard = async (text, setCopied) => {
     try {
       await navigator.clipboard.writeText(text);
-      setCopiedKey(true);
+      setCopied(true);
       
       // Reset the copied state after 3 seconds
       setTimeout(() => {
-        setCopiedKey(false);
+        setCopied(false);
       }, 3000);
     } catch (err) {
-      
+      console.error('Failed to copy text: ', err);
     }
   };
 
@@ -229,7 +230,16 @@ const APIKeys = ({ project }) => {
         <div className={styles.header}>
           <h1 className={styles.title}>API Keys</h1>
           <div className={styles.projectId}>
-            Project ID: <span className={styles.mono}>{project?.id || 'Loading...'}</span>
+            Project ID: 
+            <span className={styles.mono}>{project?.id || 'Loading...'}</span>
+            <button
+              className={`${styles.iconButton} ${styles.copyButton} ${copiedProjectId ? styles.copied : ''}`}
+              onClick={() => copyToClipboard(project?.id, setCopiedProjectId)}
+              disabled={!project?.id}
+              title="Copy project ID"
+            >
+              {copiedProjectId ? <Check size={14} /> : <Copy size={14} />}
+            </button>
           </div>
         </div>
         
@@ -402,7 +412,7 @@ const APIKeys = ({ project }) => {
                   
                   <button
                     className={`${styles.copyButton} ${copiedKey ? styles.copied : ''}`}
-                    onClick={() => copyToClipboard(newKey.key)}
+                    onClick={() => copyToClipboard(newKey.key, setCopiedKey)}
                   >
                     {copiedKey ? (
                       <>
