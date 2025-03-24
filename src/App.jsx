@@ -44,9 +44,9 @@ function AppContent() {
   if (loading || validatingSession) {
     return (
       <div className="app-loading">
-<div className="loading-spinner"></div>
+        <div className="loading-spinner"></div>
         <p>Loading application...</p>
-</div>
+      </div>
     );
   }
 
@@ -79,13 +79,15 @@ function AppContent() {
           path="/billing" 
           element={
             <ProtectedRoute isValid={sessionValid}>
-              <Billing />
+              <ComingSoon />
             </ProtectedRoute>
           } 
         />
 
         {/* These routes need to preserve the project ID parameter */}
-        <Route           path="/usage"           element={
+        <Route           
+          path="/usage"           
+          element={
             <ProtectedRoute isValid={sessionValid}>
               <ComingSoon />
             </ProtectedRoute>

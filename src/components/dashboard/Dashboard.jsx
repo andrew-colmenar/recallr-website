@@ -280,7 +280,7 @@ const Dashboard = () => {
           <Routes>
             <Route index element={<Navigate to={`settings${projectId ? `?project=${projectId}` : '?newUser=true'}`} replace />} />
             <Route path="usage" element={<ComingSoon project={currentProject} />} />
-            <Route path="users" element={<ComingSoon project={currentProject} />} />
+            <Route path="users" element={<Users project={currentProject} />} />
             <Route path="apikeys" element={<APIKeys project={currentProject} />} />
             <Route path="settings" element={<ProjectSettings project={currentProject} />} />
             <Route path="*" element={<ComingSoon project={currentProject} />} />
