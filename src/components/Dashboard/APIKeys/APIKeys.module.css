@@ -48,28 +48,6 @@
   color: #e2e8f0;
 }
 
-/* Info box about API keys */
-.infoBox {
-  background-color: rgba(76, 175, 80, 0.08);
-  border-left: 3px solid #4CAF50;
-  padding: 1.5rem;
-  margin-bottom: 2.5rem;
-  border-radius: 8px;
-}
-
-.infoBox h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: #e2e8f0;
-}
-
-.infoBox p {
-  margin: 0.75rem 0;
-  color: #cbd5e0;
-  line-height: 1.6;
-}
 
 /* Error and success message styles */
 .errorMessage {

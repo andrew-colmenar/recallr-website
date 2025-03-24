@@ -233,17 +233,6 @@ const APIKeys = ({ project }) => {
           </div>
         </div>
         
-        {/* Info box explaining API keys */}
-        <div className={styles.infoBox}>
-          <h3>About API Keys</h3>
-          <p>
-            API keys are used to authenticate requests to the Recall API. You can create multiple keys for different environments.
-          </p>
-          <p>
-            For security reasons, you can only view and copy the full API key once when it's created.
-          </p>
-        </div>
-        
         {/* Error message display */}
         {error && (
           <div className={styles.errorMessage}>
