@@ -1,522 +1,531 @@
 /* BillingInterface.css */
 :root {
-    --primary-bg: #131315;
-    --secondary-bg: #1A1A1E;
-    --border-color: #2A2A30;
-    --text-primary: #FFFFFF;
-    --text-secondary: #AAAAAA;
-    --accent-color: #4CAF50;
-    --inactive-color: #555555;
-    --card-bg: #1F1F23;
-  }
-  
-  .billing-container {
-    background-color: var(--primary-bg);
-    color: var(--text-primary);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .billing-title {
-    font-size: 24px;
-    font-weight: 500;
-    margin-bottom: 24px;
-  }
-  
-  .billing-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 24px;
-  }
-  
-  .tab-button {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 16px;
-    padding: 12px 16px;
-    cursor: pointer;
-    margin-right: 8px;
-    position: relative;
-    transition: color 0.2s ease;
-  }
-  
-  .tab-button:hover {
-    color: var(--text-primary);
-  }
-  
-  .tab-button.active {
-    color: var(--text-primary);
-    font-weight: 500;
-  }
-  
-  .tab-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--text-primary);
-  }
-  
-  .billing-content {
-    padding: 16px 0;
-  }
-  
-  /* Overview Section */
-  .trial-section {
-    background-color: var(--secondary-bg);
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 32px;
-  }
-  
-  .section-title {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 16px;
-  }
-  
-  .credit-info {
-    margin-bottom: 24px;
-  }
-  
-  .credit-label {
-    color: var(--text-secondary);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .info-icon {
-    margin-left: 4px;
-    font-size: 12px;
-    width: 16px;
-    height: 16px;
-    border: 1px solid var(--text-secondary);
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .credit-amount {
-    font-size: 36px;
-    font-weight: 500;
-  }
-  
+  --primary-bg: #131315;
+  --secondary-bg: #1A1A1E;
+  --border-color: #2A2A30;
+  --text-primary: #FFFFFF;
+  --text-secondary: #AAAAAA;
+  --accent-color: #4CAF50;
+  --inactive-color: #555555;
+  --card-bg: #1F1F23;
+}
+
+.billing-container {
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 960px; /* Reduced from 1200px */
+  margin: 0 auto;
+  padding: 16px; /* Reduced from 20px */
+}
+
+.billing-title {
+  font-size: 19px; /* Reduced from 24px */
+  font-weight: 500;
+  margin-bottom: 19px; /* Reduced from 24px */
+}
+
+.billing-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 19px; /* Reduced from 24px */
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px; /* Reduced from 16px */
+  padding: 10px 13px; /* Reduced from 12px 16px */
+  cursor: pointer;
+  margin-right: 6px; /* Reduced from 8px */
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.tab-button:hover {
+  color: var(--text-primary);
+}
+
+.tab-button.active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-primary);
+}
+
+.billing-content {
+  padding: 13px 0; /* Reduced from 16px 0 */
+}
+
+/* Overview Section */
+.trial-section {
+  background-color: var(--secondary-bg);
+  border-radius: 6px; /* Reduced from 8px */
+  padding: 19px; /* Reduced from 24px */
+  margin-bottom: 26px; /* Reduced from 32px */
+}
+
+.section-title {
+  font-size: 16px; /* Reduced from 20px */
+  font-weight: 500;
+  margin-bottom: 13px; /* Reduced from 16px */
+}
+
+.credit-info {
+  margin-bottom: 19px; /* Reduced from 24px */
+}
+
+.credit-label {
+  color: var(--text-secondary);
+  font-size: 11px; /* Reduced from 14px */
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px; /* Reduced from 8px */
+}
+
+.info-icon {
+  margin-left: 3px; /* Reduced from 4px */
+  font-size: 10px; /* Reduced from 12px */
+  width: 13px; /* Reduced from 16px */
+  height: 13px; /* Reduced from 16px */
+  border: 1px solid var(--text-secondary);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.credit-amount {
+  font-size: 29px; /* Reduced from 36px */
+  font-weight: 500;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px; /* Reduced from 12px */
+}
+
+.button {
+  padding: 8px 13px; /* Reduced from 10px 16px */
+  border-radius: 3px; /* Reduced from 4px */
+  font-size: 11px; /* Reduced from 14px */
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: none;
+}
+
+.primary-button {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: #3d8b40;
+}
+
+.secondary-button {
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.secondary-button:hover {
+  background-color: var(--secondary-bg);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Reduced from 250px */
+  gap: 13px; /* Reduced from 16px */
+}
+
+.feature-card {
+  background-color: var(--card-bg);
+  border-radius: 6px; /* Reduced from 8px */
+  padding: 13px; /* Reduced from 16px */
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  background-color: var(--secondary-bg);
+}
+
+.card-icon {
+  width: 32px; /* Reduced from 40px */
+  height: 32px; /* Reduced from 40px */
+  background-color: var(--secondary-bg);
+  border-radius: 6px; /* Reduced from 8px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 13px; /* Reduced from 16px */
+  font-size: 16px; /* Reduced from 20px */
+}
+
+.card-content h4 {
+  font-size: 13px; /* Reduced from 16px */
+  margin: 0 0 3px 0; /* Reduced from 0 0 4px 0 */
+}
+
+.card-content p {
+  font-size: 11px; /* Reduced from 14px */
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Billing History Section */
+.history-section {
+  padding: 13px; /* Reduced from 16px */
+  background-color: var(--secondary-bg);
+  border-radius: 6px; /* Reduced from 8px */
+}
+
+.no-invoices {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 26px 0; /* Reduced from 32px 0 */
+  font-size: 12px; /* Added smaller font */
+}
+
+/* Pricing Section */
+.pricing-section {
+  background-color: var(--secondary-bg);
+  border-radius: 6px; /* Reduced from 8px */
+  padding: 19px; /* Reduced from 24px */
+}
+
+.pricing-plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Reduced from 250px */
+  gap: 13px; /* Reduced from 16px */
+  margin-bottom: 26px; /* Reduced from 32px */
+}
+
+.pricing-card {
+  background-color: var(--card-bg);
+  border-radius: 6px; /* Reduced from 8px */
+  padding: 19px; /* Reduced from 24px */
+  text-align: center;
+}
+
+.pricing-card.highlighted {
+  border: 1px solid var(--accent-color);
+}
+
+.pricing-card h4 {
+  font-size: 16px; /* Reduced from 20px */
+  margin-top: 0;
+  margin-bottom: 13px; /* Reduced from 16px */
+}
+
+.price {
+  font-size: 19px; /* Reduced from 24px */
+  font-weight: 500;
+  margin-bottom: 13px; /* Reduced from 16px */
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 19px 0; /* Reduced from 0 0 24px 0 */
+  text-align: left;
+  font-size: 12px; /* Added smaller font */
+}
+
+.features-list li {
+  padding: 6px 0; /* Reduced from 8px 0 */
+  border-bottom: 1px solid var(--border-color);
+}
+
+.features-list li:last-child {
+  border-bottom: none;
+}
+
+.faq-section {
+  margin-top: 26px; /* Reduced from 32px */
+}
+
+.faq-item {
+  margin-bottom: 13px; /* Reduced from 16px */
+  padding-bottom: 13px; /* Reduced from 16px */
+  border-bottom: 1px solid var(--border-color);
+}
+
+.faq-item h4 {
+  margin-top: 0;
+  margin-bottom: 6px; /* Reduced from 8px */
+  font-size: 13px; /* Reduced from 16px */
+}
+
+.faq-item p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 11px; /* Reduced from 14px */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .action-buttons {
-    display: flex;
-    gap: 12px;
+    flex-direction: column;
   }
   
-  .button {
-    padding: 10px 16px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    border: none;
-  }
-  
-  .primary-button {
-    background-color: var(--accent-color);
-    color: white;
-  }
-  
-  .primary-button:hover {
-    background-color: #3d8b40;
-  }
-  
-  .secondary-button {
-    background-color: var(--primary-bg);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-  }
-  
-  .secondary-button:hover {
-    background-color: var(--secondary-bg);
-  }
-  
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
-  }
-  
-  .feature-card {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.2s ease;
-    cursor: pointer;
-  }
-  
-  .feature-card:hover {
-    background-color: var(--secondary-bg);
-  }
-  
-  .card-icon {
-    width: 40px;
-    height: 40px;
-    background-color: var(--secondary-bg);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 16px;
-    font-size: 20px;
-  }
-  
-  .card-content h4 {
-    font-size: 16px;
-    margin: 0 0 4px 0;
-  }
-  
-  .card-content p {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin: 0;
-  }
-  
-  /* Billing History Section */
-  .history-section {
-    padding: 16px;
-    background-color: var(--secondary-bg);
-    border-radius: 8px;
-  }
-  
-  .no-invoices {
-    color: var(--text-secondary);
-    font-style: italic;
-    text-align: center;
-    padding: 32px 0;
-  }
-  
-  /* Pricing Section */
-  .pricing-section {
-    background-color: var(--secondary-bg);
-    border-radius: 8px;
-    padding: 24px;
-  }
-  
+  .card-grid,
   .pricing-plans {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
-    margin-bottom: 32px;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .billing-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 6px; /* Reduced from 8px */
+  }
+}
+
+/* Loading and Error States */
+.loading {
+  text-align: center;
+  padding: 32px 0; /* Reduced from 40px 0 */
+  color: var(--text-secondary);
+  font-size: 12px; /* Added smaller font */
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Reduced from 8px */
+  background-color: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+  padding: 10px; /* Reduced from 12px */
+  border-radius: 3px; /* Reduced from 4px */
+  margin-bottom: 13px; /* Reduced from 16px */
+  font-size: 11px; /* Reduced from 14px */
+}
+
+/* Balance Section */
+.balance-section {
+  background-color: var(--secondary-bg);
+  border-radius: 6px; /* Reduced from 8px */
+  padding: 19px; /* Reduced from 24px */
+  margin-bottom: 26px; /* Reduced from 32px */
+}
+
+.last-updated {
+  font-size: 10px; /* Reduced from 12px */
+  color: var(--text-secondary);
+  margin-top: 3px; /* Reduced from 4px */
+}
+
+/* Top-up Section */
+.top-up-section {
+  margin-top: 19px; /* Reduced from 24px */
+  padding-top: 13px; /* Reduced from 16px */
+  border-top: 1px solid var(--border-color);
+}
+
+.top-up-title {
+  font-size: 13px; /* Reduced from 16px */
+  margin-bottom: 13px; /* Reduced from 16px */
+}
+
+.amount-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px; /* Reduced from 8px */
+  margin-bottom: 13px; /* Reduced from 16px */
+}
+
+.amount-button {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 6px 13px; /* Reduced from 8px 16px */
+  border-radius: 3px; /* Reduced from 4px */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px; /* Added smaller font */
+}
+
+.amount-button.selected {
+  border-color: var(--accent-color);
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.custom-amount {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  border-radius: 3px; /* Reduced from 4px */
+  padding: 0 6px; /* Reduced from 0 8px */
+}
+
+.amount-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  padding: 6px 3px; /* Reduced from 8px 4px */
+  width: 64px; /* Reduced from 80px */
+  font-size: 11px; /* Reduced from 14px */
+}
+
+.amount-input:focus {
+  outline: none;
+}
+
+.top-up-button {
+  margin-top: 6px; /* Reduced from 8px */
+  width: 100%;
+  max-width: 160px; /* Reduced from 200px */
+}
+
+/* Transactions Table */
+.transactions-table {
+  background-color: var(--card-bg);
+  border-radius: 6px; /* Reduced from 8px */
+  overflow: hidden;
+  margin-bottom: 19px; /* Reduced from 24px */
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 13px; /* Reduced from 16px */
+  background-color: var(--secondary-bg);
+  font-weight: 500;
+}
+
+.header-cell {
+  color: var(--text-secondary);
+  font-size: 11px; /* Reduced from 14px */
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 13px; /* Reduced from 16px */
+  border-bottom: 1px solid var(--border-color);
+  font-size: 11px; /* Added smaller font */
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.cell {
+  font-size: 11px; /* Reduced from 14px */
+}
+
+.status {
+  display: inline-block;
+  padding: 3px 6px; /* Reduced from 4px 8px */
+  border-radius: 3px; /* Reduced from 4px */
+  font-size: 10px; /* Reduced from 12px */
+  font-weight: 500;
+}
+
+.status-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.status-pending {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
+.status-failed {
+  background-color: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
+.invoice-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 11px; /* Added smaller font */
+}
+
+.invoice-link:hover {
+  text-decoration: underline;
+}
+
+.load-more {
+  text-align: center;
+  margin-top: 13px; /* Reduced from 16px */
+}
+
+.load-more-button {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 6px 13px; /* Reduced from 8px 16px */
+  border-radius: 3px; /* Reduced from 4px */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px; /* Added smaller font */
+}
+
+.load-more-button:hover {
+  background-color: var(--secondary-bg);
+}
+
+.card-arrow {
+  margin-left: auto;
+  color: var(--text-secondary);
+}
+
+/* Responsive adjustments for transactions table */
+@media (max-width: 768px) {
+  .table-header, .table-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px; /* Reduced from 8px */
   }
   
-  .pricing-card {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    padding: 24px;
-    text-align: center;
+  .header-cell:nth-child(3),
+  .header-cell:nth-child(4),
+  .header-cell:nth-child(5) {
+    display: none;
   }
   
-  .pricing-card.highlighted {
-    border: 1px solid var(--accent-color);
+  .cell:nth-child(3),
+  .cell:nth-child(4),
+  .cell:nth-child(5) {
+    display: none;
   }
   
-  .pricing-card h4 {
-    font-size: 20px;
-    margin-top: 0;
-    margin-bottom: 16px;
-  }
-  
-  .price {
-    font-size: 24px;
-    font-weight: 500;
-    margin-bottom: 16px;
-  }
-  
-  .features-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 24px 0;
-    text-align: left;
-  }
-  
-  .features-list li {
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .features-list li:last-child {
-    border-bottom: none;
-  }
-  
-  .faq-section {
-    margin-top: 32px;
-  }
-  
-  .faq-item {
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .faq-item h4 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 16px;
-  }
-  
-  .faq-item p {
-    margin: 0;
+  .cell:before {
+    content: attr(data-label);
+    display: block;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 8px; /* Reduced from 10px */
     color: var(--text-secondary);
+    margin-bottom: 3px; /* Reduced from 4px */
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .action-buttons {
-      flex-direction: column;
-    }
-    
-    .card-grid,
-    .pricing-plans {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .billing-tabs {
-      overflow-x: auto;
-      white-space: nowrap;
-      padding-bottom: 8px;
-    }
-  }
-  
-  /* Loading and Error States */
-  .loading {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--text-secondary);
-  }
-  
-  .error-message {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: rgba(255, 59, 48, 0.1);
-    color: #ff3b30;
-    padding: 12px;
-    border-radius: 4px;
-    margin-bottom: 16px;
-  }
-  
-  /* Balance Section */
-  .balance-section {
-    background-color: var(--secondary-bg);
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 32px;
-  }
-  
-  .last-updated {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 4px;
-  }
-  
-  /* Top-up Section */
-  .top-up-section {
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
-  }
-  
-  .top-up-title {
-    font-size: 16px;
-    margin-bottom: 16px;
-  }
-  
+}
+
+@media (max-width: 480px) {
   .amount-selector {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  
-  .amount-button {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .amount-button.selected {
-    border-color: var(--accent-color);
-    background-color: rgba(76, 175, 80, 0.1);
+    flex-direction: column;
   }
   
   .custom-amount {
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--border-color);
-    background-color: var(--card-bg);
-    border-radius: 4px;
-    padding: 0 8px;
-  }
-  
-  .amount-input {
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
-    padding: 8px 4px;
-    width: 80px;
-    font-size: 14px;
-  }
-  
-  .amount-input:focus {
-    outline: none;
-  }
-  
-  .top-up-button {
-    margin-top: 8px;
     width: 100%;
-    max-width: 200px;
   }
-  
-  /* Transactions Table */
-  .transactions-table {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-  
-  .table-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding: 16px;
-    background-color: var(--secondary-bg);
-    font-weight: 500;
-  }
-  
-  .header-cell {
-    color: var(--text-secondary);
-    font-size: 14px;
-  }
-  
-  .table-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding: 16px;
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .table-row:last-child {
-    border-bottom: none;
-  }
-  
-  .cell {
-    font-size: 14px;
-  }
-  
-  .status {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-  
-  .status-success {
-    background-color: rgba(76, 175, 80, 0.1);
-    color: #4caf50;
-  }
-  
-  .status-pending {
-    background-color: rgba(255, 152, 0, 0.1);
-    color: #ff9800;
-  }
-  
-  .status-failed {
-    background-color: rgba(255, 59, 48, 0.1);
-    color: #ff3b30;
-  }
-  
-  .invoice-link {
-    color: var(--accent-color);
-    text-decoration: none;
-    font-weight: 500;
-  }
-  
-  .invoice-link:hover {
-    text-decoration: underline;
-  }
-  
-  .load-more {
-    text-align: center;
-    margin-top: 16px;
-  }
-  
-  .load-more-button {
-    background-color: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .load-more-button:hover {
-    background-color: var(--secondary-bg);
-  }
-  
-  .card-arrow {
-    margin-left: auto;
-    color: var(--text-secondary);
-  }
-  
-  /* Responsive adjustments for transactions table */
-  @media (max-width: 768px) {
-    .table-header, .table-row {
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    
-    .header-cell:nth-child(3),
-    .header-cell:nth-child(4),
-    .header-cell:nth-child(5) {
-      display: none;
-    }
-    
-    .cell:nth-child(3),
-    .cell:nth-child(4),
-    .cell:nth-child(5) {
-      display: none;
-    }
-    
-    .cell:before {
-      content: attr(data-label);
-      display: block;
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 10px;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .amount-selector {
-      flex-direction: column;
-    }
-    
-    .custom-amount {
-      width: 100%;
-    }
-  }
+}
