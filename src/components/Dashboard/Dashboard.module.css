@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-size: 18px;
+  font-size: 14px;
   color: #e0e0e0;
 }
 
@@ -18,21 +18,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 16px;
   background-color: #1e1e1e;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .dashboardHeader h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
   color: #ffffff;
 }
 
 .logoutButton {
-  padding: 8px 16px;
+  padding: 6px 12px;
   background-color: #f44336;
   color: white;
   border: none;
@@ -40,6 +40,7 @@
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.2s;
+  font-size: 12px;
 }
 
 .logoutButton:hover {
@@ -49,7 +50,7 @@
 .dashboardContent {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 16px;
 }
 
 @media (min-width: 768px) {
@@ -61,33 +62,33 @@
 .userInfo,
 .sessionsSection {
   background-color: #1e1e1e;
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 6px;
+  padding: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .userInfo h2,
 .sessionsSection h2 {
   margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 18px;
+  margin-bottom: 16px;
+  font-size: 14px;
   color: #ffffff;
   border-bottom: 1px solid #2a2a2a;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
 }
 
 .sessionsList {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 .sessionItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  border-radius: 6px;
+  padding: 12px;
+  border-radius: 5px;
   border: 1px solid #2a2a2a;
   transition: box-shadow 0.2s;
 }
@@ -98,18 +99,19 @@
 }
 
 .sessionInfo p {
-  margin: 5px 0;
+  margin: 4px 0;
   color: #b3b3b3;
+  font-size: 12px;
 }
 
 .revokeButton {
-  padding: 6px 12px;
+  padding: 4px 10px;
   background-color: #333333;
   border: 1px solid #444444;
-  border-radius: 4px;
+  border-radius: 3px;
   color: #e0e0e0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   transition: all 0.2s;
 }
 
@@ -131,16 +133,16 @@
 
 /* Content area that holds everything except sidebar */
 .contentContainer {
-  margin-left: 16rem; /* Same as sidebar width */
-  width: calc(100% - 16rem); /* Full width minus sidebar */
+  margin-left: 14rem; /* Same as sidebar width */
+  width: calc(100% - 14rem); /* Full width minus sidebar */
   min-height: 100vh;
-  padding-top: 72px; /* Same as header height */
+  padding-top: 60px; /* Same as header height */
 }
 
 /* Main content area where routes are rendered */
 .main {
-  padding: 1.5rem;
-  min-height: calc(100vh - 72px); /* Minus header height */
+  padding: 1.2rem;
+  min-height: calc(100vh - 60px); /* Minus header height */
   width: 100%;
 }
 
@@ -151,20 +153,20 @@
   left: 0;
   right: 0;
   z-index: 20;
-  height: 72px;
+  height: 60px;
 }
 
 /* Error banner with improved visibility */
 .errorBanner {
   background-color: rgba(255, 69, 58, 0.1);
   color: #ff453a;
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-left: 3px solid #ff453a;
-  margin-bottom: 16px;
-  font-size: 14px;
+  margin-bottom: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 /* Update loading container positioning */
@@ -184,7 +186,7 @@
   width: 100vw; /* Full viewport width */
   background-color: #131315;
   color: #ffffff;
-  padding: 2rem;
+  padding: 1.6rem;
   text-align: center;
   z-index: 100; /* Above other elements */
   margin-left: 0; /* Remove margin */
@@ -192,13 +194,13 @@
 
 /* Loading spinner animation */
 .loadingSpinner {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: 3px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   border-top: 3px solid #4CAF50;
   animation: spin 1s linear infinite;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 @keyframes spin {
@@ -207,29 +209,29 @@
 }
 
 .loadingMessage {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
 }
 
 .loadingSubtext {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: #9ca3af;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .contentContainer {
-    margin-left: 4.5rem; /* Smaller margin for collapsed sidebar */
-    width: calc(100% - 4.5rem);
+    margin-left: 3.6rem; /* Smaller margin for collapsed sidebar */
+    width: calc(100% - 3.6rem);
   }
   
   .main {
-    padding: 1rem;
+    padding: 0.8rem;
   }
   
   .loadingContainer {
-    margin-left: 4.5rem;
-    width: calc(100% - 4.5rem);
+    margin-left: 3.6rem;
+    width: calc(100% - 3.6rem);
   }
 }

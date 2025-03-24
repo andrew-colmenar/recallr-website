@@ -15,29 +15,29 @@
   min-height: 100vh;
   width: 100%;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 20px;
-  margin-top:2rem;
+  padding: 16px; /* Reduced from 20px */
+  margin-top: 1.6rem; /* Reduced from 2rem */
 }
 
 /* Centered content styling */
 .content {
   text-align: center;
-  max-width: 1000px;
+  max-width: 800px; /* Reduced from 1000px */
   width: 100%;
-  padding: 40px 20px;
+  padding: 32px 16px; /* Reduced from 40px 20px */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 32px; /* Reduced from 40px */
 }
 
 /* Logo styling */
 .logo {
-  margin-bottom: 20px;
+  margin-bottom: 16px; /* Reduced from 20px */
 }
 
 .logoText {
-  font-size: 1.8rem;
+  font-size: 1.44rem; /* Reduced from 1.8rem */
   font-weight: 700;
   background: linear-gradient(to right, #4CAF50, #2196F3);
   -webkit-background-clip: text;
@@ -48,43 +48,43 @@
 
 /* Title styling */
 .title {
-  font-size: 4rem;
+  font-size: 3.2rem; /* Reduced from 4rem */
   font-weight: 800;
   background: linear-gradient(to right, #4CAF50, #2196F3);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 16px;
+  margin-bottom: 13px; /* Reduced from 16px */
   letter-spacing: -0.03em;
 }
 
 /* Subtitle styling */
 .subtitle {
-  font-size: 1.5rem;
+  font-size: 1.2rem; /* Reduced from 1.5rem */
   color: #aaaaaa;
-  max-width: 600px;
+  max-width: 480px; /* Reduced from 600px */
   line-height: 1.5;
-  margin-bottom: 30px;
+  margin-bottom: 24px; /* Reduced from 30px */
 }
 
 /* Timeline */
 .timeline {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 24px; /* Reduced from 30px */
   width: 100%;
-  max-width: 600px;
+  max-width: 480px; /* Reduced from 600px */
   position: relative;
-  margin: 40px 0;
+  margin: 32px 0; /* Reduced from 40px 0 */
 }
 
 .timeline::before {
   content: '';
   position: absolute;
   height: 100%;
-  width: 2px;
+  width: 1.6px; /* Reduced from 2px */
   background: linear-gradient(to bottom, #4CAF50, #2196F3, rgba(76, 175, 80, 0.3));
-  left: 24px;
+  left: 19px; /* Reduced from 24px */
   top: 0;
 }
 
@@ -92,18 +92,18 @@
   display: flex;
   align-items: flex-start;
   position: relative;
-  padding-left: 60px;
+  padding-left: 48px; /* Reduced from 60px */
   text-align: left;
 }
 
 .timelineDot {
   position: absolute;
-  left: 20px;
-  width: 10px;
-  height: 10px;
+  left: 16px; /* Reduced from 20px */
+  width: 8px; /* Reduced from 10px */
+  height: 8px; /* Reduced from 10px */
   border-radius: 50%;
   background-color: #4CAF50;
-  transform: translateY(8px);
+  transform: translateY(6.5px); /* Reduced from 8px */
   z-index: 1;
 }
 
@@ -113,19 +113,19 @@
 
 .timelineContent {
   background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 6.5px; /* Reduced from 8px */
+  padding: 13px; /* Reduced from 16px */
   width: 100%;
 }
 
 .timelineContent h3 {
-  font-size: 1.2rem;
+  font-size: 0.96rem; /* Reduced from 1.2rem */
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 3px; /* Reduced from 4px */
 }
 
 .timelineContent p {
-  font-size: 0.9rem;
+  font-size: 0.72rem; /* Reduced from 0.9rem */
   color: #aaaaaa;
 }
 
@@ -136,60 +136,60 @@
 /* Features */
 .features {
   display: flex;
-  gap: 30px;
+  gap: 24px; /* Reduced from 30px */
   justify-content: center;
   flex-wrap: wrap;
-  margin: 40px 0;
+  margin: 32px 0; /* Reduced from 40px 0 */
 }
 
 .feature {
   background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 30px 20px;
-  max-width: 300px;
+  border-radius: 10px; /* Reduced from 12px */
+  padding: 24px 16px; /* Reduced from 30px 20px */
+  max-width: 240px; /* Reduced from 300px */
   flex: 1;
-  min-width: 250px;
+  min-width: 200px; /* Reduced from 250px */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feature:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px); /* Reduced from -5px */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Reduced from 0 10px 20px */
   background-color: rgba(255, 255, 255, 0.07);
 }
 
 .featureIcon {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
+  font-size: 2rem; /* Reduced from 2.5rem */
+  margin-bottom: 12px; /* Reduced from 15px */
 }
 
 .feature h3 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
+  font-size: 1.04rem; /* Reduced from 1.3rem */
+  margin-bottom: 8px; /* Reduced from 10px */
   font-weight: 600;
 }
 
 .feature p {
   color: #aaaaaa;
   line-height: 1.5;
-  font-size: 0.95rem;
+  font-size: 0.76rem; /* Reduced from 0.95rem */
 }
 
 /* Back button */
 .backButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6.5px; /* Reduced from 8px */
   background-color: rgba(255, 255, 255, 0.1);
   border: none;
   color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 6px;
+  padding: 10px 16px; /* Reduced from 12px 20px */
+  border-radius: 5px; /* Reduced from 6px */
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.8rem; /* Reduced from 1rem */
   text-decoration: none;
   transition: background-color 0.2s ease;
-  margin-top: 20px;
+  margin-top: 16px; /* Reduced from 20px */
 }
 
 .backButton:hover {
@@ -199,34 +199,34 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .content {
-    gap: 30px;
-    padding: 30px 15px;
+    gap: 24px; /* Reduced from 30px */
+    padding: 24px 12px; /* Reduced from 30px 15px */
   }
 
   .title {
-    font-size: 2.5rem;
+    font-size: 2rem; /* Reduced from 2.5rem */
   }
 
   .subtitle {
-    font-size: 1.2rem;
+    font-size: 0.96rem; /* Reduced from 1.2rem */
   }
 
   .timeline {
-    gap: 20px;
+    gap: 16px; /* Reduced from 20px */
   }
 
   .feature {
-    min-width: 200px;
+    min-width: 160px; /* Reduced from 200px */
   }
 
   .features {
-    gap: 20px;
+    gap: 16px; /* Reduced from 20px */
   }
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: 2rem;
+    font-size: 1.6rem; /* Reduced from 2rem */
   }
 
   .features {
@@ -239,14 +239,14 @@
   }
   
   .timeline::before {
-    left: 15px;
+    left: 12px; /* Reduced from 15px */
   }
   
   .timelineItem {
-    padding-left: 40px;
+    padding-left: 32px; /* Reduced from 40px */
   }
   
   .timelineDot {
-    left: 11px;
+    left: 9px; /* Reduced from 11px */
   }
 }

@@ -79,7 +79,7 @@ function AppContent() {
           path="/billing" 
           element={
             <ProtectedRoute isValid={sessionValid}>
-              <ComingSoon />
+              <Billing />
             </ProtectedRoute>
           } 
         />
