@@ -263,7 +263,7 @@ const APIKeys = ({ project }) => {
                   <tr key={keyItem.id} className={styles.tableRow}>
                     <td className={styles.cell}>{keyItem.name}</td>
                     <td className={styles.cell}>
-                      <span className={styles.mono}>{keyItem.prefix}</span>
+                      <span className={styles.mono}>{keyItem.prefix + "*****"}</span>
                     </td>
                     <td className={styles.cell}>{formatDate(keyItem.created_at)}</td>
                     <td className={styles.cell}>
