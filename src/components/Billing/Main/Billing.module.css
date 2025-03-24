@@ -17,6 +17,7 @@
   max-width: 960px; /* Reduced from 1200px */
   margin: 0 auto;
   padding: 16px; /* Reduced from 20px */
+  padding-top: 80px; /* Add padding to account for navbar height */
 }
 
 .billing-title {

@@ -237,12 +237,12 @@ const Billing = () => {
         >
           Payment History
         </button>
-        <button 
+        {/* <button 
           className={`${styles['tab-button']} ${activeTab === 'pricing' ? styles['active'] : ''}`} 
           onClick={() => handleTabClick('pricing')}
         >
           Plans & Pricing
-        </button>
+        </button> */}
       </div>
       
       <div className={styles['billing-content']}>
@@ -311,58 +311,6 @@ const Billing = () => {
                   </div>
                 </>
               )}
-            </div>
-
-            <div className={styles['card-grid']}>
-              <div 
-                className={styles['feature-card']}
-                onClick={() => handleTabClick('history')}
-              >
-                <div className={styles['card-icon']}>
-                  <FileText size={20} />
-                </div>
-                <div className={styles['card-content']}>
-                  <h4>Transaction History</h4>
-                  <p>View your billing history</p>
-                </div>
-                <ArrowRight size={16} className={styles['card-arrow']} />
-              </div>
-              
-              <div className={styles['feature-card']}>
-                <div className={styles['card-icon']}>
-                  <CreditCard size={20} />
-                </div>
-                <div className={styles['card-content']}>
-                  <h4>Payment methods</h4>
-                  <p>Add or change payment method</p>
-                </div>
-                <ArrowRight size={16} className={styles['card-arrow']} />
-              </div>
-              
-              <div className={styles['feature-card']}>
-                <div className={styles['card-icon']}>
-                  <BarChart2 size={20} />
-                </div>
-                <div className={styles['card-content']}>
-                  <h4>Usage</h4>
-                  <p>Check your API usage statistics</p>
-                </div>
-                <ArrowRight size={16} className={styles['card-arrow']} />
-              </div>
-              
-              <div 
-                className={styles['feature-card']}
-                onClick={() => handleTabClick('pricing')}
-              >
-                <div className={styles['card-icon']}>
-                  <Star size={20} />
-                </div>
-                <div className={styles['card-content']}>
-                  <h4>Upgrade plan</h4>
-                  <p>Explore premium features</p>
-                </div>
-                <ArrowRight size={16} className={styles['card-arrow']} />
-              </div>
             </div>
           </div>
         )}
@@ -435,7 +383,7 @@ const Billing = () => {
           </div>
         )}
         
-        {activeTab === 'pricing' && (
+        {/* {activeTab === 'pricing' && (
           <div className={styles['pricing-section']}>
             <h3 className={styles['section-title']}>Plans & Pricing</h3>
             
@@ -511,7 +459,7 @@ const Billing = () => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
