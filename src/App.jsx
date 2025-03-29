@@ -10,6 +10,7 @@ import Billing from "./components/Billing/Main/Billing";
 import "./App.css";
 import authService from "./services/authService";
 import Header from "./components/Header/Header";
+import GetStarted from "./components/GetStarted/GetStarted";
 
 // Main app content with routes
 function AppContent() {
@@ -121,7 +122,7 @@ function AppContent() {
           path="/getstarted" 
           element={
             <ProtectedRoute isValid={sessionValid}>
-              <ComingSoon />
+              <GetStarted />
             </ProtectedRoute>
           } 
         />
