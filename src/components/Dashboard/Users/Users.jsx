@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { recallApi } from '../../api/axios';
-import { useAuth } from '../../context/AuthContext';
+import { useSearchParams } from 'react-router';
+import { appApi } from '../../../api/axios';
+import { useAuth } from '../../../context/AuthContext';
 import Cookies from 'js-cookie';
 import { AlertCircle, UserIcon } from 'lucide-react';
 import styles from './Users.module.css';
@@ -18,7 +18,8 @@ const Users = () => {
   });
   
   const { user } = useAuth();
-  const { projectId } = useParams();
+  const [searchParams] = useSearchParams();
+  const projectId = searchParams.get('project');
 
   const fetchUsers = async (offset = 0, limit = 10) => {
     try {
@@ -31,7 +32,7 @@ const Users = () => {
         throw new Error('Authentication required');
       }
       
-      const response = await recallApi.get(`/v1/projects/${projectId}/users`, {
+      const response = await appApi.get(`/projects/${projectId}/users`, {
         params: { offset, limit },
         headers: {
           'X-User-Id': user_id,

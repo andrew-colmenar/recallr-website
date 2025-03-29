@@ -42,11 +42,18 @@ const ProjectSettings = () => {
     if (isNewUser) {
       setLoading(false);
       setIsEditing(true); // Enable editing mode
-      setProject({
+      
+      // Create a default project with ALL required fields
+      const defaultProject = {
         id: "00000000-0000-0000-0000-000000000000", // Valid UUID format
         name: "My First Project",
         description: "",
         recall_preferences: {
+          // Add the missing required fields
+          return_min_top_k: 3,       // Default sensible value
+          return_max_top_k: 10,      // Default sensible value
+          threshold: 0.7,            // Default sensible value
+          
           classifier: {
             custom_instructions: [],
             false_positive_examples: [],
@@ -55,8 +62,12 @@ const ProjectSettings = () => {
           subquery_and_keywords_generator: {
             custom_instructions: [],
             subqueries_candidate_nodes_weight: 0,
+            // Add the missing required fields
+            subqueries_candidate_memories_weight: 0,  // Default value
             example_subqueries: [],
             keywords_candidate_nodes_weight: 0,
+            // Add the missing required fields
+            keywords_candidate_memories_weight: 0,    // Default value
             example_keywords: []
           }
         },
@@ -66,32 +77,10 @@ const ProjectSettings = () => {
           raise_merge_conflict: false
         },
         created_at: new Date().toISOString()
-      });
-      setEditedProject({
-        id: "00000000-0000-0000-0000-000000000000",
-        name: "My First Project",
-        description: "",
-        recall_preferences: {
-          classifier: {
-            custom_instructions: [],
-            false_positive_examples: [],
-            false_negative_examples: []
-          },
-          subquery_and_keywords_generator: {
-            custom_instructions: [],
-            subqueries_candidate_nodes_weight: 0,
-            example_subqueries: [],
-            keywords_candidate_nodes_weight: 0,
-            example_keywords: []
-          }
-        },
-        generation_preferences: {
-          custom_instructions: [],
-          top_k_symantic_similarity_check: 0,
-          raise_merge_conflict: false
-        },
-        created_at: new Date().toISOString()
-      });
+      };
+      
+      setProject(defaultProject);
+      setEditedProject(JSON.parse(JSON.stringify(defaultProject))); // Deep clone
       
       // Add a welcome message
       setSuccess("Welcome to Recallr AI! Create your first project to get started.");
@@ -126,9 +115,9 @@ const ProjectSettings = () => {
           'X-Session-Id': session_id
         }
       });
-      
+      // console.log(response);
       setProject(response.data);
-      setEditedProject(JSON.parse(JSON.stringify(response.data))); // Deep clone
+      setEditedProject(JSON.parse(JSON.stringify(response.data))); 
     } catch (err) {
       
       if (err.response?.status === 404) {
@@ -337,37 +326,61 @@ const ProjectSettings = () => {
         generation_preferences: editedProject.generation_preferences
       };
       
+      // Log payload for debugging
+      // console.log('Sending project payload:', JSON.stringify(updatePayload, null, 2));
+      
       let response;
       
       // If this is a default/new project, create a new one instead of updating
       if (project.id === "00000000-0000-0000-0000-000000000000") {
         // Creating a new project
-        response = await appApi.post('projects', updatePayload, {
-          headers: {
-            'X-User-Id': user_id,
-            'X-Session-Id': session_id
+        try {
+          response = await appApi.post('projects', updatePayload, {
+            headers: {
+              'X-User-Id': user_id,
+              'X-Session-Id': session_id,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          // The response contains project_id, not the full project data
+          const { project_id } = response.data;
+          
+          if (!project_id) {
+            throw new Error('Project ID not received from server');
           }
-        });
-        
-        // The response contains project_id, not the full project data
-        const { project_id } = response.data;
-        
-        if (!project_id) {
-          throw new Error('Project ID not received from server');
+          
+          // Now fetch the full project details
+          response = await appApi.get(`projects/${project_id}`, {
+            headers: {
+              'X-User-Id': user_id,
+              'X-Session-Id': session_id
+            }
+          });
+          
+          // Navigate to the newly created project
+          navigate(`/dashboard/settings?project=${project_id}`, { replace: true });
+          
+          setSuccess('Project created successfully!');
+        } catch (err) {
+          console.error('Project creation error:', err);
+          
+          // Handle validation errors more specifically
+          if (err.response?.status === 422) {
+            const validationErrors = err.response.data.detail;
+            if (Array.isArray(validationErrors)) {
+              const errorMessages = validationErrors.map(error => `${error.loc.join('.')} - ${error.msg}`).join('\n');
+              setError(`Validation error: ${errorMessages}`);
+            } else {
+              setError(`Validation error: ${err.response.data.detail || 'Unknown validation error'}`);
+            }
+          } else {
+            setError(err.response?.data?.detail || err.message || 'Failed to create project');
+          }
+          
+          setActionLoading(false);
+          return; // Exit early on error
         }
-        
-        // Now fetch the full project details
-        response = await appApi.get(`projects/${project_id}`, {
-          headers: {
-            'X-User-Id': user_id,
-            'X-Session-Id': session_id
-          }
-        });
-        
-        // Navigate to the newly created project
-        navigate(`/dashboard/settings?project=${project_id}`, { replace: true });
-        
-        setSuccess('Project created successfully!');
       } else {
         // Normal update for existing project
         response = await appApi.put(`projects/${project.id}`, updatePayload, {
@@ -391,6 +404,7 @@ const ProjectSettings = () => {
         setSuccess(null);
       }, 5000);
     } catch (err) {
+      console.error('Project update error:', err);
       
       if (err.response?.status === 404) {
         setError('Project not found. It may have been deleted.');
@@ -398,7 +412,10 @@ const ProjectSettings = () => {
         setError('Authentication required. Please log in again.');
       } else if (err.response?.data?.detail) {
         if (Array.isArray(err.response.data.detail)) {
-          setError(err.response.data.detail[0]?.msg || 'Failed to update project');
+          const errorMessages = err.response.data.detail.map(error => 
+            `${error.loc ? error.loc.join('.') : ''} - ${error.msg}`
+          ).join('\n');
+          setError(`Validation error: ${errorMessages}`);
         } else {
           setError(err.response.data.detail || 'Failed to update project');
         }

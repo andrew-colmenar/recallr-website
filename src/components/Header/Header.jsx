@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ChevronDown, LogOut } from "lucide-react";
-import ProjectModal from "../Projects/ProjectModal";
+import ProjectModal from "../Dashboard/Projects/ProjectModal";
 import styles from './Header.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { appApi } from "../../api/axios";
@@ -127,9 +127,6 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.headerLeft}>
         <div className={styles.LogoContainer}>
-          <div className={styles.Logo}>
-            <span className="text-black text-xs"></span>
-          </div>
           <span className={styles.Title}>Recallr AI</span>
         </div>
         

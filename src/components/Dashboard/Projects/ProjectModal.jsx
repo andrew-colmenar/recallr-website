@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Plus, AlertCircle, Calendar } from 'lucide-react';
-import { appApi } from '../../api/axios';
+import { appApi } from '../../../api/axios';
 import Cookies from 'js-cookie';
 import styles from './ProjectModal.module.css';
 

@@ -293,9 +293,9 @@ const Billing = () => {
                         <span>$</span>
                         <input 
                           type="number" 
-                          min="1" 
+                          min="5" 
                           value={topUpAmount}
-                          onChange={(e) => setTopUpAmount(Math.max(1, parseInt(e.target.value) || 0))}
+                          onChange={(e) => setTopUpAmount(Math.max(5, parseInt(e.target.value) || 0))}
                           className={styles['amount-input']}
                         />
                       </div>

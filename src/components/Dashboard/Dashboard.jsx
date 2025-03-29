@@ -4,7 +4,7 @@ import { appApi } from "../../api/axios";
 import Cookies from 'js-cookie';
 import Sidebar from "./Sidebar/Sidebar";
 import ComingSoon from "../ComingSoon/ComingSoon";
-import Users from "../Users/Users";
+import Users from "./Users/Users";
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
 import ProjectSettings from "./Settings/ProjectSettings";

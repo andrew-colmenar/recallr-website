@@ -25,8 +25,8 @@ const getCookieSettings = () => {
 const setSessionCookies = (session) => {
   const cookieSettings = getCookieSettings();
   
-  console.log('Setting cookies with settings:', cookieSettings);
-  console.log('Setting user_id cookie:', session.user_id);
+  // console.log('Setting cookies with settings:', cookieSettings);
+  // console.log('Setting user_id cookie:', session.user_id);
   
   Cookies.set('user_id', session.user_id, { 
     expires: cookieSettings.expirationDays,
@@ -44,7 +44,7 @@ const setSessionCookies = (session) => {
 };
 
 const clearSessionCookies = () => {
-  console.log('Clearing session cookies');
+  // console.log('Clearing session cookies');
   const cookieSettings = getCookieSettings();
   
   Cookies.remove('user_id', {
@@ -71,13 +71,13 @@ const getSessionFromCookies = () => {
 const authService = {
   // Request signup with email (first step)
   requestSignup: async (email) => {
-    console.log('email', email);
-    console.log('device_info', getDeviceInfo());
+    // console.log('email', email);
+    // console.log('device_info', getDeviceInfo());
     const response = await authApi.post('signup/request', {
       email,
       device_info: getDeviceInfo(),
     });
-    console.log(response);
+    // console.log(response);
     return response.data;
   },
 
@@ -169,7 +169,7 @@ const authService = {
     
     try {
       // Debug log to see what URL is being called
-      console.log('Fetching current session from:', '/auth/sessions/current');
+      // console.log('Fetching current session from:', '/auth/sessions/current');
       
       const response = await authApi.post('sessions/current', {
         user_id,
@@ -182,7 +182,7 @@ const authService = {
       
       // Only clear cookies for authentication errors (401/403)
       if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        console.log('Session invalid, clearing cookies');
+        // console.log('Session invalid, clearing cookies');
         clearSessionCookies();
       } else {
         // Log other errors but don't clear session
@@ -225,7 +225,7 @@ const authService = {
     const { user_id, session_id } = getSessionFromCookies();
     
     if (!user_id || !session_id) {
-      console.log("No session cookies found");
+      // console.log("No session cookies found");
       return false;
     }
     
@@ -237,7 +237,7 @@ const authService = {
       
       // If server returns a refreshed session, update cookies
       if (response.data?.session?.session_id) {
-        console.log('Session refreshed by server');
+        // console.log('Session refreshed by server');
         setSessionCookies(response.data.session);
       }
       
@@ -247,7 +247,7 @@ const authService = {
       
       // Only clear cookies for authentication errors
       if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        console.log('Session invalid (401/403), clearing cookies');
+        // console.log('Session invalid (401/403), clearing cookies');
         clearSessionCookies();
       }
       
