@@ -5,7 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
-import ComingSoon from "./components/ComingSoon/ComingSoon";
+// import ComingSoon from "./components/ComingSoon/ComingSoon";
 import Billing from "./components/Billing/Main/Billing";
 import "./App.css";
 import authService from "./services/authService";
