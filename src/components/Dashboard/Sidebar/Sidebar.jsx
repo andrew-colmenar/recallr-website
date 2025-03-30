@@ -49,7 +49,7 @@ const Sidebar = ({ projectId }) => {
       <div className={styles.sidebarNav}>
         <nav>
           <ul>
-            <li>
+            {/* <li>
               <Link
                 to={projectUrl("usage")}
                 className={`${styles.navItem} ${isActive("/usage")}`}
@@ -59,7 +59,7 @@ const Sidebar = ({ projectId }) => {
                 </div>
                 <span>Usage</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 to={projectUrl("users")}

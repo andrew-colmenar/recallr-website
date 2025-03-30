@@ -86,30 +86,30 @@ function AppContent() {
         />
 
         {/* These routes need to preserve the project ID parameter */}
-        <Route           
+        {/* <Route           
           path="/usage"           
           element={
             <ProtectedRoute isValid={sessionValid}>
               <ComingSoon />
             </ProtectedRoute>
           } 
-        />
-        <Route 
+        /> */}
+        {/* <Route 
           path="/playground" 
           element={
             <ProtectedRoute isValid={sessionValid}>
               <ComingSoon />
             </ProtectedRoute>
           } 
-        />
-        <Route 
+        /> */}
+        {/* <Route 
           path="/docs" 
           element={
             <ProtectedRoute isValid={sessionValid}>
               <ComingSoon />
             </ProtectedRoute>
           } 
-        />
+        /> */}
         <Route 
           path="/getstarted" 
           element={
