@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import './GetStarted.css';
-import CodeBlock from '../ui/code-block';
+import styles from './GetStarted.module.css';
+import { CodeBlock } from '../ui/CodeBlock';
 
 const GetStarted = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedTab, setSelectedTab] = useState('quickstart');
   const [apiKey, setApiKey] = useState('rai_yourapikey123456789');
   const [projectId, setProjectId] = useState('project-abc123def456');
-
+  
   const steps = [
     {
       title: "Install the SDK",
       content: (
         <>
           <p>First, install the RecallrAI SDK using your preferred package manager:</p>
-          <CodeBlock language="bash">{`poetry add recallrai
+          <CodeBlock 
+            language="bash"
+            code={`poetry add recallrai
 # or
-pip install recallrai`}</CodeBlock>
-          <div className="step-action">
+pip install recallrai`}
+          />
+          <div className={styles["step-action"]}>
             <button 
-              className="step-button"
+              className={`${styles.button} ${styles.primaryButton}`}
               onClick={() => setCurrentStep(1)}
             >
               Continue
@@ -33,14 +36,17 @@ pip install recallrai`}</CodeBlock>
       content: (
         <>
           <p>Create a client instance with your API key and project ID:</p>
-          <CodeBlock language="python">{`from recallrai import RecallrAI
+          <CodeBlock 
+            language="python"
+            code={`from recallrai import RecallrAI
 
 api_key = "${apiKey}"
 project_id = "${projectId}"
-client = RecallrAI(api_key=api_key, project_id=project_id)`}</CodeBlock>
-          <div className="step-action">
+client = RecallrAI(api_key=api_key, project_id=project_id)`}
+          />
+          <div className={styles["step-action"]}>
             <button 
-              className="step-button"
+              className={`${styles.button} ${styles.primaryButton}`}
               onClick={() => setCurrentStep(2)}
             >
               Continue
@@ -54,15 +60,18 @@ client = RecallrAI(api_key=api_key, project_id=project_id)`}</CodeBlock>
       content: (
         <>
           <p>Create a user to associate with your memory sessions:</p>
-          <CodeBlock language="python">{`from recallrai.user import User
+          <CodeBlock 
+            language="python"
+            code={`from recallrai.user import User
 
 user_id = "user123"
 metadata = {"key": "value"}
 user = client.create_user(user_id=user_id, metadata=metadata)
-print("Created user:", user.user_id)`}</CodeBlock>
-          <div className="step-action">
+print("Created user:", user.user_id)`}
+          />
+          <div className={styles["step-action"]}>
             <button 
-              className="step-button"
+              className={`${styles.button} ${styles.primaryButton}`}
               onClick={() => setCurrentStep(3)}
             >
               Continue
@@ -76,14 +85,17 @@ print("Created user:", user.user_id)`}</CodeBlock>
       content: (
         <>
           <p>Create a memory session for your user:</p>
-          <CodeBlock language="python">{`from recallrai.session import Session
+          <CodeBlock 
+            language="python"
+            code={`from recallrai.session import Session
 
 # Auto-process after 5 minutes of inactivity
 session = client.create_session(user_id="user123", auto_process_after_minutes=5)
-print("Created session id:", session.session_id)`}</CodeBlock>
-          <div className="step-action">
+print("Created session id:", session.session_id)`}
+          />
+          <div className={styles["step-action"]}>
             <button 
-              className="step-button"
+              className={`${styles.button} ${styles.primaryButton}`}
               onClick={() => setCurrentStep(4)}
             >
               Continue
@@ -97,14 +109,17 @@ print("Created session id:", session.session_id)`}</CodeBlock>
       content: (
         <>
           <p>Add user and assistant messages to the session:</p>
-          <CodeBlock language="python">{`# Add user message
+          <CodeBlock 
+            language="python"
+            code={`# Add user message
 session.add_user_message("Hello! How are you?")
 
 # Add assistant message
-session.add_assistant_message("I'm an assistant. How can I help you?")`}</CodeBlock>
-          <div className="step-action">
+session.add_assistant_message("I'm an assistant. How can I help you?")`}
+          />
+          <div className={styles["step-action"]}>
             <button 
-              className="step-button"
+              className={`${styles.button} ${styles.primaryButton}`}
               onClick={() => setCurrentStep(5)}
             >
               Continue
@@ -118,13 +133,16 @@ session.add_assistant_message("I'm an assistant. How can I help you?")`}</CodeBl
       content: (
         <>
           <p>Get the context from memory to enhance your LLM's responses:</p>
-          <CodeBlock language="python">{`# Get context with memories
+          <CodeBlock 
+            language="python"
+            code={`# Get context with memories
 context = session.get_context()
 print("Memory used:", context.memory_used)
-print("Context:", context.context)`}</CodeBlock>
-          <div className="step-action">
+print("Context:", context.context)`}
+          />
+          <div className={styles["step-action"]}>
             <button 
-              className="step-button"
+              className={`${styles.button} ${styles.primaryButton}`}
               onClick={() => setCurrentStep(6)}
             >
               Continue
@@ -138,11 +156,14 @@ print("Context:", context.context)`}</CodeBlock>
       content: (
         <>
           <p>Process the session to update the memory system:</p>
-          <CodeBlock language="python">{`# Process session to update user memories
-session.process()`}</CodeBlock>
-          <div className="step-action">
+          <CodeBlock 
+            language="python"
+            code={`# Process session to update user memories
+session.process()`}
+          />
+          <div className={styles["step-action"]}>
             <button 
-              className="complete-button"
+              className={`${styles.button} ${styles.primaryButton}`}
               onClick={() => setCurrentStep(0)}
             >
               Start Over
@@ -155,25 +176,31 @@ session.process()`}</CodeBlock>
 
   const tabContent = {
     quickstart: (
-      <div className="tab-pane">
+      <div className={styles["tab-pane"]}>
         <h3>Quick Start Guide</h3>
         <p>Get started with RecallrAI's contextual memory system in minutes. Follow these steps to integrate memory capabilities into your AI assistant.</p>
         
-        <div className="steps-container">
+        <div className={styles["steps-container"]}>
           {steps.map((step, index) => (
             <div 
               key={index} 
-              className={`step-card ${currentStep === index ? 'active' : currentStep > index ? 'completed' : 'pending'}`}
+              className={`${styles["step-card"]} ${
+                currentStep === index 
+                  ? styles.active 
+                  : currentStep > index 
+                    ? styles.completed 
+                    : styles.pending
+              }`}
             >
-              <div className="step-header">
-                <div className="step-number">{index + 1}</div>
-                <h4 className="step-title">{step.title}</h4>
+              <div className={styles["step-header"]}>
+                <div className={styles["step-number"]}>{index + 1}</div>
+                <h4 className={styles["step-title"]}>{step.title}</h4>
                 {currentStep > index && (
-                  <div className="step-status">Completed</div>
+                  <div className={styles["step-status"]}>Completed</div>
                 )}
               </div>
               {currentStep === index && (
-                <div className="step-body">
+                <div className={styles["step-body"]}>
                   {step.content}
                 </div>
               )}
@@ -183,10 +210,12 @@ session.process()`}</CodeBlock>
       </div>
     ),
     full_example: (
-      <div className="tab-pane">
+      <div className={styles["tab-pane"]}>
         <h3>Complete Integration Example</h3>
         <p>This example shows how to integrate RecallrAI with an LLM to create an AI assistant with memory:</p>
-        <CodeBlock language="python">{`import openai
+        <CodeBlock 
+          language="python"
+          code={`import openai
 from recallrai import RecallrAI
 
 # Initialize RecallrAI and OpenAI clients
@@ -262,14 +291,17 @@ def chat_with_memory(user_id, session_id=None):
 if __name__ == "__main__":
     user_id = "user123"
     session_id = chat_with_memory(user_id)
-    print(f"To continue this conversation later, use session ID: {session_id}")`}</CodeBlock>
+    print(f"To continue this conversation later, use session ID: {session_id}")`}
+        />
       </div>
     ),
     user_management: (
-      <div className="tab-pane">
+      <div className={styles["tab-pane"]}>
         <h3>User Management</h3>
         <p>Create, retrieve, update, and delete users in your RecallrAI project:</p>
-        <CodeBlock language="python">{`# Create a user
+        <CodeBlock 
+          language="python"
+          code={`# Create a user
 user = client.create_user(user_id="user123", metadata={"key": "value"})
 
 # Get a user
@@ -290,14 +322,17 @@ updated_user = client.update_user(
 
 # Delete a user
 client.delete_user("user1234")
-print("User deleted.")`}</CodeBlock>
+print("User deleted.")`}
+        />
       </div>
     ),
     session_management: (
-      <div className="tab-pane">
+      <div className={styles["tab-pane"]}>
         <h3>Session Management</h3>
         <p>Create and manage memory sessions:</p>
-        <CodeBlock language="python">{`# Create a session
+        <CodeBlock 
+          language="python"
+          code={`# Create a session
 session = client.create_session(user_id="user123", auto_process_after_minutes=5)
 
 # Get an existing session
@@ -315,54 +350,55 @@ print("Session status:", status)
 # Get session messages
 messages = session.get_messages()
 for message in messages:
-    print(f"{message.role}: {message.content} at {message.timestamp}")`}</CodeBlock>
+    print(f"{message.role}: {message.content} at {message.timestamp}")`}
+        />
       </div>
     )
   };
 
   return (
-    <div className="getting-started">
-      <div className="content">
-        <div className="intro">
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <div className={styles.intro}>
           <h2>Getting Started with RecallrAI</h2>
           <p>RecallrAI is a revolutionary contextual memory system that enables AI assistants to form meaningful connections between conversations, just like human memory.</p>
         </div>
 
-        <div className="tabs">
+        <div className={styles.tabs}>
           <button 
-            className={`tab ${selectedTab === 'quickstart' ? 'active' : ''}`}
+            className={`${styles.tab} ${selectedTab === 'quickstart' ? styles.active : ''}`}
             onClick={() => setSelectedTab('quickstart')}
           >
             Quick Start
           </button>
           <button 
-            className={`tab ${selectedTab === 'full_example' ? 'active' : ''}`}
+            className={`${styles.tab} ${selectedTab === 'full_example' ? styles.active : ''}`}
             onClick={() => setSelectedTab('full_example')}
           >
             Full Example
           </button>
           <button 
-            className={`tab ${selectedTab === 'user_management' ? 'active' : ''}`}
+            className={`${styles.tab} ${selectedTab === 'user_management' ? styles.active : ''}`}
             onClick={() => setSelectedTab('user_management')}
           >
             User Management
           </button>
           <button 
-            className={`tab ${selectedTab === 'session_management' ? 'active' : ''}`}
+            className={`${styles.tab} ${selectedTab === 'session_management' ? styles.active : ''}`}
             onClick={() => setSelectedTab('session_management')}
           >
             Session Management
           </button>
         </div>
 
-        <div className="tab-content">
+        <div className={styles["tab-content"]}>
           {tabContent[selectedTab]}
         </div>
 
-        <div className="cta-section">
+        <div className={styles["cta-section"]}>
           <h3>Ready to Enhance Your AI with Memory?</h3>
           <p>Give your AI assistants the ability to remember previous conversations and form meaningful connections.</p>
-          <button className="cta-button">View API Documentation</button>
+          <button className={`${styles.button} ${styles.primaryButton}`}>View API Documentation</button>
         </div>
       </div>
     </div>
