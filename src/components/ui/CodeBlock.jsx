@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import './CodeBlock.css';
+import styles from './CodeBlock.module.css';
 
 export const CodeBlock = ({ language, code, filename, highlightLines = [], tabs = null }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -15,21 +15,22 @@ export const CodeBlock = ({ language, code, filename, highlightLines = [], tabs 
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Style for highlighted lines
+  // Updated lineProps function
   const lineProps = (lineNumber) => {
     const style = { display: 'block' };
     
     if (tabs) {
       const currentTab = tabs[activeTab];
       if (currentTab.highlightLines && currentTab.highlightLines.includes(lineNumber)) {
+        // Instead of using className directly, we need to apply the styles manually
         style.backgroundColor = 'rgba(123, 90, 255, 0.1)';
         style.borderLeft = '3px solid #7B5AFF';
-        style.paddingLeft = '12px'; // Add some padding for highlighted lines
+        style.paddingLeft = '12px';
       }
     } else if (highlightLines && highlightLines.includes(lineNumber)) {
       style.backgroundColor = 'rgba(123, 90, 255, 0.1)';
       style.borderLeft = '3px solid #7B5AFF';
-      style.paddingLeft = '12px'; // Add some padding for highlighted lines
+      style.paddingLeft = '12px';
     }
     
     return { style };
@@ -38,12 +39,12 @@ export const CodeBlock = ({ language, code, filename, highlightLines = [], tabs 
   // If tabs are provided, render tabbed interface
   if (tabs) {
     return (
-      <div className="premium-code-block">
-        <div className="code-tabs">
+      <div className={styles["premium-code-block"]}>
+        <div className={styles["code-tabs"]}>
           {tabs.map((tab, index) => (
             <button 
               key={index}
-              className={`code-tab ${activeTab === index ? 'active' : ''}`}
+              className={`${styles["code-tab"]} ${activeTab === index ? styles.active : ''}`}
               onClick={() => setActiveTab(index)}
             >
               {tab.name}
@@ -51,14 +52,14 @@ export const CodeBlock = ({ language, code, filename, highlightLines = [], tabs 
           ))}
         </div>
         
-        <div className="code-block-header">
+        <div className={styles["code-block-header"]}>
           {tabs[activeTab].filename && (
-            <div className="filename">
+            <div className={styles.filename}>
               <span>{tabs[activeTab].filename}</span>
             </div>
           )}
           <button 
-            className="copy-button" 
+            className={`${styles["copy-button"]} ${copied ? styles.copied : ''}`}
             onClick={copyToClipboard}
             aria-label="Copy code to clipboard"
           >
@@ -66,7 +67,7 @@ export const CodeBlock = ({ language, code, filename, highlightLines = [], tabs 
           </button>
         </div>
         
-        <div ref={codeRef} className="code-container">
+        <div ref={codeRef} className={styles["code-container"]}>
           <SyntaxHighlighter
             language={tabs[activeTab].language}
             style={vscDarkPlus}
@@ -83,15 +84,15 @@ export const CodeBlock = ({ language, code, filename, highlightLines = [], tabs 
 
   // Regular single code block
   return (
-    <div className="premium-code-block">
-      <div className="code-block-header">
+    <div className={styles["premium-code-block"]}>
+      <div className={styles["code-block-header"]}>
         {filename && (
-          <div className="filename">
+          <div className={styles.filename}>
             <span>{filename}</span>
           </div>
         )}
         <button 
-          className="copy-button" 
+          className={`${styles["copy-button"]} ${copied ? styles.copied : ''}`}
           onClick={copyToClipboard}
           aria-label="Copy code to clipboard"
         >
@@ -99,7 +100,7 @@ export const CodeBlock = ({ language, code, filename, highlightLines = [], tabs 
         </button>
       </div>
       
-      <div ref={codeRef} className="code-container">
+      <div ref={codeRef} className={styles["code-container"]}>
         <SyntaxHighlighter
           language={language}
           style={vscDarkPlus}

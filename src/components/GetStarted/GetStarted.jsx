@@ -213,6 +213,8 @@ session.process()`}
       <div className={styles["tab-pane"]}>
         <h3>Complete Integration Example</h3>
         <p>This example shows how to integrate RecallrAI with an LLM to create an AI assistant with memory:</p>
+        
+        <h4>Setting Up Clients</h4>
         <CodeBlock 
           language="python"
           code={`import openai
@@ -220,9 +222,13 @@ from recallrai import RecallrAI
 
 # Initialize RecallrAI and OpenAI clients
 recallrai_client = RecallrAI(api_key="rai_yourapikey", project_id="project-uuid")
-openai_client = openai.OpenAI(api_key="your-openai-api-key")
-
-def chat_with_memory(user_id, session_id=None):
+openai_client = openai.OpenAI(api_key="your-openai-api-key")`}
+        />
+        
+        <h4>Creating the Memory-Enhanced Chat Function</h4>
+        <CodeBlock 
+          language="python"
+          code={`def chat_with_memory(user_id, session_id=None):
     # Get or create user
     try:
         user = recallrai_client.get_user(user_id)
@@ -236,8 +242,13 @@ def chat_with_memory(user_id, session_id=None):
         session = recallrai_client.create_session(user_id=user_id, auto_process_after_minutes=30)
         print(f"Created new session: {session.session_id}")
     
-    print("Chat session started. Type 'exit' to end the conversation.")
-    
+    print("Chat session started. Type 'exit' to end the conversation.")`}
+        />
+        
+        <h4>Handling User Input</h4>
+        <CodeBlock 
+          language="python"
+          code={`    # Inside the chat_with_memory function
     while True:
         # Get user input
         user_message = input("You: ")
@@ -248,9 +259,13 @@ def chat_with_memory(user_id, session_id=None):
         session.add_user_message(user_message)
         
         # Get context from RecallrAI after adding the user message
-        context = session.get_context()
+        context = session.get_context()`}
+        />
         
-        # Create a system prompt that includes the context
+        <h4>Constructing the System Prompt with Memories</h4>
+        <CodeBlock 
+          language="python"
+          code={`        # Create a system prompt that includes the context
         system_prompt = f"""You are a helpful assistant with memory of previous conversations.
         
         MEMORIES ABOUT THE USER:
@@ -261,9 +276,13 @@ def chat_with_memory(user_id, session_id=None):
         
         # Get previous messages
         previous_messages = session.get_messages()
-        previous_messages = [{"role": message.role, "content": message.content} for message in previous_messages]
-
-        # Call the LLM with the system prompt and user message
+        previous_messages = [{"role": message.role, "content": message.content} for message in previous_messages]`}
+        />
+        
+        <h4>Generating AI Response with Memory Context</h4>
+        <CodeBlock 
+          language="python"
+          code={`        # Call the LLM with the system prompt and user message
         response = openai_client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -279,9 +298,13 @@ def chat_with_memory(user_id, session_id=None):
         print(f"Assistant: {assistant_message}")
         
         # Add the assistant's response to RecallrAI
-        session.add_assistant_message(assistant_message)
-    
-    # Process the session at the end of the conversation
+        session.add_assistant_message(assistant_message)`}
+        />
+        
+        <h4>Finishing the Conversation</h4>
+        <CodeBlock 
+          language="python"
+          code={`    # Process the session at the end of the conversation
     print("Processing session to update memory...")
     session.process()
     print(f"Session ended. Session ID: {session.session_id}")
@@ -299,28 +322,46 @@ if __name__ == "__main__":
       <div className={styles["tab-pane"]}>
         <h3>User Management</h3>
         <p>Create, retrieve, update, and delete users in your RecallrAI project:</p>
+        
+        <h4>Creating a User</h4>
         <CodeBlock 
           language="python"
           code={`# Create a user
-user = client.create_user(user_id="user123", metadata={"key": "value"})
-
-# Get a user
+user = client.create_user(user_id="user123", metadata={"key": "value"})`}
+        />
+        
+        <h4>Retrieving a User</h4>
+        <CodeBlock 
+          language="python"
+          code={`# Get a user
 user = client.get_user("user123")
-print("User metadata:", user.metadata)
-
-# List users
+print("User metadata:", user.metadata)`}
+        />
+        
+        <h4>Listing Users</h4>
+        <CodeBlock 
+          language="python"
+          code={`# List users
 user_list = client.list_users(offset=0, limit=10)
 for user in user_list.users:
-    print(user.user_id, user.metadata)
-
-# Update a user
+    print(user.user_id, user.metadata)`}
+        />
+        
+        <h4>Updating a User</h4>
+        <CodeBlock 
+          language="python"
+          code={`# Update a user
 updated_user = client.update_user(
     user_id="user123", 
     new_metadata={"role": "user"}, 
     new_user_id="user1234"
-)
-
-# Delete a user
+)`}
+        />
+        
+        <h4>Deleting a User</h4>
+        <CodeBlock 
+          language="python"
+          code={`# Delete a user
 client.delete_user("user1234")
 print("User deleted.")`}
         />
@@ -330,24 +371,42 @@ print("User deleted.")`}
       <div className={styles["tab-pane"]}>
         <h3>Session Management</h3>
         <p>Create and manage memory sessions:</p>
+        
+        <h4>Creating a Session</h4>
         <CodeBlock 
           language="python"
           code={`# Create a session
-session = client.create_session(user_id="user123", auto_process_after_minutes=5)
-
-# Get an existing session
-session = client.get_session(user_id="user123", session_id="session-uuid")
-
-# List sessions
+session = client.create_session(user_id="user123", auto_process_after_minutes=5)`}
+        />
+        
+        <h4>Retrieving a Session</h4>
+        <CodeBlock 
+          language="python"
+          code={`# Get an existing session
+session = client.get_session(user_id="user123", session_id="session-uuid")`}
+        />
+        
+        <h4>Listing Sessions</h4>
+        <CodeBlock 
+          language="python"
+          code={`# List sessions
 session_list = client.list_sessions(user_id="user123", offset=0, limit=10)
 for session in session_list.sessions:
-    print(session.session_id, session.status)
-
-# Get session status
+    print(session.session_id, session.status)`}
+        />
+        
+        <h4>Checking Session Status</h4>
+        <CodeBlock 
+          language="python"
+          code={`# Get session status
 status = session.get_status()
-print("Session status:", status)
-
-# Get session messages
+print("Session status:", status)`}
+        />
+        
+        <h4>Retrieving Session Messages</h4>
+        <CodeBlock 
+          language="python"
+          code={`# Get session messages
 messages = session.get_messages()
 for message in messages:
     print(f"{message.role}: {message.content} at {message.timestamp}")`}

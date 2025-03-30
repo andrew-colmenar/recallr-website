@@ -1,0 +1,155 @@
+/* BASE STYLES */
+.premium-code-block {
+  margin: 15px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #1E1E2E;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  border: 1px solid rgba(123, 90, 255, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.premium-code-block:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* HEADER STYLES */
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #171723;
+  border-bottom: 1px solid rgba(123, 90, 255, 0.15);
+}
+
+.filename {
+  font-size: 0.85rem;
+  color: #d0d0d0;
+  display: flex;
+  align-items: center;
+  font-family: system-ui, sans-serif;
+  font-weight: 500;
+}
+
+/* TABS STYLING */
+.code-tabs {
+  display: flex;
+  background-color: #171723;
+  border-bottom: 1px solid rgba(123, 90, 255, 0.15);
+  overflow-x: auto;
+}
+
+.code-tab {
+  background: transparent;
+  border: none;
+  color: #B0B0B0;
+  padding: 12px 18px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: system-ui, sans-serif;
+  font-weight: 500;
+  position: relative;
+}
+
+.code-tab.active {
+  background-color: rgba(123, 90, 255, 0.15);
+  color: #a48fff;
+}
+
+.code-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #7B5AFF, #C77DFF);
+}
+
+.code-tab:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+}
+
+/* COPY BUTTON STYLING */
+.copy-button {
+  background-color: rgba(123, 90, 255, 0.15);
+  color: #a48fff;
+  border: 1px solid rgba(123, 90, 255, 0.3);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: system-ui, sans-serif;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.copy-button:hover {
+  background-color: rgba(123, 90, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.copy-button:active {
+  transform: translateY(0);
+}
+
+.copy-button.copied {
+  background-color: rgba(166, 227, 161, 0.15);
+  color: #a6e3a1;
+  border-color: rgba(166, 227, 161, 0.3);
+}
+
+/* CODE CONTENT STYLES */
+.code-container {
+  overflow: auto;
+  max-height: 500px;
+}
+
+/* Override the syntax highlighter styles */
+.premium-code-block pre {
+  margin: 0;
+  padding: 18px;
+  border-radius: 0;
+  font-family: monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  background-color: #1E1E2E;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .code-tab {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+  
+  .copy-button {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .premium-code-block pre {
+    font-size: 0.9rem;
+    padding: 16px;
+  }
+}
+
+/* For mobile */
+@media (max-width: 480px) {
+  .code-tabs {
+    overflow-x: auto;
+  }
+  
+  .premium-code-block pre {
+    font-size: 0.85rem;
+    padding: 14px;
+    line-height: 1.5;
+  }
+}
