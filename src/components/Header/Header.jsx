@@ -8,7 +8,7 @@ import { appApi } from "../../api/axios";
 import Cookies from 'js-cookie';
 
 const DEFAULT_PROJECT = {
-  id: "00000000-0000-0000-0000-000000000000", // Valid UUID format
+  id: "00000000-0000-0000-0000-000000000000",
   name: "Default Project",
   description: "Default project for new users",
   created_at: new Date().toISOString(),
@@ -71,7 +71,7 @@ const Header = () => {
         
         setCurrentProject(response.data);
       } catch (err) {
-        setError(err.message || 'Failed to load project details');
+        setError('Failed to load project details');
       } finally {
         setLoading(false);
       }
@@ -100,9 +100,9 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      // Redirect is likely handled in the AuthContext or by a route guard
+      // Redirect is handled in the AuthContext
     } catch (error) {
-      // Remove this console log:
+      // Silently fail in production
     }
   };
 
@@ -114,10 +114,8 @@ const Header = () => {
       }
     }
 
-    // Add event listener when component mounts
     document.addEventListener('mousedown', handleClickOutside);
     
-    // Clean up the event listener when component unmounts
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -161,7 +159,6 @@ const Header = () => {
           <span className={styles.navLinkText}>Dashboard</span>
         </Link>
         
-        {/* External link to playground */}
         <a
           href="https://recallrai.com/playground"
           target="_blank"
@@ -178,7 +175,6 @@ const Header = () => {
           <span className={styles.navLinkText}>Docs</span>
         </Link>
         
-        {/* Add new Billing link here */}
         <Link
           to="/billing"
           className={`${styles.navLink} ${location.pathname === "/billing" ? styles.active : ""}`}

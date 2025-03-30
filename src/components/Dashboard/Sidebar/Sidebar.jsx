@@ -39,7 +39,6 @@ const Sidebar = ({ projectId }) => {
     if (path.includes("/users")) return "Users";
     if (path.includes("/apikeys")) return "API Keys";
     if (path.includes("/settings")) return "Settings";
-    if (path.includes("/billing")) return "Billing";
     if (path.includes("/getstarted")) return "Get Started";
     if (path.includes("/status")) return "Status";
     return "Dashboard";

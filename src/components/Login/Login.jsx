@@ -149,6 +149,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className={styles.input}
+                autoComplete="email"
               />
               <button 
                 type="submit" 
@@ -170,6 +171,7 @@ function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className={styles.input}
+                  autoComplete="current-password"
                 />
                 <button 
                   type="button" 
@@ -210,6 +212,7 @@ function Login() {
                 maxLength={6}
                 required
                 className={styles.input}
+                autoComplete="one-time-code"
               />
               <button 
                 type="submit" 
