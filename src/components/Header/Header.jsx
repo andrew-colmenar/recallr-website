@@ -159,21 +159,21 @@ const Header = () => {
           <span className={styles.navLinkText}>Dashboard</span>
         </Link>
         
-        <a
+        {/* <a
           href="https://recallrai.com/playground"
           target="_blank"
           rel="noopener noreferrer"
           className={styles.navLink}
         >
           <span className={styles.navLinkText}>Playground</span>
-        </a>
+        </a> */}
         
-        <Link
+        {/* <Link
           to="/docs"
           className={`${styles.navLink} ${location.pathname === "/docs" ? styles.active : ""}`}
         >
           <span className={styles.navLinkText}>Docs</span>
-        </Link>
+        </Link> */}
         
         <Link
           to="/billing"

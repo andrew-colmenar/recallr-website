@@ -112,15 +112,17 @@ const Sidebar = ({ projectId }) => {
               </Link>
             </li>
             <li>
-              <Link
-                to="/status"
-                className={`${styles.navItem} ${isActive("/status")}`}
+              <a
+                href="https://status.recallrai.com"
+                className={styles.navItem}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <div className={styles.iconContainer}>
                   <LifeBuoy size={18} />
                 </div>
                 <span>Status</span>
-              </Link>
+              </a>
             </li>
           </ul>
         </nav>

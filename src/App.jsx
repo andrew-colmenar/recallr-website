@@ -95,14 +95,6 @@ function AppContent() {
           } 
         />
         <Route 
-          path="/status" 
-          element={
-            <ProtectedRoute isValid={sessionValid}>
-              <ComingSoon />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
           path="/playground" 
           element={
             <ProtectedRoute isValid={sessionValid}>
