@@ -2,13 +2,19 @@ import axios from 'axios';
 
 // Create separate API instances for different endpoints
 const authApi = axios.create({
-  baseURL: '/auth',  // This will be proxied correctly
-  timeout: 15000
+  baseURL: '/auth',
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 const appApi = axios.create({
-  baseURL: '/app',  // This will be proxied correctly
-  timeout: 15000
+  baseURL: '/app',
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 // Default export for backward compatibility

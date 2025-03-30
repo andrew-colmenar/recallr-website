@@ -6,9 +6,13 @@ const COOKIE_EXPIRES = {
   PREFERENCES: 30, // Preferences expire in 30 days
 };
 
-// Set a cookie with proper expiration
+// Set a cookie with proper expiration and security settings
 export const setCookie = (name, value, expires = COOKIE_EXPIRES.SESSION) => {
-  Cookies.set(name, value, { expires, sameSite: 'strict' });
+  Cookies.set(name, value, { 
+    expires, 
+    sameSite: 'strict', 
+    secure: true 
+  });
 };
 
 // Get a cookie value
@@ -18,13 +22,16 @@ export const getCookie = (name) => {
 
 // Remove a cookie
 export const removeCookie = (name) => {
-  Cookies.remove(name);
+  Cookies.remove(name, { 
+    sameSite: 'strict', 
+    secure: true 
+  });
 };
 
 // Clear all auth-related cookies
 export const clearAuthCookies = () => {
-  Cookies.remove('user_id');
-  Cookies.remove('session_id');
+  removeCookie('user_id');
+  removeCookie('session_id');
 };
 
 // Set user preferences in cookies
