@@ -178,6 +178,14 @@ const Header = () => {
           <span className={styles.navLinkText}>Docs</span>
         </Link>
         
+        {/* Add new Billing link here */}
+        <Link
+          to="/billing"
+          className={`${styles.navLink} ${location.pathname === "/billing" ? styles.active : ""}`}
+        >
+          <span className={styles.navLinkText}>Billing</span>
+        </Link>
+        
         <div className={styles.userProfile} ref={profileRef}>
           <div 
             className={styles.avatar}

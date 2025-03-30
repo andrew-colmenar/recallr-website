@@ -103,17 +103,6 @@ const Sidebar = ({ projectId }) => {
           <ul>
             <li>
               <Link
-                to="/billing"
-                className={`${styles.navItem} ${isActive("/billing")}`}
-              >
-                <div className={styles.iconContainer}>
-                  <MessageSquare size={18} />
-                </div>
-                <span>Billing</span>
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/getstarted"
                 className={`${styles.navItem} ${isActive("/getstarted")}`}
               >
