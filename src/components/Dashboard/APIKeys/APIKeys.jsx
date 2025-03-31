@@ -233,7 +233,7 @@ const APIKeys = ({ project }) => {
             Project ID: 
             <span className={styles.mono}>{project?.id || 'Loading...'}</span>
             <button
-              className={`${styles.iconButton} ${styles.copyButton} ${copiedProjectId ? styles.copied : ''}`}
+              className={`${styles.projectIdCopyButton} ${copiedProjectId ? styles.copied : ''}`}
               onClick={() => copyToClipboard(project?.id, setCopiedProjectId)}
               disabled={!project?.id}
               title="Copy project ID"

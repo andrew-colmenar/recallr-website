@@ -1,0 +1,72 @@
+.app-container {
+  background: linear-gradient(135deg, #111827 0%, #1F2937 50%, #111827 100%);
+}
+
+.app-main {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.loading-spinner {
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  border-radius: 50%;
+  border-top-color: #3B82F6; /* blue-500 */
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.app-loading {
+  background: linear-gradient(135deg, #111827 0%, #1F2937 50%, #111827 100%);
+  color: #D1D5DB; /* gray-300 */
+}
+
+.app-loading p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-purple gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* For smooth page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}

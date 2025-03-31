@@ -115,7 +115,6 @@ const Sidebar = ({ projectId }) => {
               <a
                 href="https://status.recallrai.com"
                 className={styles.navItem}
-                target="_blank"
                 rel="noopener noreferrer"
               >
                 <div className={styles.iconContainer}>

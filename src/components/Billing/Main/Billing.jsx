@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { appApi } from '../../../api/axios';
 import Cookies from 'js-cookie';
-import { AlertCircle, ArrowRight, CreditCard, FileText, BarChart2, Star } from 'lucide-react';
+import { AlertCircle, ArrowRight, CreditCard, FileText, BarChart2, Star, ChevronRight, ExternalLink, Check, RefreshCw } from 'lucide-react';
 import styles from './Billing.module.css';
 
 const Billing = () => {
@@ -251,7 +251,10 @@ const Billing = () => {
             <div className={styles['balance-section']}>
               <h3 className={styles['section-title']}>Account Balance</h3>
               {balanceLoading ? (
-                <div className={styles['loading']}>Loading balance...</div>
+                <div className={styles['loading']}>
+                  <RefreshCw size={16} className="animate-spin mr-2" />
+                  Loading balance...
+                </div>
               ) : balanceError ? (
                 <div className={styles['error-message']}>
                   <AlertCircle size={16} />
@@ -268,7 +271,7 @@ const Billing = () => {
                       Last updated: {balance ? formatDate(balance.last_updated) : 'N/A'}
                     </p>
                   </div>
-                  
+              
                   <div className={styles['top-up-section']}>
                     <h4 className={styles['top-up-title']}>Add funds to your account</h4>
                     
@@ -298,6 +301,24 @@ const Billing = () => {
                           onChange={(e) => setTopUpAmount(Math.max(5, parseInt(e.target.value) || 0))}
                           className={styles['amount-input']}
                         />
+                        <div className={styles['amount-controls']}>
+                          <button 
+                            type="button"
+                            className={styles['amount-control-btn']} 
+                            onClick={() => setTopUpAmount(prev => Math.max(5, prev + 1))}
+                            aria-label="Increase amount"
+                          >
+                            ▲
+                          </button>
+                          <button 
+                            type="button"
+                            className={styles['amount-control-btn']} 
+                            onClick={() => setTopUpAmount(prev => Math.max(5, prev - 1))}
+                            aria-label="Decrease amount"
+                          >
+                            ▼
+                          </button>
+                        </div>
                       </div>
                     </div>
                     
@@ -306,7 +327,17 @@ const Billing = () => {
                       onClick={handleTopUp}
                       disabled={isSubmittingTopUp}
                     >
-                      {isSubmittingTopUp ? 'Processing...' : `Add ${formatCurrency(topUpAmount)}`}
+                      {isSubmittingTopUp ? (
+                        <>
+                          <RefreshCw size={16} className="animate-spin" /> 
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard size={16} />
+                          Add {formatCurrency(topUpAmount)}
+                        </>
+                      )}
                     </button>
                   </div>
                 </>
@@ -320,7 +351,10 @@ const Billing = () => {
             <h3 className={styles['section-title']}>Transaction History</h3>
             
             {transactionsLoading && transactions.length === 0 ? (
-              <div className={styles['loading']}>Loading transactions...</div>
+              <div className={styles['loading']}>
+                <RefreshCw size={16} className="animate-spin mr-2" />
+                Loading transactions...
+              </div>
             ) : transactionsError ? (
               <div className={styles['error-message']}>
                 <AlertCircle size={16} />
@@ -348,6 +382,7 @@ const Billing = () => {
                       <div className={styles['cell']}>{formatCurrency(transaction.amount, transaction.currency)}</div>
                       <div className={styles['cell']}>
                         <span className={`${styles['status']} ${getStatusColor(transaction.status)}`}>
+                          {transaction.status === 'success' && <Check size={12} />}
                           {transaction.status}
                         </span>
                       </div>
@@ -360,6 +395,7 @@ const Billing = () => {
                             className={styles['invoice-link']}
                           >
                             View Invoice
+                            <ExternalLink size={12} />
                           </a>
                         )}
                       </div>
@@ -374,7 +410,17 @@ const Billing = () => {
                       onClick={loadMoreTransactions}
                       disabled={transactionsLoading}
                     >
-                      {transactionsLoading ? 'Loading...' : 'Load More Transactions'}
+                      {transactionsLoading ? (
+                        <>
+                          <RefreshCw size={14} className="animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          Load More Transactions
+                          <ChevronRight size={14} />
+                        </>
+                      )}
                     </button>
                   </div>
                 )}

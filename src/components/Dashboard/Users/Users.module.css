@@ -95,8 +95,8 @@
 
 .container {
   width: 100%;
-  background-color: #131315;
-  color: #ffffff;
+  background-color: #111827; /* Updated: gray-900 */
+  color: #FFFFFF; /* Updated: white */
   min-height: 100%;
 }
 
@@ -113,14 +113,14 @@
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1.2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .title {
   font-size: 1.6rem;
   font-weight: 600;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff, #b3b3b3);
+  background: linear-gradient(90deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -130,13 +130,39 @@
 /* Project ID styling */
 .projectId {
   font-size: 0.75rem;
-  color: #a0aec0;
-  background-color: rgba(255, 255, 255, 0.05);
+  color: #D1D5DB; /* Updated: gray-300 */
+  background-color: #1F2937; /* Updated: gray-800 */
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  border: 1px solid #374151; /* Updated: gray-700 */
+}
+
+.iconButton {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  background-color: rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  color: #D1D5DB; /* Updated: gray-300 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+  background-color: rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
+}
+
+.iconButton.copied {
+  background-color: #10B981; /* Updated: green-500 */
+  color: #FFFFFF; /* Updated: white */
 }
 
 /* Error message */
@@ -145,20 +171,21 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.8rem 1rem;
-  background-color: rgba(254, 178, 178, 0.1);
-  border-left: 3px solid #e53e3e;
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red-500 with opacity */
+  border-left: 3px solid #EF4444; /* Updated: red-500 */
   border-radius: 4px;
   margin-bottom: 1.2rem;
-  color: #fc8181;
+  color: #FFFFFF; /* Updated: white */
+  font-size: 0.8rem;
 }
 
-/* Table styles - updated to exactly match APIKeys styling */
+/* Table styles - updated to match new palette */
 .tableContainer {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: #1F2937; /* Updated: gray-800 */
   border-radius: 10px;
   margin-bottom: 1.2rem;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .table {
@@ -168,21 +195,21 @@
 }
 
 .tableHeader {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
 }
 
 .headerCell {
   text-align: left;
   padding: 0.8rem 1.2rem;
   font-weight: 500;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .tableRow {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid #374151; /* Updated: gray-700 */
   transition: background-color 0.2s ease;
 }
 
@@ -191,19 +218,19 @@
 }
 
 .tableRow:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
 }
 
 .cell {
   padding: 1rem 1.2rem;
-  color: #e2e8f0;
+  color: #FFFFFF; /* Updated: white */
   font-size: 0.8rem;
 }
 
 .mono {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 0.8rem;
-  color: #e2e8f0;
+  color: #FFFFFF; /* Updated: white */
 }
 
 /* Specific styling for the project ID's mono text */
@@ -220,16 +247,16 @@
   align-items: center;
   justify-content: center;
   padding: 3rem 0;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 .loadingSpinner {
   width: 30px;
   height: 30px;
   margin-bottom: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
   border-radius: 50%;
-  border-top: 2px solid #ffffff;
+  border-top: 2px solid #3B82F6; /* Updated: blue-500 */
   animation: spin 1s linear infinite;
 }
 
@@ -245,7 +272,7 @@
   align-items: center;
   justify-content: center;
   padding: 3rem 0;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   gap: 1rem;
 }
 
@@ -259,7 +286,7 @@
 
 .paginationInfo {
   font-size: 0.8rem;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 .paginationButtons {
@@ -269,9 +296,9 @@
 
 .paginationButton {
   padding: 0.4rem 0.8rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1F2937; /* Updated: gray-800 */
+  color: #FFFFFF; /* Updated: white */
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 4px;
   font-size: 0.8rem;
   cursor: pointer;
@@ -279,7 +306,9 @@
 }
 
 .paginationButton:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  border-color: #3B82F6; /* Updated: blue-500 */
+  transform: translateY(-1px);
 }
 
 .paginationButton:disabled {

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import { appApi } from '../../../api/axios';
 import { useAuth } from '../../../context/AuthContext';
 import Cookies from 'js-cookie';
-import { AlertCircle, UserIcon, Copy, Check } from 'lucide-react'; // Added Copy and Check icons
+import { AlertCircle, UserIcon, Copy, Check } from 'lucide-react';
 import styles from './Users.module.css';
 
 const Users = () => {
@@ -16,7 +16,7 @@ const Users = () => {
     total: 0,
     hasMore: false
   });
-  const [copiedProjectId, setCopiedProjectId] = useState(false); // New state for project ID copy
+  const [copiedProjectId, setCopiedProjectId] = useState(false); // State for project ID copy
 
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
@@ -110,7 +110,7 @@ const Users = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        {/* Header - updated with copy button */}
+        {/* Header with copy button */}
         <div className={styles.header}>
           <h1 className={styles.title}>Project Users</h1>
           <div className={styles.projectId}>
@@ -125,7 +125,7 @@ const Users = () => {
           </div>
         </div>
         
-        {/* Error message display - matching APIKeys */}
+        {/* Error message display */}
         {error && (
           <div className={styles.errorMessage}>
             <AlertCircle size={16} />
@@ -133,7 +133,7 @@ const Users = () => {
           </div>
         )}
         
-        {/* Users Table - using the same structure as APIKeys table */}
+        {/* Users Table */}
         <div className={styles.tableContainer}>
           {loading ? (
             <div className={styles.loading}>
@@ -169,7 +169,7 @@ const Users = () => {
           )}
         </div>
         
-        {/* Pagination - similar to how it would be structured in APIKeys */}
+        {/* Pagination */}
         {users.length > 0 && !loading && (
           <div className={styles.paginationContainer}>
             <div className={styles.paginationInfo}>

@@ -10,36 +10,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #131315;
-  color: #ffffff;
+  background-color: #111827; /* Updated to match theme */
+  color: #FFFFFF;
   min-height: 100vh;
   width: 100%;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding: 16px; /* Reduced from 20px */
-  margin-top: 1.6rem; /* Reduced from 2rem */
+  padding: 16px;
+  margin-top: 1.6rem;
+  background: linear-gradient(135deg, #111827 0%, #1F2937 50%, #111827 100%); /* Added theme gradient */
 }
 
 /* Centered content styling */
 .content {
   text-align: center;
-  max-width: 800px; /* Reduced from 1000px */
+  max-width: 800px;
   width: 100%;
-  padding: 32px 16px; /* Reduced from 40px 20px */
+  padding: 32px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px; /* Reduced from 40px */
+  gap: 32px;
+  border-radius: 12px;
+  background-color: rgba(31, 41, 55, 0.7); /* Gray-800 with opacity */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid #374151; /* Added theme border */
 }
 
 /* Logo styling */
 .logo {
-  margin-bottom: 16px; /* Reduced from 20px */
+  margin-bottom: 16px;
 }
 
 .logoText {
-  font-size: 1.44rem; /* Reduced from 1.8rem */
+  font-size: 1.44rem;
   font-weight: 700;
-  background: linear-gradient(to right, #4CAF50, #2196F3);
+  background: linear-gradient(to right, #3B82F6, #A855F7); /* Updated to theme blue-purple */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -48,43 +54,44 @@
 
 /* Title styling */
 .title {
-  font-size: 3.2rem; /* Reduced from 4rem */
+  font-size: 3.2rem;
   font-weight: 800;
-  background: linear-gradient(to right, #4CAF50, #2196F3);
+  background: linear-gradient(to right, #3B82F6, #EC4899); /* Updated to theme blue-pink */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 13px; /* Reduced from 16px */
+  margin-bottom: 13px;
   letter-spacing: -0.03em;
+  text-shadow: 0 0 40px rgba(59, 130, 246, 0.5); /* Blue glow */
 }
 
 /* Subtitle styling */
 .subtitle {
-  font-size: 1.2rem; /* Reduced from 1.5rem */
-  color: #aaaaaa;
-  max-width: 480px; /* Reduced from 600px */
+  font-size: 1.2rem;
+  color: #D1D5DB; /* Updated to gray-300 per theme */
+  max-width: 480px;
   line-height: 1.5;
-  margin-bottom: 24px; /* Reduced from 30px */
+  margin-bottom: 24px;
 }
 
 /* Timeline */
 .timeline {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Reduced from 30px */
+  gap: 24px;
   width: 100%;
-  max-width: 480px; /* Reduced from 600px */
+  max-width: 480px;
   position: relative;
-  margin: 32px 0; /* Reduced from 40px 0 */
+  margin: 32px 0;
 }
 
 .timeline::before {
   content: '';
   position: absolute;
   height: 100%;
-  width: 1.6px; /* Reduced from 2px */
-  background: linear-gradient(to bottom, #4CAF50, #2196F3, rgba(76, 175, 80, 0.3));
-  left: 19px; /* Reduced from 24px */
+  width: 1.6px;
+  background: linear-gradient(to bottom, #3B82F6, #A855F7, rgba(59, 130, 246, 0.3)); /* Updated to theme colors */
+  left: 19px;
   top: 0;
 }
 
@@ -92,41 +99,48 @@
   display: flex;
   align-items: flex-start;
   position: relative;
-  padding-left: 48px; /* Reduced from 60px */
+  padding-left: 48px;
   text-align: left;
 }
 
 .timelineDot {
   position: absolute;
-  left: 16px; /* Reduced from 20px */
-  width: 8px; /* Reduced from 10px */
-  height: 8px; /* Reduced from 10px */
+  left: 16px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background-color: #4CAF50;
-  transform: translateY(6.5px); /* Reduced from 8px */
+  background-color: #3B82F6; /* Updated to blue-500 */
+  transform: translateY(6.5px);
   z-index: 1;
 }
 
 .future .timelineDot {
-  background-color: rgba(76, 175, 80, 0.3);
+  background-color: rgba(59, 130, 246, 0.3); /* Updated to theme blue with opacity */
 }
 
 .timelineContent {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 6.5px; /* Reduced from 8px */
-  padding: 13px; /* Reduced from 16px */
+  background-color: #1F2937; /* Updated to gray-800 */
+  border-radius: 8px;
+  padding: 16px;
   width: 100%;
+  border: 1px solid #374151; /* Added border from theme */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.timelineContent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2); /* Blue glow */
 }
 
 .timelineContent h3 {
-  font-size: 0.96rem; /* Reduced from 1.2rem */
+  font-size: 0.96rem;
   font-weight: 600;
-  margin-bottom: 3px; /* Reduced from 4px */
+  margin-bottom: 3px;
 }
 
 .timelineContent p {
-  font-size: 0.72rem; /* Reduced from 0.9rem */
-  color: #aaaaaa;
+  font-size: 0.72rem;
+  color: #D1D5DB; /* Updated to gray-300 */
 }
 
 .future .timelineContent {
@@ -136,97 +150,105 @@
 /* Features */
 .features {
   display: flex;
-  gap: 24px; /* Reduced from 30px */
+  gap: 24px;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 32px 0; /* Reduced from 40px 0 */
+  margin: 32px 0;
 }
 
 .feature {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 10px; /* Reduced from 12px */
-  padding: 24px 16px; /* Reduced from 30px 20px */
-  max-width: 240px; /* Reduced from 300px */
+  background-color: #1F2937; /* Updated to gray-800 */
+  border-radius: 10px;
+  padding: 24px 16px;
+  max-width: 240px;
   flex: 1;
-  min-width: 200px; /* Reduced from 250px */
+  min-width: 200px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #374151; /* Added border from theme */
 }
 
 .feature:hover {
-  transform: translateY(-4px); /* Reduced from -5px */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Reduced from 0 10px 20px */
-  background-color: rgba(255, 255, 255, 0.07);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2); /* Blue glow */
+  background-color: #263244; /* Slightly lighter than gray-800 */
 }
 
 .featureIcon {
-  font-size: 2rem; /* Reduced from 2.5rem */
-  margin-bottom: 12px; /* Reduced from 15px */
+  font-size: 2rem;
+  margin-bottom: 12px;
+  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-purple gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .feature h3 {
-  font-size: 1.04rem; /* Reduced from 1.3rem */
-  margin-bottom: 8px; /* Reduced from 10px */
+  font-size: 1.04rem;
+  margin-bottom: 8px;
   font-weight: 600;
+  color: #FFFFFF; /* White for heading */
 }
 
 .feature p {
-  color: #aaaaaa;
+  color: #D1D5DB; /* Updated to gray-300 */
   line-height: 1.5;
-  font-size: 0.76rem; /* Reduced from 0.95rem */
+  font-size: 0.76rem;
 }
 
 /* Back button */
 .backButton {
   display: flex;
   align-items: center;
-  gap: 6.5px; /* Reduced from 8px */
-  background-color: rgba(255, 255, 255, 0.1);
+  gap: 6.5px;
+  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-purple gradient */
   border: none;
-  color: #ffffff;
-  padding: 10px 16px; /* Reduced from 12px 20px */
-  border-radius: 5px; /* Reduced from 6px */
+  color: #FFFFFF;
+  padding: 10px 16px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.8rem; /* Reduced from 1rem */
+  font-size: 0.8rem;
   text-decoration: none;
-  transition: background-color 0.2s ease;
-  margin-top: 16px; /* Reduced from 20px */
+  transition: all 0.2s ease;
+  margin-top: 16px;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3); /* Subtle blue glow */
 }
 
 .backButton:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5); /* Enhanced glow on hover */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .content {
-    gap: 24px; /* Reduced from 30px */
-    padding: 24px 12px; /* Reduced from 30px 15px */
+    gap: 24px;
+    padding: 24px 12px;
   }
 
   .title {
-    font-size: 2rem; /* Reduced from 2.5rem */
+    font-size: 2rem;
   }
 
   .subtitle {
-    font-size: 0.96rem; /* Reduced from 1.2rem */
+    font-size: 0.96rem;
   }
 
   .timeline {
-    gap: 16px; /* Reduced from 20px */
+    gap: 16px;
   }
 
   .feature {
-    min-width: 160px; /* Reduced from 200px */
+    min-width: 160px;
   }
 
   .features {
-    gap: 16px; /* Reduced from 20px */
+    gap: 16px;
   }
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: 1.6rem; /* Reduced from 2rem */
+    font-size: 1.6rem;
   }
 
   .features {
@@ -239,14 +261,14 @@
   }
   
   .timeline::before {
-    left: 12px; /* Reduced from 15px */
+    left: 12px;
   }
   
   .timelineItem {
-    padding-left: 32px; /* Reduced from 40px */
+    padding-left: 32px;
   }
   
   .timelineDot {
-    left: 9px; /* Reduced from 11px */
+    left: 9px;
   }
 }

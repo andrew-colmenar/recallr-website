@@ -1,7 +1,7 @@
 .container {
   width: 100%;
-  background-color: #131315;
-  color: #ffffff;
+  background-color: #111827; /* Updated: gray-900 */
+  color: #FFFFFF; /* Updated: white */
   min-height: 100%;
 }
 
@@ -18,14 +18,14 @@
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1.2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .title {
   font-size: 1.6rem;
   font-weight: 600;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff, #b3b3b3);
+  background: linear-gradient(90deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -33,21 +33,21 @@
 }
 
 .editableTitle {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #1F2937; /* Updated: gray-800 */
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 6px;
   padding: 0.6rem 0.8rem;
   font-size: 1.4rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #FFFFFF; /* Updated: white */
   width: 100%;
   transition: border-color 0.2s;
 }
 
 .editableTitle:focus {
-  border-color: #4CAF50;
+  border-color: #3B82F6; /* Updated: blue-500 */
   outline: none;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
 }
 
 .actionButtons {
@@ -69,42 +69,42 @@
 }
 
 .editButton {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+  background-color: rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  border: 1px solid rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
 }
 
 .editButton:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
+  border-color: rgba(59, 130, 246, 0.3); /* Updated: blue with opacity */
   transform: translateY(-1px);
 }
 
 .cancelButton {
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #c4c4c4;
+  border: 1px solid #374151; /* Updated: gray-700 */
+  color: #D1D5DB; /* Updated: gray-300 */
   height: 35px;
   width: 80px;
 }
 
 .cancelButton:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: white;
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
 }
 
 .saveButton {
-  background-color: #4CAF50;
-  border: 1px solid #4CAF50;
-  color: white;
-  box-shadow: 0 2px 5px rgba(76, 175, 80, 0.2);
+  background: linear-gradient(135deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
+  border: 1px solid #3B82F6; /* Updated: blue-500 */
+  color: #FFFFFF; /* Updated: white */
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2); /* Updated: blue shadow */
   height: 35px;
 }
 
 .saveButton:hover {
-  background-color: #43a047;
+  background: linear-gradient(135deg, #2563EB, #9333EA); /* Updated: darker gradient */
   transform: translateY(-1px);
-  box-shadow: 0 3px 7px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 3px 7px rgba(59, 130, 246, 0.3); /* Updated: blue shadow */
 }
 
 .actionButton:disabled {
@@ -132,21 +132,21 @@
 }
 
 .errorMessage {
-  background-color: rgba(231, 76, 60, 0.1);
-  border-left: 4px solid #e74c3c;
-  color: #e74c3c;
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red with opacity */
+  border-left: 4px solid #EF4444; /* Updated: red-500 */
+  color: #FFFFFF; /* Updated: white */
 }
 
 .successMessage {
-  background-color: rgba(76, 175, 80, 0.1);
-  border-left: 4px solid #4CAF50;
-  color: #4CAF50;
+  background-color: rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  border-left: 4px solid #3B82F6; /* Updated: blue-500 */
+  color: #FFFFFF; /* Updated: white */
 }
 
 /* Project info section */
 .infoSection {
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #1F2937; /* Updated: gray-800 */
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 10px;
   padding: 1.6rem;
   margin-bottom: 2rem;
@@ -158,9 +158,9 @@
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 1.2rem;
-  color: #e2e8f0;
+  color: #FFFFFF; /* Updated: white */
   padding: 0.4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #374151; /* Updated: gray-700 */
 }
 
 /* Make the info grid and description box wider */
@@ -187,13 +187,13 @@
 }
 
 .editableDescription {
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1F2937; /* Updated: gray-800 */
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 6px;
   padding: 0.8rem;
   min-height: 100px;
   width: 100%;
-  color: #ffffff;
+  color: #FFFFFF; /* Updated: white */
   font-family: inherit;
   resize: vertical;
   transition: border-color 0.2s;
@@ -208,16 +208,16 @@
   gap: 0.8rem;
   padding: 1rem;
   border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.02);
-  color: #a0aec0;
+  background-color: #1F2937; /* Updated: gray-800 */
+  color: #D1D5DB; /* Updated: gray-300 */
   font-style: italic;
-  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border: 1px dashed #374151; /* Updated: gray-700 */
   margin: 0.4rem 0 1.2rem;
   font-size: 0.75rem;
 }
 
 .emptyState svg {
-  color: #718096;
+  color: #4B5563; /* Updated: gray-600 */
 }
 
 .emptyState p {
@@ -231,8 +231,8 @@
 }
 
 .preferencesCard {
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #1F2937; /* Updated: gray-800 */
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 10px;
   margin-bottom: 1.2rem;
   overflow: hidden;
@@ -254,20 +254,20 @@
 }
 
 .cardHeader:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
 }
 
 .cardTitle {
   margin: 0;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #e2e8f0;
+  color: #FFFFFF; /* Updated: white */
 }
 
 .toggleButton {
   background: none;
   border: none;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -279,13 +279,13 @@
 }
 
 .toggleButton:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: white;
+  background-color: rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
 }
 
 .cardContent {
   padding: 0.4rem 1.4rem 1.4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #374151; /* Updated: gray-700 */
   animation: slideDown 0.3s ease-out;
 }
 
@@ -307,7 +307,7 @@
   display: block;
   margin-bottom: 0.7rem;
   font-weight: 500;
-  color: #e2e8f0;
+  color: #FFFFFF; /* Updated: white */
   font-size: 0.85rem;
 }
 
@@ -319,20 +319,20 @@
 
 .arrayItemInput {
   flex: 1;
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #374151; /* Updated: gray-700 */
+  border: 1px solid #4B5563; /* Updated: gray-600 */
   border-radius: 6px;
   padding: 0.8rem;
-  color: #ffffff;
+  color: #FFFFFF; /* Updated: white */
   font-family: inherit;
   transition: border-color 0.2s;
   font-size: 0.8rem;
 }
 
 .arrayItemInput:focus {
-  border-color: #4CAF50;
+  border-color: #3B82F6; /* Updated: blue-500 */
   outline: none;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15); /* Updated: blue with opacity */
 }
 
 textarea.arrayItemInput {
@@ -343,21 +343,21 @@ textarea.arrayItemInput {
 }
 
 .arrayItemValue {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: #111827; /* Updated: gray-900 */
   border-radius: 6px;
   padding: 0.8rem;
   width: 100%;
   min-height: 40px;
-  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  border-left: 3px solid #374151; /* Updated: gray-700 */
   line-height: 1.5;
   font-size: 0.75rem;
 }
 
 .removeItemButton {
-  background-color: rgba(231, 76, 60, 0.1);
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red with opacity */
   border: none;
   border-radius: 6px;
-  color: #e74c3c;
+  color: #EF4444; /* Updated: red-500 */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -368,7 +368,7 @@ textarea.arrayItemInput {
 }
 
 .removeItemButton:hover {
-  background-color: rgba(231, 76, 60, 0.2);
+  background-color: rgba(239, 68, 68, 0.2); /* Updated: red with opacity */
   transform: scale(1.05);
 }
 
@@ -378,9 +378,9 @@ textarea.arrayItemInput {
   gap: 0.6rem;
   padding: 0.6rem 0.8rem;
   background-color: transparent;
-  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border: 1px dashed #374151; /* Updated: gray-700 */
   border-radius: 6px;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 0.6rem;
@@ -389,18 +389,18 @@ textarea.arrayItemInput {
 }
 
 .addItemButton:hover {
-  background-color: rgba(76, 175, 80, 0.05);
-  color: #4CAF50;
-  border-color: rgba(76, 175, 80, 0.3);
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
+  color: #3B82F6; /* Updated: blue-500 */
+  border-color: rgba(59, 130, 246, 0.3); /* Updated: blue with opacity */
 }
 
 /* Number inputs and switches */
 .numberInput {
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #374151; /* Updated: gray-700 */
+  border: 1px solid #4B5563; /* Updated: gray-600 */
   border-radius: 6px;
   padding: 0.7rem 0.8rem;
-  color: #ffffff;
+  color: #FFFFFF; /* Updated: white */
   width: 100%;
   max-width: 180px;
   transition: border-color 0.2s;
@@ -408,9 +408,9 @@ textarea.arrayItemInput {
 }
 
 .numberInput:focus {
-  border-color: #4CAF50;
+  border-color: #3B82F6; /* Updated: blue-500 */
   outline: none;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15); /* Updated: blue with opacity */
 }
 
 .switchContainer {
@@ -444,7 +444,7 @@ textarea.arrayItemInput {
   left: 0;
   width: 40px;
   height: 20px;
-  background-color: rgba(74, 85, 104, 0.4);
+  background-color: #4B5563; /* Updated: gray-600 */
   border-radius: 20px;
   transition: background-color 0.3s;
 }
@@ -464,7 +464,7 @@ textarea.arrayItemInput {
 }
 
 .switchInput:checked + .switchLabel::before {
-  background-color: #4CAF50;
+  background-color: #3B82F6; /* Updated: blue-500 */
 }
 
 .switchInput:checked + .switchLabel::after {
@@ -472,7 +472,7 @@ textarea.arrayItemInput {
 }
 
 .switchInput:focus + .switchLabel::before {
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15); /* Updated: blue with opacity */
 }
 
 /* Danger zone */
@@ -482,7 +482,7 @@ textarea.arrayItemInput {
 }
 
 .dangerTitle {
-  color: #e74c3c;
+  color: #EF4444; /* Updated: red-500 */
   font-size: 1.2rem;
   font-weight: 600;
   margin-top: 0;
@@ -490,8 +490,8 @@ textarea.arrayItemInput {
 }
 
 .dangerCard {
-  background-color: rgba(231, 76, 60, 0.05);
-  border: 1px solid rgba(231, 76, 60, 0.3);
+  background-color: rgba(239, 68, 68, 0.05); /* Updated: red with opacity */
+  border: 1px solid rgba(239, 68, 68, 0.3); /* Updated: red with opacity */
   border-radius: 10px;
   padding: 1.4rem;
   display: flex;
@@ -502,7 +502,7 @@ textarea.arrayItemInput {
 }
 
 .dangerCard:hover {
-  background-color: rgba(231, 76, 60, 0.08);
+  background-color: rgba(239, 68, 68, 0.08); /* Updated: red with opacity */
 }
 
 .dangerInfo h3 {
@@ -510,12 +510,12 @@ textarea.arrayItemInput {
   margin-bottom: 0.5rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #e74c3c;
+  color: #EF4444; /* Updated: red-500 */
 }
 
 .dangerInfo p {
   margin: 0;
-  color: #cbd5e0;
+  color: #D1D5DB; /* Updated: gray-300 */
   font-size: 0.75rem;
   line-height: 1.5;
 }
@@ -523,9 +523,9 @@ textarea.arrayItemInput {
 .deleteButton {
   padding: 0.6rem 1.2rem;
   background-color: transparent;
-  border: 1px solid #e74c3c;
+  border: 1px solid #EF4444; /* Updated: red-500 */
   border-radius: 6px;
-  color: #e74c3c;
+  color: #EF4444; /* Updated: red-500 */
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
@@ -534,9 +534,9 @@ textarea.arrayItemInput {
 }
 
 .deleteButton:hover {
-  background-color: #e74c3c;
+  background-color: #EF4444; /* Updated: red-500 */
   color: white;
-  box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.3); /* Updated: red shadow */
 }
 
 .deleteButton:disabled {
@@ -554,20 +554,20 @@ textarea.arrayItemInput {
   align-items: center;
   justify-content: center;
   z-index: 50;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease-out;
 }
 
 .deleteModal {
-  background-color: #1A1A1E;
+  background-color: #1F2937; /* Updated: gray-800 */
   border-radius: 10px;
   width: 100%;
   max-width: 480px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   animation: slideUp 0.3s ease-out;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #374151; /* Updated: gray-700 */
 }
 
 @keyframes slideUp {
@@ -580,20 +580,20 @@ textarea.arrayItemInput {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .modalHeader h3 {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #e74c3c;
+  color: #EF4444; /* Updated: red-500 */
 }
 
 .closeButton {
   background: none;
   border: none;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -605,8 +605,8 @@ textarea.arrayItemInput {
 }
 
 .closeButton:hover {
-  color: #e2e8f0;
-  background-color: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF; /* Updated: white */
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
 }
 
 .modalBody {
@@ -618,11 +618,11 @@ textarea.arrayItemInput {
   align-items: flex-start;
   gap: 1rem;
   padding: 1.25rem;
-  background-color: rgba(231, 76, 60, 0.1);
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red with opacity */
   border-radius: 8px;
   margin-bottom: 1.75rem;
-  color: #e74c3c;
-  border-left: 4px solid #e74c3c;
+  color: #EF4444; /* Updated: red-500 */
+  border-left: 4px solid #EF4444; /* Updated: red-500 */
 }
 
 .warningMessage svg {
@@ -632,19 +632,19 @@ textarea.arrayItemInput {
 .confirmInput {
   width: 100%;
   padding: 0.875rem 1rem;
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #111827; /* Updated: gray-900 */
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 8px;
-  color: #ffffff;
+  color: #FFFFFF; /* Updated: white */
   margin: 1.25rem 0;
   font-size: 1rem;
   transition: border-color 0.2s;
 }
 
 .confirmInput:focus {
-  border-color: #e74c3c;
+  border-color: #EF4444; /* Updated: red-500 */
   outline: none;
-  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.15);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15); /* Updated: red with opacity */
 }
 
 .modalActions {
@@ -657,9 +657,9 @@ textarea.arrayItemInput {
 .cancelButton {
   padding: 0.75rem 1.5rem;
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 8px;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 500;
@@ -667,14 +667,14 @@ textarea.arrayItemInput {
 }
 
 .cancelButton:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
 }
 
 .deleteConfirmButton {
   padding: 0.75rem 1.5rem;
-  background-color: #e74c3c;
-  border: 1px solid #e74c3c;
+  background-color: #EF4444; /* Updated: red-500 */
+  border: 1px solid #EF4444; /* Updated: red-500 */
   border-radius: 8px;
   color: white;
   cursor: pointer;
@@ -684,8 +684,8 @@ textarea.arrayItemInput {
 }
 
 .deleteConfirmButton:hover {
-  background-color: #c0392b;
-  box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+  background-color: #DC2626; /* Updated: red-600 */
+  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.3); /* Updated: red shadow */
 }
 
 .deleteConfirmButton:disabled, .cancelButton:disabled {
@@ -699,7 +699,7 @@ textarea.arrayItemInput {
   justify-content: center;
   align-items: center;
   height: 300px;
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   font-size: 1.1rem;
   flex-direction: column;
   gap: 1rem;
@@ -709,8 +709,8 @@ textarea.arrayItemInput {
   content: '';
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(76, 175, 80, 0.1);
-  border-top-color: #4CAF50;
+  border: 3px solid rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  border-top-color: #3B82F6; /* Updated: blue-500 */
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -726,7 +726,7 @@ textarea.arrayItemInput {
   justify-content: center;
   text-align: center;
   padding: 4rem 1rem;
-  color: #e2e8f0;
+  color: #FFFFFF; /* Updated: white */
 }
 
 .error h2 {
@@ -736,15 +736,15 @@ textarea.arrayItemInput {
 }
 
 .error p {
-  color: #a0aec0;
+  color: #D1D5DB; /* Updated: gray-300 */
   margin-bottom: 2rem;
   max-width: 500px;
 }
 
 .returnButton {
   padding: 0.75rem 1.75rem;
-  background-color: #4CAF50;
-  color: #ffffff;
+  background-color: #3B82F6; /* Updated: blue-500 */
+  color: #FFFFFF; /* Updated: white */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -754,13 +754,13 @@ textarea.arrayItemInput {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.3); /* Updated: blue shadow */
 }
 
 .returnButton:hover {
-  background-color: #43a047;
+  background-color: #2563EB; /* Updated: blue-600 */
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); /* Updated: blue shadow */
 }
 
 /* Responsive styles */

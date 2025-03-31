@@ -20,14 +20,6 @@ const GetStarted = () => {
 # or
 pip install recallrai`}
           />
-          <div className={styles["step-action"]}>
-            <button 
-              className={`${styles.button} ${styles.primaryButton}`}
-              onClick={() => setCurrentStep(1)}
-            >
-              Continue
-            </button>
-          </div>
         </>
       )
     },
@@ -44,14 +36,6 @@ api_key = "${apiKey}"
 project_id = "${projectId}"
 client = RecallrAI(api_key=api_key, project_id=project_id)`}
           />
-          <div className={styles["step-action"]}>
-            <button 
-              className={`${styles.button} ${styles.primaryButton}`}
-              onClick={() => setCurrentStep(2)}
-            >
-              Continue
-            </button>
-          </div>
         </>
       )
     },
@@ -69,14 +53,6 @@ metadata = {"key": "value"}
 user = client.create_user(user_id=user_id, metadata=metadata)
 print("Created user:", user.user_id)`}
           />
-          <div className={styles["step-action"]}>
-            <button 
-              className={`${styles.button} ${styles.primaryButton}`}
-              onClick={() => setCurrentStep(3)}
-            >
-              Continue
-            </button>
-          </div>
         </>
       )
     },
@@ -93,14 +69,6 @@ print("Created user:", user.user_id)`}
 session = client.create_session(user_id="user123", auto_process_after_minutes=5)
 print("Created session id:", session.session_id)`}
           />
-          <div className={styles["step-action"]}>
-            <button 
-              className={`${styles.button} ${styles.primaryButton}`}
-              onClick={() => setCurrentStep(4)}
-            >
-              Continue
-            </button>
-          </div>
         </>
       )
     },
@@ -117,14 +85,6 @@ session.add_user_message("Hello! How are you?")
 # Add assistant message
 session.add_assistant_message("I'm an assistant. How can I help you?")`}
           />
-          <div className={styles["step-action"]}>
-            <button 
-              className={`${styles.button} ${styles.primaryButton}`}
-              onClick={() => setCurrentStep(5)}
-            >
-              Continue
-            </button>
-          </div>
         </>
       )
     },
@@ -140,14 +100,6 @@ context = session.get_context()
 print("Memory used:", context.memory_used)
 print("Context:", context.context)`}
           />
-          <div className={styles["step-action"]}>
-            <button 
-              className={`${styles.button} ${styles.primaryButton}`}
-              onClick={() => setCurrentStep(6)}
-            >
-              Continue
-            </button>
-          </div>
         </>
       )
     },
@@ -161,14 +113,6 @@ print("Context:", context.context)`}
             code={`# Process session to update user memories
 session.process()`}
           />
-          <div className={styles["step-action"]}>
-            <button 
-              className={`${styles.button} ${styles.primaryButton}`}
-              onClick={() => setCurrentStep(0)}
-            >
-              Start Over
-            </button>
-          </div>
         </>
       )
     }
@@ -202,6 +146,31 @@ session.process()`}
               {currentStep === index && (
                 <div className={styles["step-body"]}>
                   {step.content}
+                  <div className={styles["step-action"]}>
+                    {index > 0 && (
+                      <button 
+                        className={`${styles.button} ${styles.secondaryButton}`}
+                        onClick={() => setCurrentStep(index - 1)}
+                      >
+                        Previous
+                      </button>
+                    )}
+                    {index < steps.length - 1 ? (
+                      <button 
+                        className={`${styles.button} ${styles.primaryButton}`}
+                        onClick={() => setCurrentStep(index + 1)}
+                      >
+                        Continue
+                      </button>
+                    ) : (
+                      <button 
+                        className={`${styles.button} ${styles.primaryButton}`}
+                        onClick={() => setCurrentStep(0)}
+                      >
+                        Start Over
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -275,37 +244,43 @@ openai_client = openai.OpenAI(api_key="your-openai-api-key")`}
         Don't mention that you have access to memories unless you are explicitly asked."""
         
         # Get previous messages
-        previous_messages = session.get_messages()
-        previous_messages = [{"role": message.role, "content": message.content} for message in previous_messages]`}
+        previous_messages = session.get_messages()`}
         />
         
-        <h4>Generating AI Response with Memory Context</h4>
+        <h4>Sending the Request to the LLM</h4>
         <CodeBlock 
           language="python"
-          code={`        # Call the LLM with the system prompt and user message
+          code={`        # Create the messages list for OpenAI
+        messages = [
+            {"role": "system", "content": system_prompt}
+        ]
+        
+        # Add last few conversation messages (excluding system prompt)
+        for msg in previous_messages[-5:]:
+            if msg.role != "system":
+                messages.append({"role": msg.role, "content": msg.content})
+        
+        # Send to OpenAI
         response = openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                **previous_messages,
-            ],
-            temperature=0.7
+            model="gpt-4o",
+            messages=messages,
+            temperature=0.7,
         )
         
-        assistant_message = response.choices[0].message.content
-        
-        # Print the assistant's response
-        print(f"Assistant: {assistant_message}")
+        # Extract the assistant's response
+        assistant_response = response.choices[0].message.content
         
         # Add the assistant's response to RecallrAI
-        session.add_assistant_message(assistant_message)`}
+        session.add_assistant_message(assistant_response)
+        
+        # Print the response
+        print(f"Assistant: {assistant_response}")`}
         />
         
-        <h4>Finishing the Conversation</h4>
+        <h4>Finalizing the Session</h4>
         <CodeBlock 
           language="python"
-          code={`    # Process the session at the end of the conversation
-    print("Processing session to update memory...")
+          code={`    # Process the session to update the memory
     session.process()
     print(f"Session ended. Session ID: {session.session_id}")
     return session.session_id

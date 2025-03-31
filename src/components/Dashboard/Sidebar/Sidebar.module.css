@@ -2,12 +2,12 @@
 
 .sidebar {
   width: 12.8rem; /* Reduced from 16rem by 20% */
-  background-color: #121212;
-  border-right: 1px solid #2a2a2a;
+  background-color: #111827; /* Updated: gray-900 */
+  border-right: 1px solid #374151; /* Updated: gray-700 */
   display: flex;
   flex-direction: column;
   height: 100vh; /* Full height of viewport */
-  color: white;
+  color: #FFFFFF; /* Updated: white */
   transition: width 0.3s ease;
   flex-shrink: 0; /* Prevent sidebar from shrinking */
   position: fixed; /* Fixed position instead of sticky */
@@ -45,7 +45,7 @@
   padding: 0.6rem 0.8rem; /* Reduced from 0.75rem 1rem */
   border-radius: 0.3rem; /* Reduced from 0.375rem */
   transition: all 0.2s ease;
-  color: #9ca3af;
+  color: #D1D5DB; /* Updated: gray-300 */
   text-decoration: none;
   font-weight: 500;
   position: relative; /* For active indicator positioning */
@@ -54,16 +54,17 @@
 }
 
 .navItem:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #f3f4f6;
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
+  transform: translateX(2px);
 }
 
 /* Enhanced active state styling */
 .navItem.active {
-  background-color: rgba(76, 175, 80, 0.1);
-  color: #4CAF50;
+  background-color: rgba(59, 130, 246, 0.08); /* Updated: blue with opacity */
+  color: #3B82F6; /* Updated: blue-500 */
   font-weight: 600;
-  border-left: 2.4px solid #4CAF50; /* Reduced from 3px */
+  border-left: 2.4px solid #3B82F6; /* Updated: blue-500 */
   padding-left: calc(0.8rem - 2.4px); /* Adjusted padding for border */
 }
 
@@ -78,13 +79,13 @@
 
 .navItem.active .iconContainer {
   transform: scale(1.1);
-  color: #4CAF50;
+  color: #3B82F6; /* Updated: blue-500 */
 }
 
 /* Style the footer to ensure it's visible */
 .sidebarFooter {
   padding: 0.4rem 0.4rem 0.8rem 0.4rem; /* Reduced from 0.5rem 0.5rem 1rem 0.5rem */
-  border-top: 1px solid #2a2a2a;
+  border-top: 1px solid #374151; /* Updated: gray-700 */
   margin-bottom: 3.2rem; /* Reduced from 4rem */
 }
 
@@ -113,7 +114,65 @@
     border-left: none;
     border-left-width: 0;
     border-radius: 0.3rem; /* Reduced from 0.375rem */
-    border: 1.6px solid #4CAF50; /* Reduced from 2px */
+    border: 1.6px solid #3B82F6; /* Updated: blue-500 */
     padding: 0.52rem; /* Reduced from 0.65rem */
   }
+}
+
+/* Custom scrollbar for the sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(59, 130, 246, 0.4); /* Updated: blue with opacity */
+}
+
+/* Add some spacing after each section of nav items */
+.sidebarNav ul + ul {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+}
+
+/* Create a nice glow effect on hover for nav items */
+.navItem:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  border-radius: 0.3rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
+  pointer-events: none;
+}
+
+.navItem:hover:after {
+  opacity: 1;
+}
+
+/* Remove the external link indicator for Status link */
+.externalLink {
+  position: relative;
+}
+
+.externalLink:after {
+  content: '\2197';
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  font-size: 0.6rem;
+  opacity: 0.7;
 }

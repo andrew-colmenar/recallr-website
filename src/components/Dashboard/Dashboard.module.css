@@ -1,8 +1,8 @@
 /* Dashboard styling with CSS modules */
 .dashboard {
   min-height: 100vh;
-  background-color: #121212;
-  color: white;
+  background-color: #111827; /* Updated: gray-900 */
+  color: #FFFFFF; /* Updated: white */
 }
 
 .dashboardLoading {
@@ -10,47 +10,55 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-size: 14px;
-  color: #e0e0e0;
+  font-size: 0.875rem;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 .dashboardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background-color: #1e1e1e;
-  border-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  margin-bottom: 16px;
+  padding: 1rem;
+  background-color: #1F2937; /* Updated: gray-800 */
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1rem;
+  border: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .dashboardHeader h1 {
   margin: 0;
-  font-size: 20px;
-  color: #ffffff;
+  font-size: 1.25rem;
+  color: #FFFFFF; /* Updated: white */
+  background: linear-gradient(90deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .logoutButton {
-  padding: 6px 12px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red-500 with opacity */
+  color: #EF4444; /* Updated: red-500 */
+  border: 1px solid rgba(239, 68, 68, 0.3); /* Updated: red-500 with opacity */
+  border-radius: 0.25rem;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s;
-  font-size: 12px;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
 }
 
 .logoutButton:hover {
-  background-color: #d32f2f;
+  background-color: #EF4444; /* Updated: red-500 */
+  color: #FFFFFF; /* Updated: white */
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(239, 68, 68, 0.3); /* Updated: red shadow */
 }
 
 .dashboardContent {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -61,64 +69,69 @@
 
 .userInfo,
 .sessionsSection {
-  background-color: #1e1e1e;
-  border-radius: 6px;
-  padding: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background-color: #1F2937; /* Updated: gray-800 */
+  border-radius: 0.375rem;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .userInfo h2,
 .sessionsSection h2 {
   margin-top: 0;
-  margin-bottom: 16px;
-  font-size: 14px;
-  color: #ffffff;
-  border-bottom: 1px solid #2a2a2a;
-  padding-bottom: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #FFFFFF; /* Updated: white */
+  border-bottom: 1px solid #374151; /* Updated: gray-700 */
+  padding-bottom: 0.5rem;
 }
 
 .sessionsList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .sessionItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
-  border-radius: 5px;
-  border: 1px solid #2a2a2a;
-  transition: box-shadow 0.2s;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #374151; /* Updated: gray-700 */
+  transition: all 0.2s ease;
+  background-color: #111827; /* Updated: gray-900 */
 }
 
 .sessionItem:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  background-color: #252525;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
+  border-color: rgba(59, 130, 246, 0.3); /* Updated: blue with opacity */
+  transform: translateY(-1px);
 }
 
 .sessionInfo p {
-  margin: 4px 0;
-  color: #b3b3b3;
-  font-size: 12px;
+  margin: 0.25rem 0;
+  color: #D1D5DB; /* Updated: gray-300 */
+  font-size: 0.75rem;
 }
 
 .revokeButton {
-  padding: 4px 10px;
-  background-color: #333333;
-  border: 1px solid #444444;
-  border-radius: 3px;
-  color: #e0e0e0;
+  padding: 0.25rem 0.625rem;
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red with opacity */
+  border: 1px solid rgba(239, 68, 68, 0.3); /* Updated: red with opacity */
+  border-radius: 0.1875rem;
+  color: #EF4444; /* Updated: red-500 */
   cursor: pointer;
-  font-size: 12px;
-  transition: all 0.2s;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
 }
 
 .revokeButton:hover {
-  background-color: #f44336;
-  color: white;
-  border-color: #f44336;
+  background-color: #EF4444; /* Updated: red-500 */
+  color: #FFFFFF; /* Updated: white */
+  border-color: #EF4444; /* Updated: red-500 */
+  transform: translateY(-1px);
 }
 
 /* Dashboard layout improvements */
@@ -128,13 +141,13 @@
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background-color: #131315;
+  background-color: #111827; /* Updated: gray-900 */
 }
 
 /* Content area that holds everything except sidebar */
 .contentContainer {
-  margin-left: 14rem; /* Same as sidebar width */
-  width: calc(100% - 14rem); /* Full width minus sidebar */
+  margin-left: 12.8rem; /* Updated: Same as sidebar width */
+  width: calc(100% - 12.8rem); /* Full width minus sidebar */
   min-height: 100vh;
   padding-top: 60px; /* Same as header height */
 }
@@ -158,15 +171,15 @@
 
 /* Error banner with improved visibility */
 .errorBanner {
-  background-color: rgba(255, 69, 58, 0.1);
-  color: #ff453a;
-  padding: 10px 14px;
-  border-left: 3px solid #ff453a;
-  margin-bottom: 14px;
-  font-size: 12px;
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red with opacity */
+  color: #EF4444; /* Updated: red-500 */
+  padding: 0.625rem 0.875rem;
+  border-left: 3px solid #EF4444; /* Updated: red-500 */
+  margin-bottom: 0.875rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
-  border-radius: 6px;
+  border-radius: 0.375rem;
 }
 
 /* Update loading container positioning */
@@ -184,8 +197,8 @@
   bottom: 0;
   height: 100vh;
   width: 100vw; /* Full viewport width */
-  background-color: #131315;
-  color: #ffffff;
+  background: linear-gradient(135deg, #111827 0%, #1F2937 50%, #111827 100%); /* Updated: gradient background */
+  color: #FFFFFF; /* Updated: white */
   padding: 1.6rem;
   text-align: center;
   z-index: 100; /* Above other elements */
@@ -196,9 +209,9 @@
 .loadingSpinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
+  border: 3px solid rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
   border-radius: 50%;
-  border-top: 3px solid #4CAF50;
+  border-top: 3px solid #3B82F6; /* Updated: blue-500 */
   animation: spin 1s linear infinite;
   margin-bottom: 1.2rem;
 }
@@ -212,11 +225,15 @@
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 0.6rem;
+  background: linear-gradient(to right, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .loadingSubtext {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 /* Responsive adjustments */
@@ -231,7 +248,7 @@
   }
   
   .loadingContainer {
-    margin-left: 3.6rem;
-    width: calc(100% - 3.6rem);
+    margin-left: 0;
+    width: 100%;
   }
 }

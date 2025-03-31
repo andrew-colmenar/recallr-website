@@ -8,28 +8,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 99999; /* Increased substantially */
   backdrop-filter: blur(4px);
+  padding: 20px;
+  overflow-y: auto; /* Allow scrolling if modal is taller than viewport */
 }
 
 .modalContent {
+  position: relative;
+  z-index: 100000; /* Increased substantially */
   width: 100%;
   max-width: 550px;
   max-height: 90vh;
-  background-color: #131315;
+  background-color: #1F2937;
   border-radius: 12px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   animation: fadeIn 0.25s ease-out;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #374151;
   overflow: hidden;
+  margin: auto;
+  transform: translate(0, 0); /* Reset any transforms */
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.96);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -42,15 +48,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .modalTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #FFFFFF;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff, #b3b3b3);
+  background: linear-gradient(90deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -60,7 +65,7 @@
 .closeButton {
   background: none;
   border: none;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -73,15 +78,16 @@
 }
 
 .closeButton:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #FFFFFF;
+  background-color: rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
   transform: rotate(90deg);
 }
 
 .modalBody {
   padding: 1.5rem;
-  overflow-y: auto;
+  overflow-y: auto; /* Allow scrolling within the body */
   flex: 1;
+  max-height: calc(90vh - 130px); /* Account for header and footer */
 }
 
 .errorMessage {
@@ -90,10 +96,10 @@
   gap: 0.75rem;
   padding: 1rem 1.25rem;
   margin-bottom: 1.5rem;
-  background-color: rgba(255, 69, 58, 0.1);
-  border-left: 3px solid #FF453A;
+  background-color: rgba(239, 68, 68, 0.1); /* Updated: red-500 with opacity */
+  border-left: 3px solid #EF4444; /* Updated: red-500 */
   border-radius: 8px;
-  color: #f8a9a3;
+  color: #FFFFFF; /* Updated: white */
 }
 
 .errorMessage span {
@@ -102,7 +108,7 @@
 }
 
 .errorMessage svg {
-  color: #FF453A;
+  color: #EF4444; /* Updated: red-500 */
   flex-shrink: 0;
   margin-top: 0.125rem;
 }
@@ -113,14 +119,14 @@
   align-items: center;
   justify-content: center;
   padding: 4rem 0;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 .spinner {
   width: 36px;
   height: 36px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top: 3px solid #4CAF50;
+  border: 3px solid rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
+  border-top: 3px solid #3B82F6; /* Updated: blue-500 */
   border-radius: 50%;
   margin-bottom: 1.25rem;
   animation: spin 1s linear infinite;
@@ -140,14 +146,14 @@
 .projectItem {
   padding: 1.25rem;
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: #111827; /* Updated: gray-900 */
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .projectItem:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
@@ -161,7 +167,7 @@
 .projectName {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #FFFFFF; /* Updated: white */
   margin: 0;
   display: flex;
   align-items: center;
@@ -169,10 +175,10 @@
 
 .projectId {
   font-size: 0.8rem;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
   margin: 0;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(59, 130, 246, 0.1); /* Updated: blue with opacity */
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   display: inline-block;
@@ -180,7 +186,7 @@
 
 .projectDescription {
   font-size: 0.95rem;
-  color: #AEAEB2;
+  color: #D1D5DB; /* Updated: gray-300 */
   margin: 0.5rem 0 0 0;
   line-height: 1.5;
 }
@@ -192,24 +198,24 @@
   justify-content: center;
   text-align: center;
   padding: 4rem 1rem;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 .emptyStateIcon {
   margin-bottom: 1.25rem;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 .emptyState h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #FFFFFF; /* Updated: white */
   margin: 0 0 0.75rem 0;
 }
 
 .emptyState p {
   font-size: 0.95rem;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
   max-width: 320px;
   margin: 0;
   line-height: 1.6;
@@ -219,7 +225,7 @@
   display: flex;
   justify-content: flex-end;
   padding: 1.25rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .createButton {
@@ -227,33 +233,33 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
-  background-color: #4CAF50;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
+  color: #FFFFFF; /* Updated: white */
   border: none;
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(76, 175, 80, 0.2);
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2); /* Updated: blue shadow */
 }
 
 .createButton:hover {
-  background-color: #43A047;
+  background: linear-gradient(135deg, #2563EB, #9333EA); /* Updated: darker gradient */
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); /* Updated: enhanced blue shadow */
 }
 
 .loadMoreContainer {
   text-align: center;
   padding: 1rem 0 0.5rem;
   margin-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #374151; /* Updated: gray-700 */
 }
 
 .loadMoreInfo {
   font-size: 0.85rem;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
 }
 
 /* Project creation form styles */
@@ -270,7 +276,7 @@
 }
 
 .formGroup label {
-  color: #e2e8f0;
+  color: #FFFFFF; /* Updated: white */
   font-size: 0.95rem;
   font-weight: 500;
 }
@@ -278,10 +284,10 @@
 .formGroup input,
 .formGroup textarea {
   padding: 0.875rem 1rem;
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #374151; /* Updated: gray-700 */
+  border: 1px solid #4B5563; /* Updated: gray-600 */
   border-radius: 8px;
-  color: #ffffff;
+  color: #FFFFFF; /* Updated: white */
   font-size: 1rem;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -290,13 +296,13 @@
 .formGroup input:focus,
 .formGroup textarea:focus {
   outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.25);
+  border-color: #3B82F6; /* Updated: blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25); /* Updated: blue glow */
 }
 
 .formGroup input::placeholder,
 .formGroup textarea::placeholder {
-  color: #7c7c7c;
+  color: #9CA3AF; /* Updated: gray-400 */
 }
 
 .formActions {
@@ -309,8 +315,8 @@
 .cancelButton {
   padding: 0.75rem 1.25rem;
   background-color: transparent;
-  color: #AEAEB2;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #D1D5DB; /* Updated: gray-300 */
+  border: 1px solid #374151; /* Updated: gray-700 */
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -319,27 +325,26 @@
 }
 
 .cancelButton:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #FFFFFF;
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
+  color: #FFFFFF; /* Updated: white */
 }
 
 .submitButton {
   padding: 0.75rem 1.25rem;
-  background-color: #4CAF50;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
+  color: #FFFFFF; /* Updated: white */
   border: none;
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(76, 175, 80, 0.2);
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2); /* Updated: blue shadow */
 }
 
 .submitButton:hover {
-  background-color: #43A047;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); /* Updated: blue shadow */
 }
 
 .submitButton:disabled {
@@ -352,13 +357,13 @@
 .projectItem.projectDisabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 69, 58, 0.2);
+  background-color: rgba(17, 24, 39, 0.8); /* Updated: gray-900 with opacity */
+  border: 1px solid rgba(239, 68, 68, 0.2); /* Updated: red with opacity */
 }
 
 .unavailableTag {
   font-size: 0.7rem;
-  background-color: #FF453A;
+  background-color: #EF4444; /* Updated: red-500 */
   color: white;
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
@@ -371,7 +376,7 @@
   align-items: center;
   gap: 0.75rem;
   margin-top: 0.75rem;
-  color: #8E8E93;
+  color: #D1D5DB; /* Updated: gray-300 */
   font-size: 0.8rem;
 }
 
@@ -379,20 +384,20 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
 }
 
 .projectActive {
-  border-left: 3px solid #4CAF50;
-  background-color: rgba(76, 175, 80, 0.08);
+  border-left: 3px solid #3B82F6; /* Updated: blue-500 */
+  background-color: rgba(59, 130, 246, 0.08); /* Updated: blue with opacity */
 }
 
 .currentTag {
   font-size: 0.7rem;
   padding: 0.15rem 0.5rem;
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
   color: white;
   border-radius: 4px;
   margin-left: 0.5rem;
@@ -404,6 +409,15 @@
   .modalContent {
     max-width: 95%;
     max-height: 80vh;
+    margin: auto;
+  }
+  
+  .modalBody {
+    max-height: calc(80vh - 120px); /* Adjusted for mobile */
+  }
+  
+  .modalOverlay {
+    padding: 15px;
   }
 }
 

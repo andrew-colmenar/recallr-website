@@ -4,6 +4,7 @@ import { X, Plus, AlertCircle, Calendar } from 'lucide-react';
 import { appApi } from '../../../api/axios';
 import Cookies from 'js-cookie';
 import styles from './ProjectModal.module.css';
+import { createPortal } from 'react-dom'; // Add this import
 
 // Default project to show when no projects are available
 const DEFAULT_PROJECT = {
@@ -282,7 +283,8 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
   
   if (!isOpen) return null;
   
-  return (
+  // Use createPortal to render the modal at the document body level
+  return createPortal(
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
@@ -399,7 +401,8 @@ const ProjectModal = ({ isOpen, onClose, onProjectSelect, currentProjectId }) =>
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body // This ensures the modal is mounted at the body level
   );
 };
 
