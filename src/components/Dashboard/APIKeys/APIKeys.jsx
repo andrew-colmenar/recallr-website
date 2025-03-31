@@ -403,7 +403,7 @@ const APIKeys = ({ project }) => {
                   <p>
                     <strong>This is the only time you'll see the complete API key.</strong> Please copy it now as you won't be able to see it again!
                   </p>
-                                  </div>
+                </div>
                 
                 <div className={styles.keyDisplay}>
                   <div className={styles.keyValue}>
@@ -426,17 +426,6 @@ const APIKeys = ({ project }) => {
                       </>
                     )}
                   </button>
-                </div>
-                
-                <div className={styles.keyDetails}>
-                  <div className={styles.keyDetail}>
-                    <span className={styles.keyDetailLabel}>Name:</span>
-                    <span className={styles.keyDetailValue}>{newKey.name}</span>
-                  </div>
-                  <div className={styles.keyDetail}>
-                    <span className={styles.keyDetailLabel}>Created:</span>
-                    <span className={styles.keyDetailValue}>{formatDate(newKey.created_at)}</span>
-                  </div>
                 </div>
                 
                 <div className={styles.modalActions}>
