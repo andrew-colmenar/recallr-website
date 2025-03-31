@@ -5,18 +5,22 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: #000;
+  background-color: #111827; /* Dark background from Recallr color palette */
+  background-image: linear-gradient(to bottom right, #111827, #1F2937, #111827);
 }
 
 .loginPanel {
-  background-color: #000;
-  color: white;
+  background-color: #1F2937; /* Card background color */
+  color: #D1D5DB; /* Body text color */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 2.5rem;
   max-width: 500px;
   width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid #374151; /* Border color */
 }
 
 .loginContent {
@@ -27,12 +31,18 @@
 .loginContent h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: #FFFFFF; /* Heading text color */
+  font-weight: 700;
+  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-Purple gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .loginContent p {
-  color: #aaa;
+  color: #9CA3AF; /* Gray-400 */
   margin-bottom: 2rem;
+  font-size: 1.1rem;
 }
 
 .socialLogins {
@@ -47,12 +57,13 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem;
-  border-radius: 4px;
+  padding: 0.85rem;
+  border-radius: 6px;
   background: transparent;
-  border: 1px solid #333;
-  color: white;
-  font-size: 0.9rem;
+  border: 1px solid #374151; /* Border color */
+  color: #D1D5DB; /* Body text color */
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -63,21 +74,11 @@
   margin-right: 10px;
 }
 
-/* Fix the hover state for the Google button */
+/* Google button hover style */
 .google:hover {
-  background-color: #f2f2f2;
-  color: #333; /* Change text color to dark on hover */
-}
-
-/* Keep GitHub button styling as is */
-.github {
-  background-color: #24292e;
-  color: white;
-  border: none;
-}
-
-.github:hover {
-  background-color: #1a1e22;
+  background-color: rgba(59, 130, 246, 0.1); /* Primary accent with low opacity */
+  border-color: #3B82F6; /* Primary accent */
+  color: #FFFFFF; /* White text on hover */
 }
 
 .divider {
@@ -85,54 +86,60 @@
   align-items: center;
   text-align: center;
   margin: 1.5rem 0;
-  color: #999;
+  color: #6B7280; /* Gray-500 */
 }
 
 .divider::before,
 .divider::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #374151; /* Border color */
 }
 
 .divider span {
   padding: 0 0.75rem;
-  color: #777;
+  color: #6B7280; /* Gray-500 */
   font-size: 14px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 0px;
   width: 100%;
 }
 
 .input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
   margin-bottom: 1rem;
-  background-color: transparent;
-  border: 1px solid #333;
-  border-radius: 4px;
-  color: white;
+  background-color: #4B5563; /* Input background color */
+  border: 1px solid #374151; /* Border color */
+  border-radius: 6px;
+  color: #FFFFFF; /* White text */
   font-size: 1rem;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus {
   outline: none;
-  border-color: #4285f4;
+  border-color: #3B82F6; /* Primary accent */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25); /* Blue glow effect */
+}
+
+.input::placeholder {
+  color: #9CA3AF; /* Gray-400 */
 }
 
 .continueButton {
   width: 100%;
-  padding: 0.75rem;
-  background-color: white;
-  color: black;
+  padding: 0.85rem;
+  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-Purple gradient */
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -141,14 +148,13 @@
 }
 
 .continueButton:hover {
-  background-color: #eee;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
 }
 
 .continueButton:active {
   transform: translateY(0);
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
 }
 
 .continueButton:before {
@@ -173,8 +179,8 @@
 }
 
 .continueButton:disabled {
-  background-color: #555;
-  color: #888;
+  background: #4B5563; /* Gray-600 */
+  color: #9CA3AF; /* Gray-400 */
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -184,11 +190,23 @@
   display: none;
 }
 
+/* Password field styling */
 .passwordField {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.passwordField .input {
+  margin-bottom: 0; /* Override the default input margin */
+  width: 100%;
+  padding-right: 70px; /* Make room for the toggle button */
+}
+
+.passwordField:last-of-type {
+  margin-bottom: 1.5rem;
 }
 
 .togglePassword {
@@ -198,34 +216,43 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #aaa;
+  color: #9CA3AF; /* Gray-400 */
   cursor: pointer;
   font-size: 14px;
-  margin-top: -8px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.togglePassword:hover {
+  color: #3B82F6; /* Primary accent */
+  background-color: rgba(59, 130, 246, 0.1); /* Primary accent with low opacity */
 }
 
 .backButton {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
   background-color: transparent;
-  color: #aaa;
-  border: 1px solid #333;
-  border-radius: 4px;
+  color: #D1D5DB; /* Body text color */
+  border: 1px solid #374151; /* Border color */
+  border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
   margin-top: 0.5rem;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   align-self: center;
 }
 
 .backButton:hover {
-  background-color: #111;
+  background-color: rgba(59, 130, 246, 0.1); /* Primary accent with low opacity */
+  border-color: #3B82F6; /* Primary accent */
+  color: #FFFFFF;
 }
 
 .resendButton {
   background: none;
   border: none;
-  color: #aaa;
+  color: #9CA3AF; /* Gray-400 */
   text-decoration: underline;
   cursor: pointer;
   font-size: 0.9rem;
@@ -233,79 +260,116 @@
   text-align: center;
   width: 100%;
   align-self: center;
+  transition: color 0.2s;
 }
 
 .resendButton:hover {
-  color: white;
+  color: #3B82F6; /* Primary accent */
+}
+
+.resendButton:disabled {
+  color: #6B7280; /* Gray-500 */
+  cursor: not-allowed;
 }
 
 .errorMessage {
-  color: #ff6b6b;
+  color: #F87171; /* Red-400 */
   margin-bottom: 15px;
   font-size: 14px;
-  padding: 10px;
-  background-color: rgba(255, 107, 107, 0.1);
-  border-radius: 4px;
-  border-left: 3px solid #ff6b6b;
+  padding: 12px 15px;
+  background-color: rgba(239, 68, 68, 0.1); /* Error color with low opacity */
+  border-radius: 6px;
+  border-left: 3px solid #EF4444; /* Error color */
 }
 
 .nameFields {
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  margin-bottom: 0.5rem;
 }
 
 .nameFields input {
   flex: 1;
+  margin-bottom: 1.5rem;
 }
 
 .loginLink {
   margin-top: 20px;
   text-align: center;
   font-size: 14px;
-  color: #666;
+  color: #9CA3AF; /* Gray-400 */
 }
 
 .loginLink button {
   background: none;
   border: none;
-  color: #4285f4;
+  color: #3B82F6; /* Primary accent */
   cursor: pointer;
   font-weight: 500;
+  transition: color 0.2s;
+}
+
+.loginLink button:hover {
+  color: #A855F7; /* Purple-500 */
+  text-decoration: underline;
 }
 
 .otpPrompt {
   margin-bottom: 1rem;
   text-align: center;
-  color: #aaa;
+  color: #D1D5DB; /* Body text color */
+}
+
+.emailHighlight {
+  color: #3B82F6; /* Primary accent */
+  font-weight: 500;
 }
 
 .otpTimer {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-align: center;
-  color: #4285f4;
+  color: #A855F7; /* Purple-500 */
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.dashboard-preview {
-  flex: 1;
-  background-color: #f2f2f2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Animation for step transitions */
+.stepContainer {
+  width: 100%;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-@media (min-width: 1024px) {
-  .dashboard-preview {
-    display: block;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+/* Focus states for interactive elements */
+.input:focus,
+.continueButton:focus,
+.backButton:focus,
+.togglePassword:focus,
+.resendButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); /* Primary accent with low opacity */
+}
+
+/* Media queries */
 @media (max-width: 768px) {
-  .loginContainer {
-    flex-direction: column;
+  .loginPanel {
+    border-radius: 0;
+    padding: 2rem;
+    max-width: 100%;
+    height: 100%;
   }
   
-  .dashboard-preview {
-    display: none;
+  .loginContent h1 {
+    font-size: 2rem;
   }
 }
