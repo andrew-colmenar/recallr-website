@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import { appApi } from '../../../api/axios';
 import { useAuth } from '../../../context/AuthContext';
 import Cookies from 'js-cookie';
-import { AlertCircle, UserIcon } from 'lucide-react';
+import { AlertCircle, UserIcon, Copy, Check } from 'lucide-react'; // Added Copy and Check icons
 import styles from './Users.module.css';
 
 const Users = () => {
@@ -12,16 +12,32 @@ const Users = () => {
   const [error, setError] = useState(null);
   const [pagination, setPagination] = useState({
     offset: 0,
-    limit: 10,
+    limit: 7,
     total: 0,
     hasMore: false
   });
-  
+  const [copiedProjectId, setCopiedProjectId] = useState(false); // New state for project ID copy
+
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const projectId = searchParams.get('project');
 
-  const fetchUsers = async (offset = 0, limit = 10) => {
+  // Function to format date string - reusing the same format as APIKeys component
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true,
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  const fetchUsers = async (offset = 0, limit = 7) => {
     try {
       setLoading(true);
       
@@ -80,31 +96,36 @@ const Users = () => {
     fetchUsers(newOffset, pagination.limit);
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true,
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
+  // Copy to clipboard function
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedProjectId(true);
+      setTimeout(() => setCopiedProjectId(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
+        {/* Header - updated with copy button */}
         <div className={styles.header}>
           <h1 className={styles.title}>Project Users</h1>
           <div className={styles.projectId}>
             Project ID: <span className={styles.mono}>{projectId || 'Loading...'}</span>
+            <button 
+              className={`${styles.iconButton} ${copiedProjectId ? styles.copied : ''}`}
+              onClick={() => copyToClipboard(projectId)}
+              aria-label="Copy project ID"
+            >
+              {copiedProjectId ? <Check size={14} /> : <Copy size={14} />}
+            </button>
           </div>
         </div>
         
-        {/* Error message display */}
+        {/* Error message display - matching APIKeys */}
         {error && (
           <div className={styles.errorMessage}>
             <AlertCircle size={16} />
@@ -112,7 +133,7 @@ const Users = () => {
           </div>
         )}
         
-        {/* Users Table */}
+        {/* Users Table - using the same structure as APIKeys table */}
         <div className={styles.tableContainer}>
           {loading ? (
             <div className={styles.loading}>
@@ -132,9 +153,7 @@ const Users = () => {
                 {users.map((userItem) => (
                   <tr key={userItem.user_id} className={styles.tableRow}>
                     <td className={styles.cell}>
-                      <div className={styles.userContainer}>
-                        <span className={styles.mono}>{userItem.user_id}</span>
-                      </div>
+                      <span className={styles.mono}>{userItem.user_id}</span>
                     </td>
                     <td className={styles.cell}>{formatDate(userItem.created_at)}</td>
                     <td className={styles.cell}>{formatDate(userItem.last_active_at)}</td>
@@ -150,8 +169,8 @@ const Users = () => {
           )}
         </div>
         
-        {/* Pagination */}
-        {users.length > 0 && (
+        {/* Pagination - similar to how it would be structured in APIKeys */}
+        {users.length > 0 && !loading && (
           <div className={styles.paginationContainer}>
             <div className={styles.paginationInfo}>
               Showing {pagination.offset + 1} - {Math.min(pagination.offset + users.length, pagination.total)} of {pagination.total} users
