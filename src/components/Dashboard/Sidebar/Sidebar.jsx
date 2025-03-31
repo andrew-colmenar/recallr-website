@@ -49,7 +49,7 @@ const Sidebar = ({ projectId }) => {
       <div className={styles.sidebarNav}>
         <nav>
           <ul>
-            <li>
+            {/* <li>
               <Link
                 to={projectUrl("usage")}
                 className={`${styles.navItem} ${isActive("/usage")}`}
@@ -59,7 +59,7 @@ const Sidebar = ({ projectId }) => {
                 </div>
                 <span>Usage</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 to={projectUrl("users")}
@@ -112,15 +112,17 @@ const Sidebar = ({ projectId }) => {
               </Link>
             </li>
             <li>
-              <Link
-                to="/status"
-                className={`${styles.navItem} ${isActive("/status")}`}
+              <a
+                href="https://status.recallrai.com"
+                className={styles.navItem}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <div className={styles.iconContainer}>
                   <LifeBuoy size={18} />
                 </div>
                 <span>Status</span>
-              </Link>
+              </a>
             </li>
           </ul>
         </nav>
