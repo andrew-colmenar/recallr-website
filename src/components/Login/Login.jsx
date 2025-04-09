@@ -115,7 +115,7 @@ function Login() {
       
       setError('');
     } catch (error) {
-      setError(error.response?.data?.detail || 'Failed to reset password');
+      setError(error.response?.data?.detail || 'Failed to resend OTP');
     } finally {
       setLoading(false);
     }
