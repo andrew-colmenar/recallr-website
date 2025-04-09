@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useSearchParams } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useSearchParams,
+} from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
 // import ComingSoon from "./components/ComingSoon/ComingSoon";
-import Billing from "./components/Billing/Main/Billing";
+// import Billing from "./components/Billing/Main/Billing";
 import "./App.css";
 import authService from "./services/authService";
 import Header from "./components/Header/Header";
@@ -22,7 +28,7 @@ const LoadingScreen = () => (
 
 // Main app content with routes
 function AppContent() {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const [sessionValid, setSessionValid] = useState(null);
   const [validatingSession, setValidatingSession] = useState(true);
 
@@ -68,15 +74,15 @@ function AppContent() {
             path="/signup" 
             element={sessionValid ? <Navigate to="/getstarted" /> : <Signup />} 
           />
-          
+
           {/* Protected routes - require authentication */}
           <Route 
             path="/dashboard/*" 
             element={sessionValid ?  <Dashboard/>: <Navigate to="/login" />} 
           />
-          
+
           {/* Non-project specific routes */}
-          <Route 
+          {/* <Route 
             path="/billing" 
             element={sessionValid ?  <Billing/>: <Navigate to="/login" />} 
           />
@@ -111,15 +117,15 @@ function AppContent() {
               <GetStarted />
             } 
           />
-          
+
           {/* Redirect from root to dashboard */}
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               sessionValid ? <Navigate to="/getstarted" /> : <Navigate to="/login" />
             } 
           />
-          
+
           {/* 404 route - handle unmatched routes */}
           <Route 
             path="*" 

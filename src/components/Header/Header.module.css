@@ -21,7 +21,8 @@
   margin-left: 0.4rem;
   font-weight: 600;
   font-size: 1.2rem;
-  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-purple gradient */
+  background: linear-gradient(to right, #3B82F6, #A855F7);
+  /* Blue-purple gradient */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -29,15 +30,18 @@
 
 .header {
   height: 60px;
-  min-height: 60px; 
+  min-height: 60px;
   max-height: 60px;
-  border-bottom: 1px solid #374151; /* Updated: gray-700 */
+  border-bottom: 1px solid #374151;
+  /* Updated: gray-700 */
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.2rem;
-  background-color: #111827; /* Updated: gray-900 */
-  color: #FFFFFF; /* Updated: white */
+  background-color: #111827;
+  /* Updated: gray-900 */
+  color: #FFFFFF;
+  /* Updated: white */
   position: fixed;
   top: 0;
   left: 0;
@@ -67,18 +71,25 @@
   font-size: 0.75rem;
   padding: 0.4rem 0.8rem;
   border-radius: 0.25rem;
-  background-color: #1F2937; /* Updated: gray-800 */
-  border: 1px solid #374151; /* Updated: gray-700 */
-  color: #D1D5DB; /* Updated: gray-300 */
+  background-color: #1F2937;
+  /* Updated: gray-800 */
+  border: 1px solid #374151;
+  /* Updated: gray-700 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .projectSelectorButton:hover {
-  background-color: #374151; /* Updated: gray-700 */
-  border-color: #4B5563; /* Updated: gray-600 */
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2); /* Blue glow */
-  color: #FFFFFF; /* Updated: white */
+  background-color: #374151;
+  /* Updated: gray-700 */
+  border-color: #4B5563;
+  /* Updated: gray-600 */
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
+  /* Blue glow */
+  color: #FFFFFF;
+  /* Updated: white */
 }
 
 .projectName {
@@ -94,7 +105,8 @@
   width: 0.8rem;
   height: 0.8rem;
   transition: transform 0.2s ease-in-out;
-  color: #3B82F6; /* Updated: blue-500 */
+  color: #3B82F6;
+  /* Updated: blue-500 */
 }
 
 .projectSelectorButton:hover .dropdownIcon {
@@ -107,8 +119,10 @@
   left: 0;
   margin-top: 0.25rem;
   width: 14rem;
-  background-color: #1F2937; /* Updated: gray-800 */
-  border: 1px solid #374151; /* Updated: gray-700 */
+  background-color: #1F2937;
+  /* Updated: gray-800 */
+  border: 1px solid #374151;
+  /* Updated: gray-700 */
   border-radius: 0.375rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -126,17 +140,20 @@
 }
 
 .dropdownItem:hover {
-  background-color: #374151; /* Updated: gray-700 */
+  background-color: #374151;
+  /* Updated: gray-700 */
 }
 
 .dropdownItemTitle {
   font-size: 0.75rem;
-  color: #FFFFFF; /* Updated: white */
+  color: #FFFFFF;
+  /* Updated: white */
 }
 
 .dropdownItemSubtitle {
   font-size: 0.65rem;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
 }
 
 .dropdownItemCreate {
@@ -144,11 +161,13 @@
   padding: 0.4rem;
   border-radius: 0.25rem;
   cursor: pointer;
-  border-top: 1px solid #374151; /* Updated: gray-700 */
+  border-top: 1px solid #374151;
+  /* Updated: gray-700 */
 }
 
 .dropdownItemCreate:hover {
-  background-color: #374151; /* Updated: gray-700 */
+  background-color: #374151;
+  /* Updated: gray-700 */
 }
 
 .createProject {
@@ -156,13 +175,15 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
 }
 
 .createIcon {
   width: 0.8rem;
   height: 0.8rem;
-  color: #3B82F6; /* Updated: blue-500 */
+  color: #3B82F6;
+  /* Updated: blue-500 */
 }
 
 .headerRight {
@@ -174,7 +195,8 @@
 .navLink {
   padding: 0.4rem 0.6rem;
   font-size: 0.75rem;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
   text-decoration: none;
   transition: all 0.3s ease;
   position: relative;
@@ -187,12 +209,15 @@
 }
 
 .navLink:hover {
-  color: #FFFFFF; /* Updated: white */
-  background-color: rgba(59, 130, 246, 0.1); /* Blue with low opacity */
+  color: #FFFFFF;
+  /* Updated: white */
+  background-color: rgba(59, 130, 246, 0.1);
+  /* Blue with low opacity */
 }
 
 .navLink.active {
-  color: #FFFFFF; /* Updated: white */
+  color: #FFFFFF;
+  /* Updated: white */
 }
 
 /* Enhanced animation for active nav links */
@@ -203,7 +228,8 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-purple gradient */
+  background: linear-gradient(to right, #3B82F6, #A855F7);
+  /* Blue-purple gradient */
   border-radius: 1px;
   animation: slideIn 0.3s ease-out forwards;
 }
@@ -214,6 +240,7 @@
     left: 50%;
     transform: translateX(-50%);
   }
+
   100% {
     width: 100%;
     left: 0;
@@ -233,7 +260,8 @@
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #3B82F6, #A855F7); /* Blue-purple gradient */
+  background: linear-gradient(135deg, #3B82F6, #A855F7);
+  /* Blue-purple gradient */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,13 +271,15 @@
 
 .avatar:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); /* Blue glow */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  /* Blue glow */
 }
 
 .avatarText {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #FFFFFF; /* Updated: white */
+  color: #FFFFFF;
+  /* Updated: white */
 }
 
 .profileDropdown {
@@ -264,6 +294,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -272,7 +303,8 @@
 
 .profileInfo {
   padding: 0.6rem 0.4rem;
-  border-bottom: 1px solid #374151; /* Updated: gray-700 */
+  border-bottom: 1px solid #374151;
+  /* Updated: gray-700 */
   display: flex;
   flex-direction: column;
 }
@@ -280,12 +312,14 @@
 .profileName {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #FFFFFF; /* Updated: white */
+  color: #FFFFFF;
+  /* Updated: white */
 }
 
 .profileEmail {
   font-size: 0.65rem;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
   margin-top: 0.2rem;
 }
 
@@ -296,7 +330,8 @@
   gap: 0.4rem;
   width: 100%;
   text-align: left;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
   background: none;
   border: none;
   font-size: 0.75rem;
@@ -307,13 +342,16 @@
 }
 
 .profileMenuItem:hover {
-  background-color: #374151; /* Updated: gray-700 */
-  color: #FFFFFF; /* Updated: white */
+  background-color: #374151;
+  /* Updated: gray-700 */
+  color: #FFFFFF;
+  /* Updated: white */
 }
 
 .profileMenuItem svg {
   transition: transform 0.2s ease;
-  color: #3B82F6; /* Updated: blue-500 */
+  color: #3B82F6;
+  /* Updated: blue-500 */
 }
 
 .profileMenuItem:hover svg {
@@ -326,7 +364,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(59, 130, 246, 0.1); /* Blue with low opacity */
+  background-color: rgba(59, 130, 246, 0.1);
+  /* Blue with low opacity */
   border-radius: 0.25rem;
   left: 0;
   top: 0;
@@ -341,10 +380,12 @@
     transform: scale(0);
     opacity: 0;
   }
+
   50% {
     transform: scale(1.1);
     opacity: 0.5;
   }
+
   100% {
     transform: scale(1);
     opacity: 0.2;
@@ -356,19 +397,19 @@
   .header {
     padding: 0 0.8rem;
   }
-  
+
   .headerRight {
     gap: 0.6rem;
   }
-  
+
   .navLink {
     padding: 0.4rem;
   }
-  
+
   .Title {
     display: none;
   }
-  
+
   .projectName {
     max-width: 100px;
   }
@@ -378,11 +419,11 @@
   .projectName {
     max-width: 80px;
   }
-  
+
   .navLinkText {
     font-size: 0.65rem;
   }
-  
+
   .navLink {
     padding: 0.4rem 0.2rem;
   }

@@ -1,8 +1,10 @@
 /* Dashboard styling with CSS modules */
 .dashboard {
   min-height: 100vh;
-  background-color: #111827; /* Updated: gray-900 */
-  color: #FFFFFF; /* Updated: white */
+  background-color: #111827;
+  /* Updated: gray-900 */
+  color: #FFFFFF;
+  /* Updated: white */
 }
 
 .dashboardLoading {
@@ -11,7 +13,8 @@
   align-items: center;
   height: 100vh;
   font-size: 0.875rem;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
 }
 
 .dashboardHeader {
@@ -19,18 +22,22 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #1F2937; /* Updated: gray-800 */
+  background-color: #1F2937;
+  /* Updated: gray-800 */
   border-radius: 0.375rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   margin-bottom: 1rem;
-  border: 1px solid #374151; /* Updated: gray-700 */
+  border: 1px solid #374151;
+  /* Updated: gray-700 */
 }
 
 .dashboardHeader h1 {
   margin: 0;
   font-size: 1.25rem;
-  color: #FFFFFF; /* Updated: white */
-  background: linear-gradient(90deg, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
+  color: #FFFFFF;
+  /* Updated: white */
+  background: linear-gradient(90deg, #3B82F6, #A855F7);
+  /* Updated: blue-purple gradient */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -38,9 +45,12 @@
 
 .logoutButton {
   padding: 0.375rem 0.75rem;
-  background-color: rgba(239, 68, 68, 0.1); /* Updated: red-500 with opacity */
-  color: #EF4444; /* Updated: red-500 */
-  border: 1px solid rgba(239, 68, 68, 0.3); /* Updated: red-500 with opacity */
+  background-color: rgba(239, 68, 68, 0.1);
+  /* Updated: red-500 with opacity */
+  color: #EF4444;
+  /* Updated: red-500 */
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  /* Updated: red-500 with opacity */
   border-radius: 0.25rem;
   cursor: pointer;
   font-weight: 500;
@@ -49,10 +59,13 @@
 }
 
 .logoutButton:hover {
-  background-color: #EF4444; /* Updated: red-500 */
-  color: #FFFFFF; /* Updated: white */
+  background-color: #EF4444;
+  /* Updated: red-500 */
+  color: #FFFFFF;
+  /* Updated: white */
   transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(239, 68, 68, 0.3); /* Updated: red shadow */
+  box-shadow: 0 3px 6px rgba(239, 68, 68, 0.3);
+  /* Updated: red shadow */
 }
 
 .dashboardContent {
@@ -69,11 +82,13 @@
 
 .userInfo,
 .sessionsSection {
-  background-color: #1F2937; /* Updated: gray-800 */
+  background-color: #1F2937;
+  /* Updated: gray-800 */
   border-radius: 0.375rem;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  border: 1px solid #374151; /* Updated: gray-700 */
+  border: 1px solid #374151;
+  /* Updated: gray-700 */
 }
 
 .userInfo h2,
@@ -81,8 +96,10 @@
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 0.875rem;
-  color: #FFFFFF; /* Updated: white */
-  border-bottom: 1px solid #374151; /* Updated: gray-700 */
+  color: #FFFFFF;
+  /* Updated: white */
+  border-bottom: 1px solid #374151;
+  /* Updated: gray-700 */
   padding-bottom: 0.5rem;
 }
 
@@ -98,39 +115,50 @@
   align-items: center;
   padding: 0.75rem;
   border-radius: 0.375rem;
-  border: 1px solid #374151; /* Updated: gray-700 */
+  border: 1px solid #374151;
+  /* Updated: gray-700 */
   transition: all 0.2s ease;
-  background-color: #111827; /* Updated: gray-900 */
+  background-color: #111827;
+  /* Updated: gray-900 */
 }
 
 .sessionItem:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  background-color: rgba(59, 130, 246, 0.05); /* Updated: blue with opacity */
-  border-color: rgba(59, 130, 246, 0.3); /* Updated: blue with opacity */
+  background-color: rgba(59, 130, 246, 0.05);
+  /* Updated: blue with opacity */
+  border-color: rgba(59, 130, 246, 0.3);
+  /* Updated: blue with opacity */
   transform: translateY(-1px);
 }
 
 .sessionInfo p {
   margin: 0.25rem 0;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
   font-size: 0.75rem;
 }
 
 .revokeButton {
   padding: 0.25rem 0.625rem;
-  background-color: rgba(239, 68, 68, 0.1); /* Updated: red with opacity */
-  border: 1px solid rgba(239, 68, 68, 0.3); /* Updated: red with opacity */
+  background-color: rgba(239, 68, 68, 0.1);
+  /* Updated: red with opacity */
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  /* Updated: red with opacity */
   border-radius: 0.1875rem;
-  color: #EF4444; /* Updated: red-500 */
+  color: #EF4444;
+  /* Updated: red-500 */
   cursor: pointer;
   font-size: 0.75rem;
   transition: all 0.2s ease;
 }
 
 .revokeButton:hover {
-  background-color: #EF4444; /* Updated: red-500 */
-  color: #FFFFFF; /* Updated: white */
-  border-color: #EF4444; /* Updated: red-500 */
+  background-color: #EF4444;
+  /* Updated: red-500 */
+  color: #FFFFFF;
+  /* Updated: white */
+  border-color: #EF4444;
+  /* Updated: red-500 */
   transform: translateY(-1px);
 }
 
@@ -141,21 +169,26 @@
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background-color: #111827; /* Updated: gray-900 */
+  background-color: #111827;
+  /* Updated: gray-900 */
 }
 
 /* Content area that holds everything except sidebar */
 .contentContainer {
-  margin-left: 12.8rem; /* Updated: Same as sidebar width */
-  width: calc(100% - 12.8rem); /* Full width minus sidebar */
+  margin-left: 12.8rem;
+  /* Updated: Same as sidebar width */
+  width: calc(100% - 12.8rem);
+  /* Full width minus sidebar */
   min-height: 100vh;
-  padding-top: 60px; /* Same as header height */
+  padding-top: 60px;
+  /* Same as header height */
 }
 
 /* Main content area where routes are rendered */
 .main {
   padding: 1.2rem;
-  min-height: calc(100vh - 60px); /* Minus header height */
+  min-height: calc(100vh - 60px);
+  /* Minus header height */
   width: 100%;
 }
 
@@ -171,10 +204,13 @@
 
 /* Error banner with improved visibility */
 .errorBanner {
-  background-color: rgba(239, 68, 68, 0.1); /* Updated: red with opacity */
-  color: #EF4444; /* Updated: red-500 */
+  background-color: rgba(239, 68, 68, 0.1);
+  /* Updated: red with opacity */
+  color: #EF4444;
+  /* Updated: red-500 */
   padding: 0.625rem 0.875rem;
-  border-left: 3px solid #EF4444; /* Updated: red-500 */
+  border-left: 3px solid #EF4444;
+  /* Updated: red-500 */
   margin-bottom: 0.875rem;
   font-size: 0.75rem;
   display: flex;
@@ -190,42 +226,56 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: fixed; /* Fixed position instead of relative */
+  position: fixed;
+  /* Fixed position instead of relative */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   height: 100vh;
-  width: 100vw; /* Full viewport width */
-  background: linear-gradient(135deg, #111827 0%, #1F2937 50%, #111827 100%); /* Updated: gradient background */
-  color: #FFFFFF; /* Updated: white */
+  width: 100vw;
+  /* Full viewport width */
+  background: linear-gradient(135deg, #111827 0%, #1F2937 50%, #111827 100%);
+  /* Updated: gradient background */
+  color: #FFFFFF;
+  /* Updated: white */
   padding: 1.6rem;
   text-align: center;
-  z-index: 100; /* Above other elements */
-  margin-left: 0; /* Remove margin */
+  z-index: 100;
+  /* Above other elements */
+  margin-left: 0;
+  /* Remove margin */
 }
 
 /* Loading spinner animation */
 .loadingSpinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(59, 130, 246, 0.2); /* Updated: blue with opacity */
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  /* Updated: blue with opacity */
   border-radius: 50%;
-  border-top: 3px solid #3B82F6; /* Updated: blue-500 */
+  border-top: 3px solid #3B82F6;
+  /* Updated: blue-500 */
   animation: spin 1s linear infinite;
   margin-bottom: 1.2rem;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loadingMessage {
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 0.6rem;
-  background: linear-gradient(to right, #3B82F6, #A855F7); /* Updated: blue-purple gradient */
+  background: linear-gradient(to right, #3B82F6, #A855F7);
+  /* Updated: blue-purple gradient */
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -233,20 +283,22 @@
 
 .loadingSubtext {
   font-size: 0.75rem;
-  color: #D1D5DB; /* Updated: gray-300 */
+  color: #D1D5DB;
+  /* Updated: gray-300 */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .contentContainer {
-    margin-left: 3.6rem; /* Smaller margin for collapsed sidebar */
+    margin-left: 3.6rem;
+    /* Smaller margin for collapsed sidebar */
     width: calc(100% - 3.6rem);
   }
-  
+
   .main {
     padding: 0.8rem;
   }
-  
+
   .loadingContainer {
     margin-left: 0;
     width: 100%;

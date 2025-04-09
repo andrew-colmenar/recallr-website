@@ -8,10 +8,10 @@ const COOKIE_EXPIRES = {
 
 // Set a cookie with proper expiration and security settings
 export const setCookie = (name, value, expires = COOKIE_EXPIRES.SESSION) => {
-  Cookies.set(name, value, { 
-    expires, 
-    sameSite: 'strict', 
-    secure: true 
+  Cookies.set(name, value, {
+    expires,
+    sameSite: 'strict',
+    secure: true
   });
 };
 
@@ -22,9 +22,9 @@ export const getCookie = (name) => {
 
 // Remove a cookie
 export const removeCookie = (name) => {
-  Cookies.remove(name, { 
-    sameSite: 'strict', 
-    secure: true 
+  Cookies.remove(name, {
+    sameSite: 'strict',
+    secure: true
   });
 };
 

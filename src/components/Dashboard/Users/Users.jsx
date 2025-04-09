@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router';
-import { appApi } from '../../../api/axios';
-import { useAuth } from '../../../context/AuthContext';
-import Cookies from 'js-cookie';
-import { AlertCircle, UserIcon, Copy, Check } from 'lucide-react';
-import styles from './Users.module.css';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router";
+import { appApi } from "../../../api/axios";
+import { useAuth } from "../../../context/AuthContext";
+import Cookies from "js-cookie";
+import { AlertCircle, UserIcon, Copy, Check } from "lucide-react";
+import styles from "./Users.module.css";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -14,67 +14,67 @@ const Users = () => {
     offset: 0,
     limit: 7,
     total: 0,
-    hasMore: false
+    hasMore: false,
   });
   const [copiedProjectId, setCopiedProjectId] = useState(false); // State for project ID copy
 
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
-  const projectId = searchParams.get('project');
+  const projectId = searchParams.get("project");
 
   // Function to format date string - reusing the same format as APIKeys component
   const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
+    if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
+    return date.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
       hour12: true,
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
   const fetchUsers = async (offset = 0, limit = 7) => {
     try {
       setLoading(true);
-      
-      const user_id = Cookies.get('user_id');
-      const session_id = Cookies.get('session_id');
-      
+
+      const user_id = Cookies.get("user_id");
+      const session_id = Cookies.get("session_id");
+
       if (!user_id || !session_id) {
-        throw new Error('Authentication required');
+        throw new Error("Authentication required");
       }
-      
+
       const response = await appApi.get(`/projects/${projectId}/users`, {
         params: { offset, limit },
         headers: {
-          'X-User-Id': user_id,
-          'X-Session-Id': session_id
-        }
+          "X-User-Id": user_id,
+          "X-Session-Id": session_id,
+        },
       });
-      
+
       setUsers(response.data.users || []);
       setPagination({
         offset,
         limit,
         total: response.data.total || 0,
-        hasMore: response.data.has_more || false
+        hasMore: response.data.has_more || false,
       });
       setError(null);
     } catch (err) {
-      let errorMessage = 'Failed to fetch users. Please try again later.';
-      
+      let errorMessage = "Failed to fetch users. Please try again later.";
+
       if (err.response?.status === 404) {
-        errorMessage = 'Project not found or users feature is not available.';
+        errorMessage = "Project not found or users feature is not available.";
       } else if (err.response?.status === 403) {
-        errorMessage = 'You do not have access to this project\'s users.';
+        errorMessage = "You do not have access to this project's users.";
       }
-      
+
       setError(errorMessage);
-      console.error('Error fetching users:', err);
+      console.error("Error fetching users:", err);
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,7 @@ const Users = () => {
       setCopiedProjectId(true);
       setTimeout(() => setCopiedProjectId(false), 2000);
     } catch (err) {
-      console.error('Failed to copy: ', err);
+      console.error("Failed to copy: ", err);
     }
   };
 
@@ -114,9 +114,12 @@ const Users = () => {
         <div className={styles.header}>
           <h1 className={styles.title}>Project Users</h1>
           <div className={styles.projectId}>
-            Project ID: <span className={styles.mono}>{projectId || 'Loading...'}</span>
-            <button 
-              className={`${styles.iconButton} ${copiedProjectId ? styles.copied : ''}`}
+            Project ID:{" "}
+            <span className={styles.mono}>{projectId || "Loading..."}</span>
+            <button
+              className={`${styles.iconButton} ${
+                copiedProjectId ? styles.copied : ""
+              }`}
               onClick={() => copyToClipboard(projectId)}
               aria-label="Copy project ID"
             >
@@ -124,7 +127,7 @@ const Users = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Error message display */}
         {error && (
           <div className={styles.errorMessage}>
@@ -132,7 +135,7 @@ const Users = () => {
             <span>{error}</span>
           </div>
         )}
-        
+
         {/* Users Table */}
         <div className={styles.tableContainer}>
           {loading ? (
@@ -155,8 +158,12 @@ const Users = () => {
                     <td className={styles.cell}>
                       <span className={styles.mono}>{userItem.user_id}</span>
                     </td>
-                    <td className={styles.cell}>{formatDate(userItem.created_at)}</td>
-                    <td className={styles.cell}>{formatDate(userItem.last_active_at)}</td>
+                    <td className={styles.cell}>
+                      {formatDate(userItem.created_at)}
+                    </td>
+                    <td className={styles.cell}>
+                      {formatDate(userItem.last_active_at)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -168,23 +175,25 @@ const Users = () => {
             </div>
           )}
         </div>
-        
+
         {/* Pagination */}
         {users.length > 0 && !loading && (
           <div className={styles.paginationContainer}>
             <div className={styles.paginationInfo}>
-              Showing {pagination.offset + 1} - {Math.min(pagination.offset + users.length, pagination.total)} of {pagination.total} users
+              Showing {pagination.offset + 1} -{" "}
+              {Math.min(pagination.offset + users.length, pagination.total)} of{" "}
+              {pagination.total} users
             </div>
             <div className={styles.paginationButtons}>
-              <button 
-                className={styles.paginationButton} 
+              <button
+                className={styles.paginationButton}
                 onClick={handlePrevPage}
                 disabled={pagination.offset === 0}
               >
                 Previous
               </button>
-              <button 
-                className={styles.paginationButton} 
+              <button
+                className={styles.paginationButton}
                 onClick={handleNextPage}
                 disabled={!pagination.hasMore}
               >

@@ -5,13 +5,16 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: #111827; /* Dark background from Recallr color palette */
+  background-color: #111827;
+  /* Dark background from Recallr color palette */
   background-image: linear-gradient(to bottom right, #111827, #1F2937, #111827);
 }
 
 .loginPanel {
-  background-color: #1F2937; /* Card background color */
-  color: #D1D5DB; /* Body text color */
+  background-color: #1F2937;
+  /* Card background color */
+  color: #D1D5DB;
+  /* Body text color */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +23,8 @@
   width: 100%;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  border: 1px solid #374151; /* Border color */
+  border: 1px solid #374151;
+  /* Border color */
 }
 
 .loginContent {
@@ -31,16 +35,19 @@
 .loginContent h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: #FFFFFF; /* Heading text color */
+  color: #FFFFFF;
+  /* Heading text color */
   font-weight: 700;
-  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-Purple gradient */
+  background: linear-gradient(to right, #3B82F6, #A855F7);
+  /* Blue-Purple gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .loginContent p {
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
   margin-bottom: 2rem;
   font-size: 1.1rem;
 }
@@ -60,8 +67,10 @@
   padding: 0.85rem;
   border-radius: 6px;
   background: transparent;
-  border: 1px solid #374151; /* Border color */
-  color: #D1D5DB; /* Body text color */
+  border: 1px solid #374151;
+  /* Border color */
+  color: #D1D5DB;
+  /* Body text color */
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
@@ -76,9 +85,12 @@
 
 /* Google button hover style */
 .google:hover {
-  background-color: rgba(59, 130, 246, 0.1); /* Primary accent with low opacity */
-  border-color: #3B82F6; /* Primary accent */
-  color: #FFFFFF; /* White text on hover */
+  background-color: rgba(59, 130, 246, 0.1);
+  /* Primary accent with low opacity */
+  border-color: #3B82F6;
+  /* Primary accent */
+  color: #FFFFFF;
+  /* White text on hover */
 }
 
 .divider {
@@ -86,19 +98,22 @@
   align-items: center;
   text-align: center;
   margin: 1.5rem 0;
-  color: #6B7280; /* Gray-500 */
+  color: #6B7280;
+  /* Gray-500 */
 }
 
 .divider::before,
 .divider::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid #374151; /* Border color */
+  border-bottom: 1px solid #374151;
+  /* Border color */
 }
 
 .divider span {
   padding: 0 0.75rem;
-  color: #6B7280; /* Gray-500 */
+  color: #6B7280;
+  /* Gray-500 */
   font-size: 14px;
 }
 
@@ -113,28 +128,35 @@
   width: 100%;
   padding: 0.85rem;
   margin-bottom: 1rem;
-  background-color: #4B5563; /* Input background color */
-  border: 1px solid #374151; /* Border color */
+  background-color: #4B5563;
+  /* Input background color */
+  border: 1px solid #374151;
+  /* Border color */
   border-radius: 6px;
-  color: #FFFFFF; /* White text */
+  color: #FFFFFF;
+  /* White text */
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus {
   outline: none;
-  border-color: #3B82F6; /* Primary accent */
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25); /* Blue glow effect */
+  border-color: #3B82F6;
+  /* Primary accent */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  /* Blue glow effect */
 }
 
 .input::placeholder {
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
 }
 
 .continueButton {
   width: 100%;
   padding: 0.85rem;
-  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-Purple gradient */
+  background: linear-gradient(to right, #3B82F6, #A855F7);
+  /* Blue-Purple gradient */
   color: white;
   border: none;
   border-radius: 6px;
@@ -164,12 +186,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
   transition: all 0.5s;
   z-index: -1;
 }
@@ -179,8 +199,10 @@
 }
 
 .continueButton:disabled {
-  background: #4B5563; /* Gray-600 */
-  color: #9CA3AF; /* Gray-400 */
+  background: #4B5563;
+  /* Gray-600 */
+  color: #9CA3AF;
+  /* Gray-400 */
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -200,9 +222,11 @@
 }
 
 .passwordField .input {
-  margin-bottom: 0; /* Override the default input margin */
+  margin-bottom: 0;
+  /* Override the default input margin */
   width: 100%;
-  padding-right: 70px; /* Make room for the toggle button */
+  padding-right: 70px;
+  /* Make room for the toggle button */
 }
 
 .passwordField:last-of-type {
@@ -216,7 +240,8 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
   cursor: pointer;
   font-size: 14px;
   padding: 5px 10px;
@@ -225,16 +250,20 @@
 }
 
 .togglePassword:hover {
-  color: #3B82F6; /* Primary accent */
-  background-color: rgba(59, 130, 246, 0.1); /* Primary accent with low opacity */
+  color: #3B82F6;
+  /* Primary accent */
+  background-color: rgba(59, 130, 246, 0.1);
+  /* Primary accent with low opacity */
 }
 
 .backButton {
   width: 100%;
   padding: 0.85rem;
   background-color: transparent;
-  color: #D1D5DB; /* Body text color */
-  border: 1px solid #374151; /* Border color */
+  color: #D1D5DB;
+  /* Body text color */
+  border: 1px solid #374151;
+  /* Border color */
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
@@ -244,15 +273,18 @@
 }
 
 .backButton:hover {
-  background-color: rgba(59, 130, 246, 0.1); /* Primary accent with low opacity */
-  border-color: #3B82F6; /* Primary accent */
+  background-color: rgba(59, 130, 246, 0.1);
+  /* Primary accent with low opacity */
+  border-color: #3B82F6;
+  /* Primary accent */
   color: #FFFFFF;
 }
 
 .resendButton {
   background: none;
   border: none;
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
   text-decoration: underline;
   cursor: pointer;
   font-size: 0.9rem;
@@ -264,22 +296,27 @@
 }
 
 .resendButton:hover {
-  color: #3B82F6; /* Primary accent */
+  color: #3B82F6;
+  /* Primary accent */
 }
 
 .resendButton:disabled {
-  color: #6B7280; /* Gray-500 */
+  color: #6B7280;
+  /* Gray-500 */
   cursor: not-allowed;
 }
 
 .errorMessage {
-  color: #F87171; /* Red-400 */
+  color: #F87171;
+  /* Red-400 */
   margin-bottom: 15px;
   font-size: 14px;
   padding: 12px 15px;
-  background-color: rgba(239, 68, 68, 0.1); /* Error color with low opacity */
+  background-color: rgba(239, 68, 68, 0.1);
+  /* Error color with low opacity */
   border-radius: 6px;
-  border-left: 3px solid #EF4444; /* Error color */
+  border-left: 3px solid #EF4444;
+  /* Error color */
 }
 
 .nameFields {
@@ -297,38 +334,44 @@
   margin-top: 20px;
   text-align: center;
   font-size: 14px;
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
 }
 
 .loginLink button {
   background: none;
   border: none;
-  color: #3B82F6; /* Primary accent */
+  color: #3B82F6;
+  /* Primary accent */
   cursor: pointer;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .loginLink button:hover {
-  color: #A855F7; /* Purple-500 */
+  color: #A855F7;
+  /* Purple-500 */
   text-decoration: underline;
 }
 
 .otpPrompt {
   margin-bottom: 1rem;
   text-align: center;
-  color: #D1D5DB; /* Body text color */
+  color: #D1D5DB;
+  /* Body text color */
 }
 
 .emailHighlight {
-  color: #3B82F6; /* Primary accent */
+  color: #3B82F6;
+  /* Primary accent */
   font-weight: 500;
 }
 
 .otpTimer {
   margin-bottom: 1.5rem;
   text-align: center;
-  color: #A855F7; /* Purple-500 */
+  color: #A855F7;
+  /* Purple-500 */
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -344,6 +387,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -357,7 +401,8 @@
 .togglePassword:focus,
 .resendButton:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); /* Primary accent with low opacity */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  /* Primary accent with low opacity */
 }
 
 /* Media queries */
@@ -368,7 +413,7 @@
     max-width: 100%;
     height: 100%;
   }
-  
+
   .loginContent h1 {
     font-size: 2rem;
   }

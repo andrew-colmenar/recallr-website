@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { ChevronDown, LogOut } from "lucide-react";
 import ProjectModal from "../Dashboard/Projects/ProjectModal";
-import styles from './Header.module.css';
-import { useAuth } from '../../context/AuthContext';
+import styles from "./Header.module.css";
+import { useAuth } from "../../context/AuthContext";
 import { appApi } from "../../api/axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 const DEFAULT_PROJECT = {
   id: "00000000-0000-0000-0000-000000000000",
   name: "Default Project",
   description: "Default project for new users",
   created_at: new Date().toISOString(),
-  is_available: true
+  is_available: true,
 };
 
 const Header = () => {
@@ -22,7 +27,7 @@ const Header = () => {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user } = useAuth();
@@ -30,69 +35,71 @@ const Header = () => {
   const projectIdRef = useRef(null);
 
   // Check if current path is dashboard or starts with dashboard
-  const isDashboardActive = location.pathname === "/dashboard" || location.pathname.startsWith("/dashboard");
+  const isDashboardActive =
+    location.pathname === "/dashboard" ||
+    location.pathname.startsWith("/dashboard");
 
   useEffect(() => {
     // Get project ID from URL
-    const projectId = searchParams.get('project');
-    
+    const projectId = searchParams.get("project");
+
     // Skip re-fetching if we already have this project loaded
     if (projectId === projectIdRef.current) {
       return;
     }
-    
+
     // Update the ref with current projectId
     projectIdRef.current = projectId;
-    
+
     if (!projectId) {
       setCurrentProject(DEFAULT_PROJECT);
       return;
     }
-    
+
     // If there's a project ID, fetch the project details
     const fetchProjectDetails = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
-        const user_id = Cookies.get('user_id');
-        const session_id = Cookies.get('session_id');
-        
+        const user_id = Cookies.get("user_id");
+        const session_id = Cookies.get("session_id");
+
         if (!user_id || !session_id) {
-          throw new Error('Authentication required');
+          throw new Error("Authentication required");
         }
-        
+
         const response = await appApi.get(`projects/${projectId}`, {
           headers: {
-            'X-User-Id': user_id,
-            'X-Session-Id': session_id
-          }
+            "X-User-Id": user_id,
+            "X-Session-Id": session_id,
+          },
         });
-        
+
         setCurrentProject(response.data);
       } catch (err) {
-        setError('Failed to load project details');
+        setError("Failed to load project details");
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchProjectDetails();
   }, [searchParams, location.search]);
 
   const handleProjectSelect = (project) => {
     setCurrentProject(project);
     projectIdRef.current = project.id;
-    
+
     // If we're on a dashboard path, preserve the current route with the new project
-    if (location.pathname.startsWith('/dashboard/')) {
-      const routePart = location.pathname.split('/dashboard/')[1] || 'settings';
+    if (location.pathname.startsWith("/dashboard/")) {
+      const routePart = location.pathname.split("/dashboard/")[1] || "settings";
       navigate(`/dashboard/${routePart}?project=${project.id}`);
     } else {
       // Otherwise, go to settings with the selected project
       navigate(`/dashboard/settings?project=${project.id}`);
     }
-    
+
     // Close the modal after project selection
     setIsProjectModalOpen(false);
   };
@@ -114,10 +121,10 @@ const Header = () => {
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -127,23 +134,25 @@ const Header = () => {
         <div className={styles.LogoContainer}>
           <span className={styles.Title}>Recallr AI</span>
         </div>
-        
+
         {/* Project selector - moved to the left side */}
-        {location.pathname.startsWith('/dashboard/') && (
+        {location.pathname.startsWith("/dashboard/") && (
           <div className={styles.projectSelector}>
             <button
               className={styles.projectSelectorButton}
               onClick={() => setIsProjectModalOpen(true)}
             >
               <span className={styles.projectName}>
-                {loading ? "Loading..." : currentProject.name || "Select Project"}
+                {loading
+                  ? "Loading..."
+                  : currentProject.name || "Select Project"}
               </span>
               <ChevronDown className={styles.dropdownIcon} />
             </button>
 
-            <ProjectModal 
-              isOpen={isProjectModalOpen} 
-              onClose={() => setIsProjectModalOpen(false)} 
+            <ProjectModal
+              isOpen={isProjectModalOpen}
+              onClose={() => setIsProjectModalOpen(false)}
               onProjectSelect={handleProjectSelect}
               currentProjectId={projectIdRef.current}
             />
@@ -152,13 +161,19 @@ const Header = () => {
       </div>
 
       <div className={styles.headerRight}>
-        <Link 
-          to={currentProject.id !== DEFAULT_PROJECT.id ? `/dashboard?project=${currentProject.id}` : "/dashboard"}
-          className={`${styles.navLink} ${isDashboardActive ? styles.active : ""}`}
+        <Link
+          to={
+            currentProject.id !== DEFAULT_PROJECT.id
+              ? `/dashboard?project=${currentProject.id}`
+              : "/dashboard"
+          }
+          className={`${styles.navLink} ${
+            isDashboardActive ? styles.active : ""
+          }`}
         >
           <span className={styles.navLinkText}>Dashboard</span>
         </Link>
-        
+
         {/* <a
           href="https://recallrai.com/playground"
           target="_blank"
@@ -167,40 +182,47 @@ const Header = () => {
         >
           <span className={styles.navLinkText}>Playground</span>
         </a> */}
-        
+
         {/* <Link
           to="/docs"
           className={`${styles.navLink} ${location.pathname === "/docs" ? styles.active : ""}`}
         >
           <span className={styles.navLinkText}>Docs</span>
         </Link> */}
-        
-        <Link
+
+        {/* <Link
           to="/billing"
           className={`${styles.navLink} ${location.pathname === "/billing" ? styles.active : ""}`}
         >
           <span className={styles.navLinkText}>Billing</span>
-        </Link>
-        
+        </Link> */}
+
         <div className={styles.userProfile} ref={profileRef}>
-          <div 
+          <div
             className={styles.avatar}
             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
           >
-            <span className={styles.avatarText}>{user?.first_name?.[0] || 'U'}</span>
+            <span className={styles.avatarText}>
+              {user?.first_name?.[0] || "U"}
+            </span>
           </div>
-          
+
           {isProfileMenuOpen && (
             <div className={`${styles.dropdownMenu} ${styles.profileDropdown}`}>
               <div className={styles.dropdownContent}>
                 {user && (
                   <div className={styles.profileInfo}>
-                    <span className={styles.profileName}>{`${user.first_name || ''} ${user.last_name || ''}`}</span>
+                    <span className={styles.profileName}>{`${
+                      user.first_name || ""
+                    } ${user.last_name || ""}`}</span>
                     <span className={styles.profileEmail}>{user.email}</span>
                   </div>
                 )}
-                
-                <button onClick={handleLogout} className={styles.profileMenuItem}>
+
+                <button
+                  onClick={handleLogout}
+                  className={styles.profileMenuItem}
+                >
                   <LogOut size={16} />
                   <span>Logout</span>
                 </button>

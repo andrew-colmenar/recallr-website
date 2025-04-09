@@ -24,13 +24,13 @@
   padding: 16px;
   padding-top: 80px;
   border-radius: 8px;
-  padding:3rem;
-  padding-top:5rem;
+  padding: 3rem;
+  padding-top: 5rem;
 }
 
 /* Common section styling */
-.balance-section, 
-.history-section, 
+.balance-section,
+.history-section,
 .pricing-section {
   background-color: var(--secondary-bg);
   border-radius: 8px;
@@ -239,7 +239,8 @@
 
 /* Billing History Section */
 .history-section {
-  padding: 24px; /* Changed from 16px to 24px to match other sections */
+  padding: 24px;
+  /* Changed from 16px to 24px to match other sections */
   background-color: var(--secondary-bg);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -375,7 +376,7 @@
   .action-buttons {
     flex-direction: column;
   }
-  
+
   .card-grid,
   .pricing-plans {
     grid-template-columns: 1fr;
@@ -408,8 +409,9 @@
 .status svg {
   display: inline-flex;
   vertical-align: middle;
-  margin-top: -2px; /* Slight adjustment to align with text */
-  
+  margin-top: -2px;
+  /* Slight adjustment to align with text */
+
 }
 
 .error-message {
@@ -482,8 +484,10 @@
   border-radius: 6px;
   padding: 0 12px;
   transition: border-color 0.2s ease;
-  width: auto; /* Change from fixed width to auto */
-  min-width: 80px; /* Set a minimum width */
+  width: auto;
+  /* Change from fixed width to auto */
+  min-width: 80px;
+  /* Set a minimum width */
 }
 
 .custom-amount:focus-within {
@@ -496,9 +500,11 @@
   border: none;
   color: var(--text-primary);
   padding: 8px 4px;
-  width: 50px; /* Adjust width to better fit content */
+  width: 50px;
+  /* Adjust width to better fit content */
   font-size: 14px;
-  text-align: center; /* Center the text for better appearance */
+  text-align: center;
+  /* Center the text for better appearance */
 }
 
 .amount-input:focus {
@@ -515,6 +521,7 @@
 /* Firefox */
 .amount-input[type=number] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 /* Custom increment/decrement buttons */
@@ -542,7 +549,8 @@
 
 .top-up-button {
   margin-top: 8px;
-  width: auto; /* Changed from 100% to auto */
+  width: auto;
+  /* Changed from 100% to auto */
   padding-left: 20px;
   padding-right: 20px;
   white-space: nowrap;
@@ -554,7 +562,8 @@
 
 /* Transactions Table */
 .transactions-table {
-  background-color: var(--card-bg); /* Match the card background */
+  background-color: var(--card-bg);
+  /* Match the card background */
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 24px;
@@ -604,7 +613,8 @@
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
-  gap: 4px; /* Add space between icon and text */
+  gap: 4px;
+  /* Add space between icon and text */
 }
 
 .status svg {
@@ -620,7 +630,8 @@
 }
 
 .status-success svg {
-  margin-right: 4px; /* Additional space between icon and text */
+  margin-right: 4px;
+  /* Additional space between icon and text */
 }
 
 .status-pending {
@@ -630,7 +641,8 @@
 }
 
 .status-pending svg {
-  margin-right: 4px; /* Additional space between icon and text */
+  margin-right: 4px;
+  /* Additional space between icon and text */
 }
 
 .status-failed {
@@ -640,7 +652,8 @@
 }
 
 .status-failed svg {
-  margin-right: 4px; /* Additional space between icon and text */
+  margin-right: 4px;
+  /* Additional space between icon and text */
 }
 
 .invoice-link {
@@ -688,23 +701,25 @@
 
 /* Responsive adjustments for transactions table */
 @media (max-width: 768px) {
-  .table-header, .table-row {
+
+  .table-header,
+  .table-row {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
-  
+
   .header-cell:nth-child(3),
   .header-cell:nth-child(4),
   .header-cell:nth-child(5) {
     display: none;
   }
-  
+
   .cell:nth-child(3),
   .cell:nth-child(4),
   .cell:nth-child(5) {
     display: none;
   }
-  
+
   .cell:before {
     content: attr(data-label);
     display: block;
@@ -720,7 +735,7 @@
   .amount-selector {
     flex-direction: column;
   }
-  
+
   .custom-amount {
     width: 100%;
   }
