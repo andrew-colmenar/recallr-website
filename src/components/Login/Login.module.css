@@ -5,13 +5,16 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: #111827; /* Dark background from Recallr color palette */
+  background-color: #111827;
+  /* Dark background from Recallr color palette */
   background-image: linear-gradient(to bottom right, #111827, #1F2937, #111827);
 }
 
 .loginPanel {
-  background-color: #1F2937; /* Card background color */
-  color: #D1D5DB; /* Body text color */
+  background-color: #1F2937;
+  /* Card background color */
+  color: #D1D5DB;
+  /* Body text color */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +23,8 @@
   width: 100%;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  border: 1px solid #374151; /* Border color */
+  border: 1px solid #374151;
+  /* Border color */
 }
 
 .loginContent {
@@ -31,16 +35,19 @@
 .loginContent h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: #FFFFFF; /* Heading text color */
+  color: #FFFFFF;
+  /* Heading text color */
   font-weight: 700;
-  background: linear-gradient(to right, #3B82F6, #A855F7); /* Blue-Purple gradient */
+  background: linear-gradient(to right, #3B82F6, #A855F7);
+  /* Blue-Purple gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .loginContent p {
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
   margin-bottom: 2rem;
   font-size: 1.1rem;
 }
@@ -60,16 +67,20 @@
   padding: 0.85rem;
   border-radius: 6px;
   background: transparent;
-  border: 1px solid #374151; /* Border color */
-  color: #D1D5DB; /* Text color */
+  border: 1px solid #374151;
+  /* Border color */
+  color: #D1D5DB;
+  /* Text color */
   cursor: pointer;
   font-size: 0.95rem;
   transition: all 0.2s ease;
 }
 
 .socialButton:hover {
-  background-color: rgba(59, 130, 246, 0.05); /* Blue with opacity */
-  border-color: #3B82F6; /* Blue-500 */
+  background-color: rgba(59, 130, 246, 0.05);
+  /* Blue with opacity */
+  border-color: #3B82F6;
+  /* Blue-500 */
   transform: translateY(-2px);
 }
 
@@ -79,14 +90,16 @@
 }
 
 .google {
-  border-color: #374151; /* Border color */
+  border-color: #374151;
+  /* Border color */
 }
 
 .divider {
   display: flex;
   align-items: center;
   margin: 1.5rem 0;
-  color: #6B7280; /* Gray-500 */
+  color: #6B7280;
+  /* Gray-500 */
   font-size: 0.9rem;
 }
 
@@ -95,7 +108,8 @@
   content: "";
   flex: 1;
   height: 1px;
-  background-color: #374151; /* Border color */
+  background-color: #374151;
+  /* Border color */
 }
 
 .divider span {
@@ -113,29 +127,37 @@
   width: 100%;
   padding: 0.85rem 1rem;
   margin-bottom: 0.5rem;
-  background-color: #374151; /* Gray-700 */
-  border: 1px solid #4B5563; /* Gray-600 */
+  background-color: #374151;
+  /* Gray-700 */
+  border: 1px solid #4B5563;
+  /* Gray-600 */
   border-radius: 6px;
-  color: #FFFFFF; /* White */
+  color: #FFFFFF;
+  /* White */
   font-size: 0.95rem;
   transition: all 0.2s ease;
 }
 
 .input:focus {
   outline: none;
-  border-color: #3B82F6; /* Blue-500 */
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); /* Blue with opacity */
+  border-color: #3B82F6;
+  /* Blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  /* Blue with opacity */
 }
 
 .input::placeholder {
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
 }
 
 .continueButton {
   width: 100%;
   padding: 0.85rem;
-  background: linear-gradient(135deg, #3B82F6, #A855F7); /* Blue-Purple gradient */
-  color: #FFFFFF; /* White */
+  background: linear-gradient(135deg, #3B82F6, #A855F7);
+  /* Blue-Purple gradient */
+  color: #FFFFFF;
+  /* White */
   border: none;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -145,12 +167,14 @@
   position: relative;
   overflow: hidden;
   z-index: 1;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); /* Blue shadow */
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+  /* Blue shadow */
 }
 
 .continueButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.35); /* Enhanced blue shadow */
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.35);
+  /* Enhanced blue shadow */
 }
 
 .continueButton:active {
@@ -165,12 +189,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
   transition: all 0.5s;
   z-index: -1;
 }
@@ -180,7 +202,8 @@
 }
 
 .continueButton:disabled {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(168, 85, 247, 0.5)); /* Faded gradient */
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(168, 85, 247, 0.5));
+  /* Faded gradient */
   color: rgba(255, 255, 255, 0.7);
   cursor: not-allowed;
   transform: none;
@@ -204,7 +227,8 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
   cursor: pointer;
   font-size: 0.8rem;
   padding: 0.25rem 0.5rem;
@@ -213,16 +237,20 @@
 }
 
 .togglePassword:hover {
-  background-color: rgba(59, 130, 246, 0.1); /* Blue with opacity */
-  color: #D1D5DB; /* Gray-300 */
+  background-color: rgba(59, 130, 246, 0.1);
+  /* Blue with opacity */
+  color: #D1D5DB;
+  /* Gray-300 */
 }
 
 .backButton {
   width: 100%;
   padding: 0.85rem;
   background: transparent;
-  color: #D1D5DB; /* Gray-300 */
-  border: 1px solid #374151; /* Gray-700 */
+  color: #D1D5DB;
+  /* Gray-300 */
+  border: 1px solid #374151;
+  /* Gray-700 */
   border-radius: 6px;
   font-size: 0.95rem;
   cursor: pointer;
@@ -232,15 +260,19 @@
 }
 
 .backButton:hover {
-  background-color: rgba(59, 130, 246, 0.05); /* Blue with opacity */
-  border-color: #4B5563; /* Gray-600 */
-  color: #FFFFFF; /* White */
+  background-color: rgba(59, 130, 246, 0.05);
+  /* Blue with opacity */
+  border-color: #4B5563;
+  /* Gray-600 */
+  color: #FFFFFF;
+  /* White */
 }
 
 .resendButton {
   background: none;
   border: none;
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
   text-decoration: underline;
   cursor: pointer;
   font-size: 0.9rem;
@@ -252,19 +284,24 @@
 }
 
 .resendButton:hover:not(:disabled) {
-  color: #3B82F6; /* Blue-500 */
+  color: #3B82F6;
+  /* Blue-500 */
 }
 
 .resendButton:disabled {
-  color: #6B7280; /* Gray-500 */
+  color: #6B7280;
+  /* Gray-500 */
   cursor: not-allowed;
   text-decoration: none;
 }
 
 .errorMessage {
-  color: #FFFFFF; /* White */
-  background-color: rgba(239, 68, 68, 0.1); /* Red-500 with opacity */
-  border-left: 3px solid #EF4444; /* Red-500 */
+  color: #FFFFFF;
+  /* White */
+  background-color: rgba(239, 68, 68, 0.1);
+  /* Red-500 with opacity */
+  border-left: 3px solid #EF4444;
+  /* Red-500 */
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
   padding: 1rem;
@@ -287,14 +324,16 @@
   margin-top: 2rem;
   text-align: center;
   font-size: 0.95rem;
-  color: #9CA3AF; /* Gray-400 */
+  color: #9CA3AF;
+  /* Gray-400 */
 }
 
 .signupLink button,
 .loginLink button {
   background: none;
   border: none;
-  color: #3B82F6; /* Blue-500 */
+  color: #3B82F6;
+  /* Blue-500 */
   cursor: pointer;
   font-weight: 500;
   transition: color 0.2s ease;
@@ -303,27 +342,31 @@
 
 .signupLink button:hover,
 .loginLink button:hover {
-  color: #2563EB; /* Blue-600 */
+  color: #2563EB;
+  /* Blue-600 */
   text-decoration: underline;
 }
 
 .otpPrompt {
   margin-bottom: 1rem;
   text-align: center;
-  color: #D1D5DB; /* Gray-300 */
+  color: #D1D5DB;
+  /* Gray-300 */
   font-size: 0.95rem;
 }
 
 .otpTimer {
   margin-bottom: 1.5rem;
   text-align: center;
-  color: #3B82F6; /* Blue-500 */
+  color: #3B82F6;
+  /* Blue-500 */
   font-size: 0.9rem;
   font-weight: 500;
 }
 
 .emailHighlight {
-  color: #FFFFFF; /* White */
+  color: #FFFFFF;
+  /* White */
   font-weight: 500;
 }
 
@@ -335,7 +378,7 @@
     max-width: 100%;
     height: 100%;
   }
-  
+
   .loginContent h1 {
     font-size: 2rem;
   }

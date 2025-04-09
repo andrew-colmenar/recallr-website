@@ -57,47 +57,49 @@ export const signInWithGoogle = async () => {
     browser_name: deviceInfo.browserName,
   });
 
-  const redirectUrl = `${import.meta.env.VITE_GOOGLE_AUTH_REDIRECT_URL}?${params.toString()}`;
+  const redirectUrl = `${
+    import.meta.env.VITE_GOOGLE_AUTH_REDIRECT_URL
+  }?${params.toString()}`;
 
   // Before redirecting, set up a handler for when we return
-  localStorage.setItem('pendingGoogleAuth', 'true');
-  
+  localStorage.setItem("pendingGoogleAuth", "true");
+
   window.location.href = redirectUrl;
 };
 
 // Function to handle the redirection from auth service
-export const handleGoogleAuthRedirect = () => {  
+export const handleGoogleAuthRedirect = () => {
   // Check if we're on the dashboard with auth parameters
-  if (window.location.pathname.includes('/dashboard')) {
+  if (window.location.pathname.includes("/dashboard")) {
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('user_id');
-    const sessionId = urlParams.get('session_id');
-    
+    const userId = urlParams.get("user_id");
+    const sessionId = urlParams.get("session_id");
+
     // If we have the auth parameters, save them to cookies
     if (userId && sessionId) {
-      setCookie('user_id', userId);
-      setCookie('session_id', sessionId);
-      
+      setCookie("user_id", userId);
+      setCookie("session_id", sessionId);
+
       // Clean up the URL by removing the query parameters
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
-      
+
       // Clear the pending auth flag
-      localStorage.removeItem('pendingGoogleAuth');
-      
+      localStorage.removeItem("pendingGoogleAuth");
+
       return true; // Authentication completed successfully
     }
   }
-  
+
   return false; // Authentication not completed
 };
 
 // Configure global event listener for page loads to handle auth redirects
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   // Only run in browser environment
-  window.addEventListener('DOMContentLoaded', function() {
+  window.addEventListener("DOMContentLoaded", function () {
     // Check if there's a pending Google auth (set before redirect)
-    if (localStorage.getItem('pendingGoogleAuth') === 'true') {
+    if (localStorage.getItem("pendingGoogleAuth") === "true") {
       handleGoogleAuthRedirect();
     }
   });
@@ -108,6 +110,6 @@ export const GoogleAuthHandler = () => {
   useEffect(() => {
     handleGoogleAuthRedirect();
   }, []);
-  
+
   return null; // This component doesn't render anything
 };

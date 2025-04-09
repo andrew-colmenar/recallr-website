@@ -23,15 +23,15 @@ const getCookieSettings = () => {
 
 const setSessionCookies = (session) => {
   const cookieSettings = getCookieSettings();
-  
-  Cookies.set('user_id', session.user_id, { 
+
+  Cookies.set('user_id', session.user_id, {
     expires: cookieSettings.expirationDays,
     sameSite: cookieSettings.sameSite,
     secure: cookieSettings.secure,
     path: cookieSettings.path
   });
-  
-  Cookies.set('session_id', session.session_id, { 
+
+  Cookies.set('session_id', session.session_id, {
     expires: cookieSettings.expirationDays,
     sameSite: cookieSettings.sameSite,
     secure: cookieSettings.secure,
@@ -41,13 +41,13 @@ const setSessionCookies = (session) => {
 
 const clearSessionCookies = () => {
   const cookieSettings = getCookieSettings();
-  
+
   Cookies.remove('user_id', {
     path: cookieSettings.path,
     sameSite: cookieSettings.sameSite,
     secure: cookieSettings.secure
   });
-  
+
   Cookies.remove('session_id', {
     path: cookieSettings.path,
     sameSite: cookieSettings.sameSite,
@@ -77,7 +77,7 @@ const authService = {
   verifyOtp: async (transactionId, code) => {
     const response = await authApi.post('otp/verify', {
       transaction_id: transactionId,
-      code:code,
+      code: code,
     });
     return response.data;
   },
@@ -101,12 +101,12 @@ const authService = {
       password,
       transaction_id: transactionId,
     });
-    
+
     // Set cookies with session data
     if (response.data.session) {
       setSessionCookies(response.data.session);
     }
-    
+
     return response.data;
   },
 
@@ -125,28 +125,28 @@ const authService = {
     const response = await authApi.post('login/complete', {
       transaction_id: transactionId,
     });
-    
+
     // Set cookies with session data
     if (response.data.session) {
       setSessionCookies(response.data.session);
     }
-    
+
     return response.data;
   },
 
   // Logout the user
   logout: async () => {
     const { user_id, session_id } = getSessionFromCookies();
-    
+
     if (!user_id || !session_id) {
       return { detail: 'No active session' };
     }
-    
+
     const response = await authApi.post('logout', {
       user_id,
       session_id,
     });
-    
+
     clearSessionCookies();
     return response.data;
   },
@@ -154,11 +154,11 @@ const authService = {
   // Get current session information
   getCurrentSession: async () => {
     const { user_id, session_id } = getSessionFromCookies();
-    
+
     if (!user_id || !session_id) {
       return null;
     }
-    
+
     try {
       const response = await authApi.post('sessions/current', {
         user_id,
@@ -177,11 +177,11 @@ const authService = {
   // Get all active sessions
   getAllSessions: async () => {
     const { user_id, session_id } = getSessionFromCookies();
-    
+
     if (!user_id || !session_id) {
       return null;
     }
-    
+
     const response = await authApi.post('sessions/all', {
       user_id,
       session_id,
@@ -193,11 +193,11 @@ const authService = {
   // Revoke a specific session
   revokeSession: async (targetUserId, targetSessionId) => {
     const { user_id, session_id } = getSessionFromCookies();
-    
+
     if (!user_id || !session_id) {
       return null;
     }
-    
+
     const response = await authApi.post(`sessions/${targetUserId}/${targetSessionId}/revoke`, {});
     return response.data;
   },
@@ -205,29 +205,29 @@ const authService = {
   // Validate the current session
   validateSession: async () => {
     const { user_id, session_id } = getSessionFromCookies();
-    
+
     if (!user_id || !session_id) {
       return false;
     }
-    
+
     try {
       const response = await authApi.post('sessions/validate-session', {
         user_id,
         session_id,
       });
-      
+
       // If server returns a refreshed session, update cookies
       if (response.data?.session?.session_id) {
         setSessionCookies(response.data.session);
       }
-      
+
       return true;
     } catch (error) {
       // Only clear cookies for authentication errors
       if (error.response && (error.response.status === 401 || error.response.status === 403)) {
         clearSessionCookies();
       }
-      
+
       return false;
     }
   },

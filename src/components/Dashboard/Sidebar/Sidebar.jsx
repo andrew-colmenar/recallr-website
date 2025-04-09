@@ -9,7 +9,7 @@ import {
   Settings,
   AlertCircle,
   LifeBuoy,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
@@ -31,7 +31,7 @@ const Sidebar = ({ projectId }) => {
   const projectUrl = (path) => {
     return `/dashboard/${path}?project=${projectId}`;
   };
-  
+
   // Get the current section name for display in header
   const getCurrentSectionName = () => {
     const path = location.pathname;
