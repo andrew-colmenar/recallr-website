@@ -46,7 +46,11 @@ export const getUserPreferences = () => {
   try {
     const preferencesStr = getCookie('user_preferences');
     return preferencesStr ? JSON.parse(preferencesStr) : {};
-  } catch (error) {
+  } catch (e) {
+    console.error('Error parsing user preferences:', e);
+    // Return an empty object if parsing fails
+    // This ensures that the application can still function without user preferences
+    // and avoids breaking the application.
     return {};
   }
 };

@@ -37,15 +37,15 @@
 //   const fetchBalance = async () => {
 //     setBalanceLoading(true);
 //     setBalanceError(null);
-    
+
 //     try {
 //       const user_id = Cookies.get('user_id');
 //       const session_id = Cookies.get('session_id');
-      
+
 //       if (!user_id || !session_id) {
 //         throw new Error('Authentication required');
 //       }
-      
+
 //       // Fix the path - Add a LEADING SLASH to ensure proper proxy routing
 //       const response = await appApi.get('/billing/balance', {
 //         headers: {
@@ -53,7 +53,7 @@
 //           'X-Session-Id': session_id
 //         }
 //       });
-      
+
 //       setBalance(response.data);
 //     } catch (error) {
 //       if (error.response) {
@@ -76,17 +76,17 @@
 //     if (offset === 0) {
 //       setTransactionsLoading(true);
 //     }
-    
+
 //     setTransactionsError(null);
-    
+
 //     try {
 //       const user_id = Cookies.get('user_id');
 //       const session_id = Cookies.get('session_id');
-      
+
 //       if (!user_id || !session_id) {
 //         throw new Error('Authentication required');
 //       }
-      
+
 //       // Fix the path - Add a LEADING SLASH to ensure proper proxy routing
 //       const response = await appApi.get('/billing/transactions', {
 //         headers: {
@@ -98,15 +98,15 @@
 //           limit: TRANSACTION_LIMIT
 //         }
 //       });
-      
+
 //       const { transactions: newTransactions, total, has_more } = response.data;
-      
+
 //       if (append) {
 //         setTransactions(prevTransactions => [...prevTransactions, ...(newTransactions || [])]);
 //       } else {
 //         setTransactions(newTransactions || []);
 //       }
-      
+
 //       setHasMoreTransactions(has_more || false);
 //       setTransactionPage(Math.floor(offset / TRANSACTION_LIMIT));
 //     } catch (error) {
@@ -132,15 +132,15 @@
 //   const handleTopUp = async () => {
 //     setIsSubmittingTopUp(true);
 //     setTopUpError(null);
-    
+
 //     try {
 //       const user_id = Cookies.get('user_id');
 //       const session_id = Cookies.get('session_id');
-      
+
 //       if (!user_id || !session_id) {
 //         throw new Error('Authentication required');
 //       }
-      
+
 //       // Fix the path - Add a LEADING SLASH to ensure proper proxy routing
 //       const response = await appApi.post('/billing/top-up', {
 //         amount: parseInt(topUpAmount), // Ensure it's an integer
@@ -152,7 +152,7 @@
 //           'X-Session-Id': session_id
 //         }
 //       });
-      
+
 //       // Redirect to checkout URL from response
 //       if (response.data && response.data.checkout_url) {
 //         window.location.href = response.data.checkout_url;
@@ -163,7 +163,7 @@
 //       if (error.response) {
 //         console.error('Response status:', error.response.status);
 //         console.error('Response data:', error.response.data);
-        
+
 //         if (error.response.data?.detail) {
 //           if (Array.isArray(error.response.data.detail)) {
 //             setTopUpError(error.response.data.detail[0]?.msg || 'Failed to process payment');
@@ -180,7 +180,7 @@
 //         console.error('Request setup error:', error.message);
 //         setTopUpError('Network error. Please check your connection and try again.');
 //       }
-      
+
 //       setIsSubmittingTopUp(false);
 //     }
 //   };
@@ -223,28 +223,28 @@
 //   return (
 //     <div className={styles['billing-container']}>
 //       <h1 className={styles['billing-title']}>Billing & Subscription</h1>
-      
+
 //       <div className={styles['billing-tabs']}>
-//         <button 
-//           className={`${styles['tab-button']} ${activeTab === 'overview' ? styles['active'] : ''}`} 
+//         <button
+//           className={`${styles['tab-button']} ${activeTab === 'overview' ? styles['active'] : ''}`}
 //           onClick={() => handleTabClick('overview')}
 //         >
 //           Overview
 //         </button>
-//         <button 
-//           className={`${styles['tab-button']} ${activeTab === 'history' ? styles['active'] : ''}`} 
+//         <button
+//           className={`${styles['tab-button']} ${activeTab === 'history' ? styles['active'] : ''}`}
 //           onClick={() => handleTabClick('history')}
 //         >
 //           Payment History
 //         </button>
-//         {/* <button 
-//           className={`${styles['tab-button']} ${activeTab === 'pricing' ? styles['active'] : ''}`} 
+//         {/* <button
+//           className={`${styles['tab-button']} ${activeTab === 'pricing' ? styles['active'] : ''}`}
 //           onClick={() => handleTabClick('pricing')}
 //         >
 //           Plans & Pricing
 //         </button> */}
 //       </div>
-      
+
 //       <div className={styles['billing-content']}>
 //         {activeTab === 'overview' && (
 //           <div className={styles['overview-section']}>
@@ -271,20 +271,20 @@
 //                       Last updated: {balance ? formatDate(balance.last_updated) : 'N/A'}
 //                     </p>
 //                   </div>
-              
+
 //                   <div className={styles['top-up-section']}>
 //                     <h4 className={styles['top-up-title']}>Add funds to your account</h4>
-                    
+
 //                     {topUpError && (
 //                       <div className={styles['error-message']}>
 //                         <AlertCircle size={16} />
 //                         <span>{topUpError}</span>
 //                       </div>
 //                     )}
-                    
+
 //                     <div className={styles['amount-selector']}>
 //                       {[10, 50, 100].map(amount => (
-//                         <button 
+//                         <button
 //                           key={amount}
 //                           className={`${styles['amount-button']} ${topUpAmount === amount ? styles['selected'] : ''}`}
 //                           onClick={() => setTopUpAmount(amount)}
@@ -294,25 +294,25 @@
 //                       ))}
 //                       <div className={styles['custom-amount']}>
 //                         <span>$</span>
-//                         <input 
-//                           type="number" 
-//                           min="5" 
+//                         <input
+//                           type="number"
+//                           min="5"
 //                           value={topUpAmount}
 //                           onChange={(e) => setTopUpAmount(Math.max(5, parseInt(e.target.value) || 0))}
 //                           className={styles['amount-input']}
 //                         />
 //                         <div className={styles['amount-controls']}>
-//                           <button 
+//                           <button
 //                             type="button"
-//                             className={styles['amount-control-btn']} 
+//                             className={styles['amount-control-btn']}
 //                             onClick={() => setTopUpAmount(prev => Math.max(5, prev + 1))}
 //                             aria-label="Increase amount"
 //                           >
 //                             ▲
 //                           </button>
-//                           <button 
+//                           <button
 //                             type="button"
-//                             className={styles['amount-control-btn']} 
+//                             className={styles['amount-control-btn']}
 //                             onClick={() => setTopUpAmount(prev => Math.max(5, prev - 1))}
 //                             aria-label="Decrease amount"
 //                           >
@@ -321,15 +321,15 @@
 //                         </div>
 //                       </div>
 //                     </div>
-                    
-//                     <button 
+
+//                     <button
 //                       className={`${styles['button']} ${styles['primary-button']} ${styles['top-up-button']}`}
 //                       onClick={handleTopUp}
 //                       disabled={isSubmittingTopUp}
 //                     >
 //                       {isSubmittingTopUp ? (
 //                         <>
-//                           <RefreshCw size={16} className="animate-spin" /> 
+//                           <RefreshCw size={16} className="animate-spin" />
 //                           Processing...
 //                         </>
 //                       ) : (
@@ -345,11 +345,11 @@
 //             </div>
 //           </div>
 //         )}
-        
+
 //         {activeTab === 'history' && (
 //           <div className={styles['history-section']}>
 //             <h3 className={styles['section-title']}>Transaction History</h3>
-            
+
 //             {transactionsLoading && transactions.length === 0 ? (
 //               <div className={styles['loading']}>
 //                 <RefreshCw size={16} className="animate-spin mr-2" />
@@ -374,7 +374,7 @@
 //                     <div className={styles['header-cell']}>Status</div>
 //                     <div className={styles['header-cell']}>Actions</div>
 //                   </div>
-                  
+
 //                   {transactions.map((transaction, index) => (
 //                     <div key={index} className={styles['table-row']}>
 //                       <div className={styles['cell']}>{transaction.invoice_number}</div>
@@ -388,9 +388,9 @@
 //                       </div>
 //                       <div className={styles['cell']}>
 //                         {transaction.invoice_url && (
-//                           <a 
-//                             href={transaction.invoice_url} 
-//                             target="_blank" 
+//                           <a
+//                             href={transaction.invoice_url}
+//                             target="_blank"
 //                             rel="noopener noreferrer"
 //                             className={styles['invoice-link']}
 //                           >
@@ -402,10 +402,10 @@
 //                     </div>
 //                   ))}
 //                 </div>
-                
+
 //                 {hasMoreTransactions && (
 //                   <div className={styles['load-more']}>
-//                     <button 
+//                     <button
 //                       className={styles['load-more-button']}
 //                       onClick={loadMoreTransactions}
 //                       disabled={transactionsLoading}
@@ -428,11 +428,11 @@
 //             )}
 //           </div>
 //         )}
-        
+
 //         {/* {activeTab === 'pricing' && (
 //           <div className={styles['pricing-section']}>
 //             <h3 className={styles['section-title']}>Plans & Pricing</h3>
-            
+
 //             <div className={styles['pricing-plans']}>
 //               <div className={styles['pricing-card']}>
 //                 <h4>Free</h4>
@@ -444,7 +444,7 @@
 //                 </ul>
 //                 <button className={`${styles['button']} ${styles['secondary-button']}`}>Current Plan</button>
 //               </div>
-              
+
 //               <div className={`${styles['pricing-card']} ${styles['highlighted']}`}>
 //                 <h4>Pro</h4>
 //                 <div className={styles['price']}>$29/month</div>
@@ -454,14 +454,14 @@
 //                   <li>Email support</li>
 //                   <li>Advanced analytics</li>
 //                 </ul>
-//                 <button 
+//                 <button
 //                   className={`${styles['button']} ${styles['primary-button']}`}
 //                   onClick={() => window.open('mailto:sales@recallrai.com?subject=Upgrade%20to%20Pro%20Plan', '_blank')}
 //                 >
 //                   Upgrade to Pro
 //                 </button>
 //               </div>
-              
+
 //               <div className={styles['pricing-card']}>
 //                 <h4>Enterprise</h4>
 //                 <div className={styles['price']}>Custom</div>
@@ -472,7 +472,7 @@
 //                   <li>Custom integrations</li>
 //                   <li>SLA guarantees</li>
 //                 </ul>
-//                 <button 
+//                 <button
 //                   className={`${styles['button']} ${styles['secondary-button']}`}
 //                   onClick={() => window.open('mailto:enterprise@recallrai.com?subject=Enterprise%20Plan%20Inquiry', '_blank')}
 //                 >
@@ -480,25 +480,25 @@
 //                 </button>
 //               </div>
 //             </div>
-            
+
 //             <div className={styles['faq-section']}>
 //               <h3 className={styles['section-title']}>Frequently Asked Questions</h3>
-              
+
 //               <div className={styles['faq-item']}>
 //                 <h4>How will I be billed?</h4>
 //                 <p>You'll be billed monthly based on your chosen plan. All plans are billed automatically at the start of each billing period.</p>
 //               </div>
-              
+
 //               <div className={styles['faq-item']}>
 //                 <h4>Can I change plans at any time?</h4>
 //                 <p>Yes, you can upgrade or downgrade your plan at any time. Changes will be effective immediately.</p>
 //               </div>
-              
+
 //               <div className={styles['faq-item']}>
 //                 <h4>Is there a contract or commitment?</h4>
 //                 <p>No, all plans are month-to-month with no long-term contracts. You can cancel at any time.</p>
 //               </div>
-              
+
 //               <div className={styles['faq-item']}>
 //                 <h4>What payment methods do you accept?</h4>
 //                 <p>We accept all major credit cards (Visa, MasterCard, American Express) and PayPal.</p>
