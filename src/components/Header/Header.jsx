@@ -175,12 +175,12 @@ const Header = () => {
           <span className={styles.navLinkText}>Docs</span>
         </Link> */}
         
-        <Link
+        {/* <Link
           to="/billing"
           className={`${styles.navLink} ${location.pathname === "/billing" ? styles.active : ""}`}
         >
           <span className={styles.navLinkText}>Billing</span>
-        </Link>
+        </Link> */}
         
         <div className={styles.userProfile} ref={profileRef}>
           <div 

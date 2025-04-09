@@ -3,7 +3,7 @@ import { Routes, Route, useSearchParams, useNavigate, Navigate } from "react-rou
 import { appApi } from "../../api/axios";
 import Cookies from 'js-cookie';
 import Sidebar from "./Sidebar/Sidebar";
-import ComingSoon from "../ComingSoon/ComingSoon";
+// import ComingSoon from "../ComingSoon/ComingSoon";
 import Users from "./Users/Users";
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
@@ -279,11 +279,11 @@ const Dashboard = () => {
         <main className={styles.main}>
           <Routes>
             <Route index element={<Navigate to={`settings${projectId ? `?project=${projectId}` : '?newUser=true'}`} replace />} />
-            <Route path="usage" element={<ComingSoon project={currentProject} />} />
+            {/* <Route path="usage" element={<ComingSoon project={currentProject} />} /> */}
             <Route path="users" element={<Users project={currentProject} />} />
             <Route path="apikeys" element={<APIKeys project={currentProject} />} />
             <Route path="settings" element={<ProjectSettings project={currentProject} />} />
-            <Route path="*" element={<ComingSoon project={currentProject} />} />
+            {/* <Route path="*" element={<ComingSoon project={currentProject} />} /> */}
           </Routes>
         </main>
       </div>

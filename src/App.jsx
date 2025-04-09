@@ -6,7 +6,7 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
 // import ComingSoon from "./components/ComingSoon/ComingSoon";
-import Billing from "./components/Billing/Main/Billing";
+// import Billing from "./components/Billing/Main/Billing";
 import "./App.css";
 import authService from "./services/authService";
 import Header from "./components/Header/Header";
@@ -22,7 +22,7 @@ const LoadingScreen = () => (
 
 // Main app content with routes
 function AppContent() {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const [sessionValid, setSessionValid] = useState(null);
   const [validatingSession, setValidatingSession] = useState(true);
 
@@ -80,14 +80,14 @@ function AppContent() {
           />
           
           {/* Non-project specific routes */}
-          <Route 
+          {/* <Route 
             path="/billing" 
             element={
               <ProtectedRoute isValid={sessionValid}>
                 <Billing />
               </ProtectedRoute>
             } 
-          />
+          /> */}
 
           {/* <Route           
             path="/usage"           
