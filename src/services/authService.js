@@ -235,6 +235,24 @@ const authService = {
   // Check if user is authenticated
   isAuthenticated: () => {
     return !!Cookies.get('session_id') && !!Cookies.get('user_id');
+  },
+
+  // Request password reset
+  requestPasswordReset: async (email) => {
+    const response = await authApi.post('reset-password/request', {
+      email
+    });
+    return response.data;
+  },
+
+  // Complete password reset
+  completePasswordReset: async (email, password, transactionId) => {
+    const response = await authApi.post('reset-password/complete', {
+      email,
+      password,
+      transaction_id: transactionId
+    });
+    return response.data;
   }
 };
 

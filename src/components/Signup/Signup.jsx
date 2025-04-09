@@ -108,7 +108,7 @@ function Signup() {
       setLoading(true);
       setError('');
       await completeSignup(email, firstName, lastName, password, transactionId);
-      navigate('/dashboard'); // Navigate to dashboard after successful signup
+      navigate('/getstarted'); 
     } catch (error) {
       setError(error.response?.data?.detail || 'Failed to complete signup');
     } finally {

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { setCookie } from "../utils/cookieUtils";
 
@@ -50,7 +49,7 @@ export const signInWithGoogle = async () => {
   const deviceInfo = getDeviceInfo();
 
   const params = new URLSearchParams({
-    referal_url: import.meta.env.VITE_APP_URL + "/dashboard",
+    referal_url: import.meta.env.VITE_APP_URL + "/getstarted",
     device_type: deviceInfo.deviceType,
     operating_system: deviceInfo.operatingSystem,
     browser_version: deviceInfo.browserVersion,
@@ -68,7 +67,7 @@ export const signInWithGoogle = async () => {
 // Function to handle the redirection from auth service
 export const handleGoogleAuthRedirect = () => {  
   // Check if we're on the dashboard with auth parameters
-  if (window.location.pathname.includes('/dashboard')) {
+  if (window.location.pathname.includes('/getstarted')) {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('user_id');
     const sessionId = urlParams.get('session_id');

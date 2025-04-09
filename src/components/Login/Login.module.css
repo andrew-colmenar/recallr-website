@@ -273,6 +273,32 @@
   align-items: center;
 }
 
+.forgotPasswordLink {
+  background: none;
+  border: none;
+  color: #9CA3AF; /* Gray-400 */
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  text-align: center;
+  width: 100%;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+}
+
+.forgotPasswordLink:hover {
+  color: #3B82F6; /* Blue-500 */
+}
+
+.successMessage {
+  color: #10B981; /* Green-500 */
+  text-align: center;
+  font-weight: 500;
+  margin: 1rem 0 2rem;
+  font-size: 1.05rem;
+}
+
 .nameFields {
   display: flex;
   gap: 1rem;

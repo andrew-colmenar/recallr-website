@@ -62,31 +62,23 @@ function AppContent() {
           {/* Public routes - accessible when not logged in */}
           <Route 
             path="/login" 
-            element={sessionValid ? <Navigate to="/dashboard" /> : <Login />} 
+            element={sessionValid ? <Navigate to="/getstarted" /> : <Login />} 
           />
           <Route 
             path="/signup" 
-            element={sessionValid ? <Navigate to="/dashboard" /> : <Signup />} 
+            element={sessionValid ? <Navigate to="/getstarted" /> : <Signup />} 
           />
           
           {/* Protected routes - require authentication */}
           <Route 
             path="/dashboard/*" 
-            element={
-              <ProtectedRoute isValid={sessionValid}>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
+            element={sessionValid ?  <Dashboard/>: <Navigate to="/login" />} 
           />
           
           {/* Non-project specific routes */}
           <Route 
             path="/billing" 
-            element={
-              <ProtectedRoute isValid={sessionValid}>
-                <Billing />
-              </ProtectedRoute>
-            } 
+            element={sessionValid ?  <Billing/>: <Navigate to="/login" />} 
           />
 
           {/* <Route           
@@ -115,10 +107,8 @@ function AppContent() {
           /> */}
           <Route 
             path="/getstarted" 
-            element={
-              <ProtectedRoute isValid={sessionValid}>
-                <GetStarted />
-              </ProtectedRoute>
+            element={   
+              <GetStarted />
             } 
           />
           
@@ -126,7 +116,7 @@ function AppContent() {
           <Route 
             path="/" 
             element={
-              sessionValid ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+              sessionValid ? <Navigate to="/getstarted" /> : <Navigate to="/login" />
             } 
           />
           
@@ -134,7 +124,7 @@ function AppContent() {
           <Route 
             path="*" 
             element={
-              <Navigate to={sessionValid ? "/dashboard" : "/login"} />
+              <Navigate to={sessionValid ? "/getstarted" : "/login"} />
             } 
           />
         </Routes>

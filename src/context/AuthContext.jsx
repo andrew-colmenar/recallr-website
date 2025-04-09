@@ -95,7 +95,25 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+
+  // Request password reset
+  const requestPasswordReset = async (email) => {
+    try {
+      return await authService.requestPasswordReset(email);
+    } catch (error) {
+      throw error;
+    }
+  };
   
+  // Complete password reset
+  const completePasswordReset = async (email, password, transactionId) => {
+    try {
+      return await authService.completePasswordReset(email, password, transactionId);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -106,6 +124,8 @@ export const AuthProvider = ({ children }) => {
     logout,
     verifyOtp,
     resendOtp,
+    requestPasswordReset,
+    completePasswordReset,
     isAuthenticated: !!user,
   };
   

@@ -100,7 +100,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      // Redirect is handled in the AuthContext
+      navigate('/login');
     } catch (error) {
       // Silently fail in production
     }
