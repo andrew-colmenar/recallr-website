@@ -277,15 +277,6 @@ function Login() {
               >
                 Forgot password?
               </button>
-              
-              {/* Add forgot password link */}
-              <button 
-                type="button"
-                onClick={handleForgotPassword}
-                className={styles.forgotPasswordLink}
-              >
-                Forgot password?
-              </button>
             </form>
           )}
 
