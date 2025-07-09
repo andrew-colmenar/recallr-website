@@ -341,3 +341,26 @@
   font-size: 1.25rem;
   color: #d1d5db;
 }
+
+.contentContainer.collapsed {
+  margin-left: 4.5rem;
+  width: calc(100% - 4.5rem);
+  transition: margin-left 0.3s, width 0.3s;
+}
+
+.main.collapsed {
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  transition: padding 0.3s, font-size 0.3s;
+}
+
+@media (max-width: 768px) {
+  .contentContainer {
+    margin-left: 4.5rem;
+    width: calc(100% - 4.5rem);
+  }
+  .main {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+}

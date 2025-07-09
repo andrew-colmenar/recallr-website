@@ -16,9 +16,14 @@ import {
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = ({ projectId }) => {
+const Sidebar = ({ projectId, onCollapseChange }) => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+
+  // Notify parent when collapsed state changes
+  React.useEffect(() => {
+    if (onCollapseChange) onCollapseChange(collapsed);
+  }, [collapsed, onCollapseChange]);
 
   const isActive = (path) => {
     return location.pathname.includes(path) ? styles.active : "";

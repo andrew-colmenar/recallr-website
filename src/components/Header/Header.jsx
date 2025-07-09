@@ -11,6 +11,7 @@ import styles from "./Header.module.css";
 import { useAuth } from "../../context/AuthContext";
 import { appApi } from "../../api/axios";
 import Cookies from "js-cookie";
+import { useProjectContext } from "../../context/ProjectContext";
 
 const DEFAULT_PROJECT = {
   id: "00000000-0000-0000-0000-000000000000",
@@ -33,6 +34,7 @@ const Header = () => {
   const { logout, user } = useAuth();
   const profileRef = useRef(null);
   const projectIdRef = useRef(null);
+  const { currentProjectId, setCurrentProjectId } = useProjectContext();
 
   // Check if current path is dashboard or starts with dashboard
   const isDashboardActive =
@@ -40,57 +42,42 @@ const Header = () => {
     location.pathname.startsWith("/dashboard");
 
   useEffect(() => {
-    // Get project ID from URL
-    const projectId = searchParams.get("project");
-
-    // Skip re-fetching if we already have this project loaded
-    if (projectId === projectIdRef.current) {
-      return;
-    }
-
-    // Update the ref with current projectId
-    projectIdRef.current = projectId;
-
+    // Use projectId from context as the source of truth
+    const projectId = currentProjectId;
     if (!projectId) {
       setCurrentProject(DEFAULT_PROJECT);
       return;
     }
-
     // If there's a project ID, fetch the project details
     const fetchProjectDetails = async () => {
       setLoading(true);
       setError(null);
-
       try {
         const user_id = Cookies.get("user_id");
         const session_id = Cookies.get("session_id");
-
         if (!user_id || !session_id) {
           throw new Error("Authentication required");
         }
-
         const response = await appApi.get(`projects/${projectId}`, {
           headers: {
             "X-User-Id": user_id,
             "X-Session-Id": session_id,
           },
         });
-
         setCurrentProject(response.data);
+        setCurrentProjectId(response.data.id); // Ensure context stays in sync
       } catch (err) {
         setError("Failed to load project details");
       } finally {
         setLoading(false);
       }
     };
-
     fetchProjectDetails();
-  }, [searchParams, location.search]);
+  }, [currentProjectId, setCurrentProject, setCurrentProjectId]);
 
   const handleProjectSelect = (project) => {
     setCurrentProject(project);
-    projectIdRef.current = project.id;
-
+    setCurrentProjectId(project.id);
     // If we're on a dashboard path, preserve the current route with the new project
     if (location.pathname.startsWith("/dashboard/")) {
       const routePart = location.pathname.split("/dashboard/")[1] || "project-settings";
@@ -99,8 +86,6 @@ const Header = () => {
       // Otherwise, go to project-settings with the selected project
       navigate(`/dashboard/project-settings?project=${project.id}`);
     }
-
-    // Close the modal after project selection
     setIsProjectModalOpen(false);
   };
 
@@ -146,9 +131,9 @@ const Header = () => {
           <span className={styles.navLinkText}>Dashboard</span>
         </Link>
 
-        {/* Project selector - now on the right side */}
+        {/* Project selector - now on the right side, next to Dashboard */}
         {location.pathname.startsWith("/dashboard/") && (
-          <div className={styles.projectSelector}>
+          <div className={styles.projectSelectorRight}>
             <button
               className={styles.projectSelectorButton}
               onClick={() => setIsProjectModalOpen(true)}
@@ -156,7 +141,9 @@ const Header = () => {
               <span className={styles.projectName}>
                 {loading
                   ? "Loading..."
-                  : currentProject.name || "Select Project"}
+                  : !currentProjectId
+                    ? "No project selected"
+                    : currentProject.name || "Select Project"}
               </span>
               <ChevronDown className={styles.dropdownIcon} />
             </button>
@@ -165,7 +152,7 @@ const Header = () => {
               isOpen={isProjectModalOpen}
               onClose={() => setIsProjectModalOpen(false)}
               onProjectSelect={handleProjectSelect}
-              currentProjectId={projectIdRef.current}
+              currentProjectId={currentProjectId}
             />
           </div>
         )}

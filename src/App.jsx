@@ -20,6 +20,7 @@ import Header from "./components/Header/Header";
 import GetStarted from "./components/GetStarted/GetStarted";
 import ContactHelp from "./components/ContactHelp";
 import ProjectManagement from "./components/Dashboard/Projects/ProjectManagement";
+import { ProjectProvider } from "./context/ProjectContext";
 
 // Custom loading component with updated styling
 const LoadingScreen = () => (
@@ -158,9 +159,11 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <ProjectProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </ProjectProvider>
     </AuthProvider>
   );
 }

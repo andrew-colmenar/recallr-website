@@ -14,8 +14,10 @@ import Sidebar from "./Sidebar/Sidebar";
 import Users from "./Users/Users";
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
-import ProjectSettings from "./Settings/ProjectSettings";
+import ProjectManagement from "./Projects/ProjectManagement";
+import { useProjectContext } from "../../context/ProjectContext";
 
+// use postman     
 // Default project to use when no project ID is specified or on error
 // Using a valid UUID format for the default project ID
 const DEFAULT_PROJECT = {
@@ -53,8 +55,8 @@ const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const projectId = searchParams.get("project");
+  const { currentProjectId } = useProjectContext();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Check if authentication is ready
   const checkAuth = useCallback(() => {
@@ -115,7 +117,7 @@ const Dashboard = () => {
         setProjects(projectsList || []);
 
         // If no project is selected in URL but user has projects, redirect to latest project
-        if (!projectId && projectsList && projectsList.length > 0) {
+        if (!currentProjectId && projectsList && projectsList.length > 0) {
           // Sort by creation date (newest first) and redirect to project-settings
           const sortedProjects = [...projectsList].sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -129,7 +131,7 @@ const Dashboard = () => {
 
         // If no projects exist and no project is selected, show the create project page
         // instead of trying to fetch a non-existent default project
-        if ((!projectsList || projectsList.length === 0) && !projectId) {
+        if ((!projectsList || projectsList.length === 0) && !currentProjectId) {
           // Just use the default project without fetching from backend
           setCurrentProject(DEFAULT_PROJECT);
           setLoading(false);
@@ -140,8 +142,8 @@ const Dashboard = () => {
         }
 
         // If projects exist and a project ID is provided, fetch that project's details
-        if (projectId) {
-          fetchProjectDetails(projectId);
+        if (currentProjectId) {
+          fetchProjectDetails(currentProjectId);
         }
       } catch (error) {
         if (error.response?.status === 401) {
@@ -151,8 +153,8 @@ const Dashboard = () => {
         }
 
         // For other errors, proceed to project details
-        if (projectId) {
-          fetchProjectDetails(projectId);
+        if (currentProjectId) {
+          fetchProjectDetails(currentProjectId);
         } else {
           setLoading(false);
         }
@@ -160,7 +162,7 @@ const Dashboard = () => {
     };
 
     fetchProjects();
-  }, [authChecked, projectId, navigate, checkAuth]);
+  }, [authChecked, currentProjectId, navigate, checkAuth]);
 
   // Only fetch project details if projectId changes or currentProject is missing/mismatched
   const fetchProjectDetails = useCallback(async (projId) => {
@@ -313,11 +315,11 @@ const Dashboard = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <Sidebar projectId={projectId || ""} />
-      <div className={styles.contentContainer}>
+      <Sidebar projectId={currentProjectId || ""} onCollapseChange={setSidebarCollapsed} />
+      <div className={`${styles.contentContainer}${sidebarCollapsed ? ' ' + styles.collapsed : ''}`}>
         {error && <div className={styles.errorBanner}>{error}</div>}
-        {/* Overlay if not in a project and not on a footer route */}
-        {currentProject && currentProject.id === DEFAULT_PROJECT.id && !isFooterRoute() && (
+        {/* Overlay if not in a project and not on a footer route and not on project-settings */}
+        {currentProject && currentProject.id === DEFAULT_PROJECT.id && !isFooterRoute() && !location.pathname.includes("/project-settings") && (
           <div className={styles.projectOverlay}>
             <div className={styles.projectOverlayContent}>
               <h1>Please select or create a project first</h1>
@@ -325,28 +327,64 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-        <main className={styles.main} style={currentProject && currentProject.id === DEFAULT_PROJECT.id && !isFooterRoute() ? { filter: 'blur(6px)', pointerEvents: 'none', userSelect: 'none' } : {}}>
+        <main className={`${styles.main}${sidebarCollapsed ? ' ' + styles.collapsed : ''}`} style={currentProject && currentProject.id === DEFAULT_PROJECT.id && !isFooterRoute() && !location.pathname.includes("/project-settings") ? { filter: 'blur(6px)', pointerEvents: 'none', userSelect: 'none' } : {}}>
           <Routes>
             <Route
               index
               element={
                 <Navigate
                   to={`project-settings${
-                    projectId ? `?project=${projectId}` : "?newUser=true"
+                    currentProjectId ? `?project=${currentProjectId}` : "?newUser=true"
                   }`}
                   replace
                 />
               }
             />
             {/* <Route path="usage" element={<ComingSoon project={currentProject} />} /> */}
-            <Route path="users" element={<Users project={currentProject} />} />
+            <Route
+              path="users"
+              element={
+                !currentProjectId ? (
+                  <div className={styles.projectOverlay}>
+                    <div className={styles.projectOverlayContent}>
+                      <h1>Please select or create a project first</h1>
+                      <p>You need to select or create a project before using this page.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <Users projectId={currentProjectId} />
+                )
+              }
+            />
             <Route
               path="apikeys"
-              element={<APIKeys project={currentProject} />}
+              element={
+                !currentProjectId ? (
+                  <div className={styles.projectOverlay}>
+                    <div className={styles.projectOverlayContent}>
+                      <h1>Please select or create a project first</h1>
+                      <p>You need to select or create a project before using this page.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <APIKeys projectId={currentProjectId} />
+                )
+              }
             />
             <Route
               path="project-settings"
-              element={<ProjectSettings project={currentProject} />}
+              element={
+                !currentProjectId ? (
+                  <div className={styles.projectOverlay}>
+                    <div className={styles.projectOverlayContent}>
+                      <h1>Please select or create a project first</h1>
+                      <p>You need to select or create a project before using this page.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <ProjectManagement />
+                )
+              }
             />
             {/* <Route path="*" element={<ComingSoon project={currentProject} />} /> */}
           </Routes>

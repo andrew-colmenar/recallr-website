@@ -80,7 +80,7 @@ const ProjectModal = ({
         },
         params: {
           offset: 0,
-          limit: 100,
+          limit: 5,
         },
         withCredentials: true,
       });
