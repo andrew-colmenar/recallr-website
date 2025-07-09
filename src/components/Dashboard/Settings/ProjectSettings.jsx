@@ -4,6 +4,7 @@ import { appApi } from "../../../api/axios";
 import Cookies from "js-cookie";
 import { useSearchParams } from "react-router-dom";
 import { Info } from "lucide-react";
+import styles from "./ProjectSettings.module.css";
 
 const FIELD_INFO = {
   return_min_top_k: "Minimum number of top results to return for recall queries.",
@@ -230,189 +231,159 @@ const ProjectSettings = () => {
           />
         </div>
         {/* Recall Preferences Card */}
-        <div style={{ background: "#f7f7fa", borderRadius: 10, padding: 24, marginBottom: 28, boxShadow: "0 2px 8px rgba(59,130,246,0.07)" }}>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: 18 }}>
-            <span style={{ fontWeight: 700, fontSize: 18 }}>Recall Preferences</span>
+        <div className={styles.preferencesCard}>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardHeaderText}>Recall Preferences</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: 14 }}>
-            <label style={{ flex: 1 }}>Return Min Top K <InfoTooltip text={FIELD_INFO.return_min_top_k} /></label>
-            <input
-              type="number"
-              value={form.recall_preferences?.return_min_top_k || 0}
-              onChange={e => handleNestedChange("recall_preferences", "return_min_top_k", Number(e.target.value))}
-              style={{ width: 100, padding: 8, borderRadius: 6, border: "1px solid #ccc", fontSize: 15 }}
-            />
+          <div className={styles.cardContent}>
+            <div className={styles.cardRow}>
+              <label className={styles.cardLabel}>Return Min Top K <InfoTooltip text={FIELD_INFO.return_min_top_k} /></label>
+              <input
+                type="number"
+                value={form.recall_preferences?.return_min_top_k || 0}
+                onChange={e => handleNestedChange("recall_preferences", "return_min_top_k", Number(e.target.value))}
+                className={styles.cardInput}
+              />
+            </div>
+            <div className={styles.cardRow}>
+              <label className={styles.cardLabel}>Return Max Top K <InfoTooltip text={FIELD_INFO.return_max_top_k} /></label>
+              <input
+                type="number"
+                value={form.recall_preferences?.return_max_top_k || 0}
+                onChange={e => handleNestedChange("recall_preferences", "return_max_top_k", Number(e.target.value))}
+                className={styles.cardInput}
+              />
+            </div>
+            <div className={styles.cardRow}>
+              <label className={styles.cardLabel}>Threshold <InfoTooltip text={FIELD_INFO.threshold} /></label>
+              <input
+                type="number"
+                step="0.01"
+                value={form.recall_preferences?.threshold || 0}
+                onChange={e => handleNestedChange("recall_preferences", "threshold", Number(e.target.value))}
+                className={styles.cardInput}
+              />
+            </div>
+            {/* Advanced Recall Preferences */}
+            <button
+              type="button"
+              onClick={() => setShowAdvanced((prev) => !prev)}
+              className={styles.advancedButton}
+            >
+              {showAdvanced ? "▼" : "►"} Advanced Recall Preferences
+            </button>
+            {showAdvanced && (
+              <div className={styles.cardContent}>
+                {/* Array and number fields for advanced recall preferences */}
+                {ADVANCED_FIELDS.filter(f => f.startsWith("recall_preferences")).map((field) => {
+                  const label = field.split(".").slice(-1)[0].replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                  const value = field.includes("custom_instructions") || field.includes("examples") || field.includes("keywords")
+                    ? form.recall_preferences?.classifier?.[label] || form.recall_preferences?.subquery_and_keywords_generator?.[label] || []
+                    : form.recall_preferences?.subquery_and_keywords_generator?.[label] || 0;
+                  // Array fields
+                  if (Array.isArray(value)) {
+                    return (
+                      <div key={field} className={styles.cardRow}>
+                        <label className={styles.cardLabel}>{label} <InfoTooltip text={FIELD_INFO[field]} /></label>
+                        {value.map((item, idx) => (
+                          <div key={idx} className={styles.cardRow}>
+                            <input
+                              type="text"
+                              value={item}
+                              onChange={e => handleAdvancedArrayChange(field, idx, e.target.value)}
+                              className={styles.cardInput}
+                            />
+                            <button type="button" onClick={() => handleAdvancedArrayRemove(field, idx)} className={styles.removeButton}>×</button>
+                          </div>
+                        ))}
+                        <button type="button" onClick={() => handleAdvancedArrayAdd(field)} className={styles.addButton}>+ Add</button>
+                      </div>
+                    );
+                  } else {
+                    // Number fields
+                    return (
+                      <div key={field} className={styles.cardRow}>
+                        <label className={styles.cardLabel}>{label} <InfoTooltip text={FIELD_INFO[field]} /></label>
+                        <input
+                          type="number"
+                          value={value}
+                          onChange={e => handleNestedChange("recall_preferences.subquery_and_keywords_generator", label, Number(e.target.value))}
+                          className={styles.cardInput}
+                        />
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            )}
           </div>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: 14 }}>
-            <label style={{ flex: 1 }}>Return Max Top K <InfoTooltip text={FIELD_INFO.return_max_top_k} /></label>
-            <input
-              type="number"
-              value={form.recall_preferences?.return_max_top_k || 0}
-              onChange={e => handleNestedChange("recall_preferences", "return_max_top_k", Number(e.target.value))}
-              style={{ width: 100, padding: 8, borderRadius: 6, border: "1px solid #ccc", fontSize: 15 }}
-            />
+        </div>
+        {/* Generation Preferences Card */}
+        <div className={styles.preferencesCard}>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardHeaderText}>Generation Preferences</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: 14 }}>
-            <label style={{ flex: 1 }}>Threshold <InfoTooltip text={FIELD_INFO.threshold} /></label>
-            <input
-              type="number"
-              step="0.01"
-              value={form.recall_preferences?.threshold || 0}
-              onChange={e => handleNestedChange("recall_preferences", "threshold", Number(e.target.value))}
-              style={{ width: 100, padding: 8, borderRadius: 6, border: "1px solid #ccc", fontSize: 15 }}
-            />
-          </div>
-          {/* Advanced Recall Preferences */}
-          <button
-            type="button"
-            onClick={() => setShowAdvanced((prev) => !prev)}
-            style={{
-              background: showAdvanced ? "#232B3A" : "#e5e7eb",
-              color: showAdvanced ? "#fff" : "#374151",
-              border: "none",
-              borderRadius: 8,
-              padding: "0.6rem 1.2rem",
-              fontWeight: 500,
-              fontSize: "1rem",
-              cursor: "pointer",
-              marginTop: 10,
-              marginBottom: 10,
-              transition: "background 0.2s, color 0.2s",
-            }}
-          >
-            {showAdvanced ? "▼" : "►"} Advanced Recall Preferences
-          </button>
-          {showAdvanced && (
-            <div style={{ marginTop: 10, background: "#f3f4f6", borderRadius: 8, padding: 16 }}>
-              {/* Array and number fields for advanced recall preferences */}
-              {ADVANCED_FIELDS.filter(f => f.startsWith("recall_preferences")).map((field) => {
-                const label = field.split(".").slice(-1)[0].replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                const value = field.includes("custom_instructions") || field.includes("examples") || field.includes("keywords")
-                  ? form.recall_preferences?.classifier?.[label] || form.recall_preferences?.subquery_and_keywords_generator?.[label] || []
-                  : form.recall_preferences?.subquery_and_keywords_generator?.[label] || 0;
-                // Array fields
-                if (Array.isArray(value)) {
+          <div className={styles.cardContent}>
+            <div className={styles.cardRow}>
+              <label className={styles.cardLabel}>Top K Symantic Similarity Check <InfoTooltip text={FIELD_INFO.top_k_symantic_similarity_check} /></label>
+              <input
+                type="number"
+                value={form.generation_preferences?.top_k_symantic_similarity_check || 0}
+                onChange={e => handleNestedChange("generation_preferences", "top_k_symantic_similarity_check", Number(e.target.value))}
+                className={styles.cardInput}
+              />
+            </div>
+            <div className={styles.cardRow}>
+              <label className={styles.cardLabel}>Raise Merge Conflict <InfoTooltip text={FIELD_INFO.raise_merge_conflict} /></label>
+              <input
+                type="checkbox"
+                checked={!!form.generation_preferences?.raise_merge_conflict}
+                onChange={e => handleNestedChange("generation_preferences", "raise_merge_conflict", e.target.checked)}
+                className={styles.cardInput}
+              />
+            </div>
+            {/* Advanced Generation Preferences */}
+            <button
+              type="button"
+              onClick={() => setShowAdvanced((prev) => !prev)}
+              className={styles.advancedButton}
+            >
+              {showAdvanced ? "▼" : "►"} Advanced Generation Preferences
+            </button>
+            {showAdvanced && (
+              <div className={styles.cardContent}>
+                {/* Array fields for advanced generation preferences */}
+                {ADVANCED_FIELDS.filter(f => f.startsWith("generation_preferences")).map((field) => {
+                  const label = field.split(".").slice(-1)[0].replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                  const value = form.generation_preferences?.[label] || [];
                   return (
-                    <div key={field} style={{ marginBottom: 14 }}>
-                      <label style={{ fontWeight: 500 }}>{label} <InfoTooltip text={FIELD_INFO[field]} /></label>
+                    <div key={field} className={styles.cardRow}>
+                      <label className={styles.cardLabel}>{label} <InfoTooltip text={FIELD_INFO[field]} /></label>
                       {value.map((item, idx) => (
-                        <div key={idx} style={{ display: "flex", alignItems: "center", marginBottom: 6 }}>
+                        <div key={idx} className={styles.cardRow}>
                           <input
                             type="text"
                             value={item}
                             onChange={e => handleAdvancedArrayChange(field, idx, e.target.value)}
-                            style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #ccc", fontSize: 15, marginRight: 8 }}
+                            className={styles.cardInput}
                           />
-                          <button type="button" onClick={() => handleAdvancedArrayRemove(field, idx)} style={{ color: "#EF4444", background: "none", border: "none", fontSize: 18, cursor: "pointer" }}>×</button>
+                          <button type="button" onClick={() => handleAdvancedArrayRemove(field, idx)} className={styles.removeButton}>×</button>
                         </div>
                       ))}
-                      <button type="button" onClick={() => handleAdvancedArrayAdd(field)} style={{ color: "#3B82F6", background: "none", border: "none", fontWeight: 500, fontSize: "1rem", cursor: "pointer" }}>+ Add</button>
+                      <button type="button" onClick={() => handleAdvancedArrayAdd(field)} className={styles.addButton}>+ Add</button>
                     </div>
                   );
-                } else {
-                  // Number fields
-                  return (
-                    <div key={field} style={{ marginBottom: 14 }}>
-                      <label style={{ fontWeight: 500 }}>{label} <InfoTooltip text={FIELD_INFO[field]} /></label>
-                      <input
-                        type="number"
-                        value={value}
-                        onChange={e => handleNestedChange("recall_preferences.subquery_and_keywords_generator", label, Number(e.target.value))}
-                        style={{ width: 100, padding: 8, borderRadius: 6, border: "1px solid #ccc", fontSize: 15, marginLeft: 8 }}
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          )}
+                })}
+              </div>
+            )}
+          </div>
         </div>
-        {/* Generation Preferences Card */}
-        <div style={{ background: "#f7f7fa", borderRadius: 10, padding: 24, marginBottom: 28, boxShadow: "0 2px 8px rgba(59,130,246,0.07)" }}>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: 18 }}>
-            <span style={{ fontWeight: 700, fontSize: 18 }}>Generation Preferences</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: 14 }}>
-            <label style={{ flex: 1 }}>Top K Symantic Similarity Check <InfoTooltip text={FIELD_INFO.top_k_symantic_similarity_check} /></label>
-            <input
-              type="number"
-              value={form.generation_preferences?.top_k_symantic_similarity_check || 0}
-              onChange={e => handleNestedChange("generation_preferences", "top_k_symantic_similarity_check", Number(e.target.value))}
-              style={{ width: 100, padding: 8, borderRadius: 6, border: "1px solid #ccc", fontSize: 15 }}
-            />
-          </div>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: 14 }}>
-            <label style={{ flex: 1 }}>Raise Merge Conflict <InfoTooltip text={FIELD_INFO.raise_merge_conflict} /></label>
-            <input
-              type="checkbox"
-              checked={!!form.generation_preferences?.raise_merge_conflict}
-              onChange={e => handleNestedChange("generation_preferences", "raise_merge_conflict", e.target.checked)}
-              style={{ marginLeft: 8 }}
-            />
-          </div>
-          {/* Advanced Generation Preferences */}
-          <button
-            type="button"
-            onClick={() => setShowAdvanced((prev) => !prev)}
-            style={{
-              background: showAdvanced ? "#232B3A" : "#e5e7eb",
-              color: showAdvanced ? "#fff" : "#374151",
-              border: "none",
-              borderRadius: 8,
-              padding: "0.6rem 1.2rem",
-              fontWeight: 500,
-              fontSize: "1rem",
-              cursor: "pointer",
-              marginTop: 10,
-              marginBottom: 10,
-              transition: "background 0.2s, color 0.2s",
-            }}
-          >
-            {showAdvanced ? "▼" : "►"} Advanced Generation Preferences
-          </button>
-          {showAdvanced && (
-            <div style={{ marginTop: 10, background: "#f3f4f6", borderRadius: 8, padding: 16 }}>
-              {/* Array fields for advanced generation preferences */}
-              {ADVANCED_FIELDS.filter(f => f.startsWith("generation_preferences")).map((field) => {
-                const label = field.split(".").slice(-1)[0].replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                const value = form.generation_preferences?.[label] || [];
-                return (
-                  <div key={field} style={{ marginBottom: 14 }}>
-                    <label style={{ fontWeight: 500 }}>{label} <InfoTooltip text={FIELD_INFO[field]} /></label>
-                    {value.map((item, idx) => (
-                      <div key={idx} style={{ display: "flex", alignItems: "center", marginBottom: 6 }}>
-                        <input
-                          type="text"
-                          value={item}
-                          onChange={e => handleAdvancedArrayChange(field, idx, e.target.value)}
-                          style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #ccc", fontSize: 15, marginRight: 8 }}
-                        />
-                        <button type="button" onClick={() => handleAdvancedArrayRemove(field, idx)} style={{ color: "#EF4444", background: "none", border: "none", fontSize: 18, cursor: "pointer" }}>×</button>
-                      </div>
-                    ))}
-                    <button type="button" onClick={() => handleAdvancedArrayAdd(field)} style={{ color: "#3B82F6", background: "none", border: "none", fontWeight: 500, fontSize: "1rem", cursor: "pointer" }}>+ Add</button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-        {error && <div style={{ color: "#EF4444", marginBottom: 12 }}>{error}</div>}
-        {success && <div style={{ color: "#22C55E", marginBottom: 12 }}>{success}</div>}
+        {error && <div className={styles.errorMessage}>{error}</div>}
+        {success && <div className={styles.successMessage}>{success}</div>}
         <button
           type="submit"
           disabled={loading}
-          style={{
-            background: "#3B82F6",
-            color: "#fff",
-            border: "none",
-            borderRadius: 8,
-            padding: "0.7rem 1.5rem",
-            fontWeight: 600,
-            fontSize: "1rem",
-            cursor: loading ? "not-allowed" : "pointer",
-            opacity: loading ? 0.7 : 1,
-          }}
+          className={styles.submitButton}
         >
           {loading ? "Saving..." : "Save Changes"}
         </button>
