@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
+import MainDashboard from "./components/Dashboard/MainDashboard";
 // import ComingSoon from "./components/ComingSoon/ComingSoon";
 // import Billing from "./components/Billing/Main/Billing";
 import "./App.css";
@@ -79,6 +80,10 @@ function AppContent() {
           <Route 
             path="/dashboard/*" 
             element={sessionValid ?  <Dashboard/>: <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/dashboard/main" 
+            element={sessionValid ? <MainDashboard /> : <Navigate to="/login" />} 
           />
 
           {/* Non-project specific routes */}

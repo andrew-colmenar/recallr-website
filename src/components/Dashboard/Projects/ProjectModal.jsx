@@ -206,7 +206,7 @@ const ProjectModal = ({
         },
         generation_preferences: {
           custom_instructions: [],
-          top_k_symantic_similarity_check: 10,
+          top_k_symantic_similarity_check: 3,
           raise_merge_conflict: true,
         },
       };

@@ -96,7 +96,7 @@ function Login() {
       setError("");
       await verifyOtp(transactionId, otpCode);
       await completeLogin(transactionId);
-      navigate('/getstarted');
+      navigate('/dashboard/main');
     } catch (error) {
       setError(error.response?.data?.detail || "Invalid OTP code");
     } finally {

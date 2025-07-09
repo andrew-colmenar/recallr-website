@@ -13,13 +13,13 @@
   /* Full height of viewport */
   color: #FFFFFF;
   /* Updated: white */
-  transition: width 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   /* Prevent sidebar from shrinking */
   position: fixed;
   /* Fixed position instead of sticky */
   left: 0;
-  top: 58px;
+  top: 88px;
   /* Reduced from 72px to match smaller header */
   bottom: 0;
   /* Extend to bottom */
@@ -218,4 +218,48 @@
   right: 0.45rem;
   font-size: 0.6rem;
   opacity: 0.7;
+}
+
+.collapsed {
+  transform: translateX(-100%);
+  top: 88px;
+}
+
+.collapseButton {
+  position: static;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.openSidebarButton {
+  position: fixed;
+  top: 98px;
+  left: 0.5rem;
+  z-index: 100;
+  background: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: background 0.2s;
+}
+
+.openSidebarButton:hover {
+  background: #374151;
+}
+
+.sidebarHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 0.4rem 0.8rem 0.8rem;
+  background: #111827;
+  /* border-bottom: 1px solid #374151; */
+  min-height: 3.5rem;
+  box-sizing: border-box;
 }

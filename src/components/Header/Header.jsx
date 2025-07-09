@@ -134,8 +134,23 @@ const Header = () => {
         <div className={styles.LogoContainer}>
           <span className={styles.Title}>Recallr AI</span>
         </div>
+      </div>
 
-        {/* Project selector - moved to the left side */}
+      <div className={styles.headerRight}>
+        <Link
+          to={
+            currentProject.id !== DEFAULT_PROJECT.id
+              ? `/dashboard?project=${currentProject.id}`
+              : "/dashboard"
+          }
+          className={`${styles.navLink} ${
+            isDashboardActive ? styles.active : ""
+          }`}
+        >
+          <span className={styles.navLinkText}>Dashboard</span>
+        </Link>
+
+        {/* Project selector - now on the right side */}
         {location.pathname.startsWith("/dashboard/") && (
           <div className={styles.projectSelector}>
             <button
@@ -158,44 +173,6 @@ const Header = () => {
             />
           </div>
         )}
-      </div>
-
-      <div className={styles.headerRight}>
-        <Link
-          to={
-            currentProject.id !== DEFAULT_PROJECT.id
-              ? `/dashboard?project=${currentProject.id}`
-              : "/dashboard"
-          }
-          className={`${styles.navLink} ${
-            isDashboardActive ? styles.active : ""
-          }`}
-        >
-          <span className={styles.navLinkText}>Dashboard</span>
-        </Link>
-
-        {/* <a
-          href="https://recallrai.com/playground"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.navLink}
-        >
-          <span className={styles.navLinkText}>Playground</span>
-        </a> */}
-
-        {/* <Link
-          to="/docs"
-          className={`${styles.navLink} ${location.pathname === "/docs" ? styles.active : ""}`}
-        >
-          <span className={styles.navLinkText}>Docs</span>
-        </Link> */}
-
-        {/* <Link
-          to="/billing"
-          className={`${styles.navLink} ${location.pathname === "/billing" ? styles.active : ""}`}
-        >
-          <span className={styles.navLinkText}>Billing</span>
-        </Link> */}
 
         <div className={styles.userProfile} ref={profileRef}>
           <div

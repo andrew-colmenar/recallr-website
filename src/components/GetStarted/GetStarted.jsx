@@ -143,7 +143,11 @@ session.process()`}
                   : styles.pending
               }`}
             >
-              <div className={styles["step-header"]}>
+              <div
+                className={styles["step-header"]}
+                onClick={() => setCurrentStep(index)}
+                style={{ cursor: "pointer" }}
+              >
                 <div className={styles["step-number"]}>{index + 1}</div>
                 <h4 className={styles["step-title"]}>{step.title}</h4>
                 {currentStep > index && (
@@ -457,8 +461,8 @@ for message in messages:
             Give your AI assistants the ability to remember previous
             conversations and form meaningful connections.
           </p>
-          <button className={`${styles.button} ${styles.primaryButton}`}>
-            View API Documentation
+          <button className={`${styles.button} ${styles.primaryButton}`} onClick={() => window.open('https://github.com/recallrai/sdk-python', '_blank')}>
+            View SDK Documentation
           </button>
         </div>
       </div>

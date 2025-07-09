@@ -1,20 +1,4 @@
 /* BillingInterface.css */
-:root {
-  --primary-bg: #111827;
-  --secondary-bg: #1F2937;
-  --border-color: #374151;
-  --text-primary: #FFFFFF;
-  --text-secondary: #D1D5DB;
-  --accent-color: #3B82F6;
-  --accent-hover: #2563EB;
-  --secondary-accent: #EC4899;
-  --success-color: #10B981;
-  --error-color: #EF4444;
-  --warning-color: #F59E0B;
-  --card-bg: #1F2937;
-  --input-bg: #4B5563;
-}
-
 .billing-container {
   background-color: var(--primary-bg);
   color: var(--text-primary);
