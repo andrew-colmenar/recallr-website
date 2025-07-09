@@ -11,6 +11,8 @@ import {
   LifeBuoy,
   ChevronRight,
   ChevronLeft,
+  Mail,
+  Folder,
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
@@ -55,7 +57,7 @@ const Sidebar = ({ projectId }) => {
             onClick={() => setCollapsed((prev) => !prev)}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+            {collapsed ? <ChevronRight size={28} /> : <ChevronLeft size={28} />}
           </button>
         </div>
         <div className={styles.sidebarNav}>
@@ -70,6 +72,17 @@ const Sidebar = ({ projectId }) => {
                     <Activity size={18} />
                   </div>
                   <span>Main Dashboard</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/projects"
+                  className={`${styles.navItem} ${isActive("/dashboard/projects")}`}
+                >
+                  <div className={styles.iconContainer}>
+                    <Folder size={18} />
+                  </div>
+                  <span>Project Management</span>
                 </Link>
               </li>
               {/* <li>
@@ -107,13 +120,13 @@ const Sidebar = ({ projectId }) => {
               </li>
               <li>
                 <Link
-                  to={projectUrl("settings")}
-                  className={`${styles.navItem} ${isActive("/settings")}`}
+                  to={projectUrl("project-settings")}
+                  className={`${styles.navItem} ${isActive("/project-settings")}`}
                 >
                   <div className={styles.iconContainer}>
                     <Settings size={18} />
                   </div>
-                  <span>Settings</span>
+                  <span>Project Settings</span>
                 </Link>
               </li>
             </ul>
@@ -146,6 +159,17 @@ const Sidebar = ({ projectId }) => {
                   <span>Status</span>
                 </a>
               </li>
+              <li>
+                <Link
+                  to="/contact-help"
+                  className={styles.navItem}
+                >
+                  <div className={styles.iconContainer}>
+                    <Mail size={18} />
+                  </div>
+                  <span>Contact Us / Help</span>
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
@@ -157,7 +181,7 @@ const Sidebar = ({ projectId }) => {
           onClick={() => setCollapsed(false)}
           aria-label="Expand sidebar"
         >
-          <ChevronRight size={24} />
+          <ChevronRight size={28} />
         </button>
       )}
     </>

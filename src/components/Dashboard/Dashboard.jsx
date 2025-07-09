@@ -5,6 +5,7 @@ import {
   useSearchParams,
   useNavigate,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import { appApi } from "../../api/axios";
 import Cookies from "js-cookie";
@@ -51,6 +52,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const projectId = searchParams.get("project");
 
@@ -114,12 +116,12 @@ const Dashboard = () => {
 
         // If no project is selected in URL but user has projects, redirect to latest project
         if (!projectId && projectsList && projectsList.length > 0) {
-          // Sort by creation date (newest first) and redirect to settings
+          // Sort by creation date (newest first) and redirect to project-settings
           const sortedProjects = [...projectsList].sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at)
           );
 
-          navigate(`/dashboard/settings?project=${sortedProjects[0].id}`, {
+          navigate(`/dashboard/project-settings?project=${sortedProjects[0].id}`, {
             replace: true,
           });
           return;
@@ -132,14 +134,14 @@ const Dashboard = () => {
           setCurrentProject(DEFAULT_PROJECT);
           setLoading(false);
 
-          // Navigate to settings with a special query param indicating new user
-          navigate(`/dashboard/settings?newUser=true`, { replace: true });
+          // Navigate to project-settings with a special query param indicating new user
+          navigate(`/dashboard/project-settings?newUser=true`, { replace: true });
           return;
         }
 
         // If projects exist and a project ID is provided, fetch that project's details
         if (projectId) {
-          fetchProjectDetails();
+          fetchProjectDetails(projectId);
         }
       } catch (error) {
         if (error.response?.status === 401) {
@@ -150,7 +152,7 @@ const Dashboard = () => {
 
         // For other errors, proceed to project details
         if (projectId) {
-          fetchProjectDetails();
+          fetchProjectDetails(projectId);
         } else {
           setLoading(false);
         }
@@ -160,17 +162,22 @@ const Dashboard = () => {
     fetchProjects();
   }, [authChecked, projectId, navigate, checkAuth]);
 
-  const fetchProjectDetails = useCallback(async () => {
-    // If no project is selected, use default without API call
-    if (!projectId) {
+  // Only fetch project details if projectId changes or currentProject is missing/mismatched
+  const fetchProjectDetails = useCallback(async (projId) => {
+    if (!projId) {
       setCurrentProject(DEFAULT_PROJECT);
       setLoading(false);
       return;
     }
 
-    // If the project ID is our default ID, don't try to fetch it from the backend
-    if (projectId === DEFAULT_PROJECT.id) {
+    if (projId === DEFAULT_PROJECT.id) {
       setCurrentProject(DEFAULT_PROJECT);
+      setLoading(false);
+      return;
+    }
+
+    // Only fetch if we don't already have the correct project
+    if (currentProject && currentProject.id === projId) {
       setLoading(false);
       return;
     }
@@ -191,7 +198,7 @@ const Dashboard = () => {
     }, 10000);
 
     try {
-      const response = await appApi.get(`/projects/${projectId}`, {
+      const response = await appApi.get(`/projects/${projId}`, {
         headers: {
           "X-User-Id": user_id,
           "X-Session-Id": session_id,
@@ -217,7 +224,7 @@ const Dashboard = () => {
             );
             break;
           case 404:
-            setError(`Project not found: ${projectId}`);
+            setError(`Project not found: ${projId}`);
 
             // Check if there are other projects to redirect to
             if (projects.length > 0) {
@@ -228,14 +235,14 @@ const Dashboard = () => {
               setTimeout(
                 () =>
                   navigate(
-                    `/dashboard/settings?project=${sortedProjects[0].id}`
+                    `/dashboard/project-settings?project=${sortedProjects[0].id}`
                   ),
                 3000
               );
             } else {
               // No projects, show the create project view
               setTimeout(
-                () => navigate(`/dashboard/settings?newUser=true`),
+                () => navigate(`/dashboard/project-settings?newUser=true`),
                 3000
               );
             }
@@ -276,7 +283,17 @@ const Dashboard = () => {
       clearTimeout(timeoutId);
       setLoading(false);
     }
-  }, [projectId, navigate, checkAuth, loading, projects]);
+  }, [currentProject, checkAuth, loading, projects, navigate]);
+
+  // Helper: is this a footer route?
+  const isFooterRoute = () => {
+    const path = location.pathname;
+    return (
+      path.includes("/getstarted") ||
+      path.includes("/contact-help") ||
+      path.includes("/status")
+    );
+  };
 
   if (loading) {
     return (
@@ -299,13 +316,22 @@ const Dashboard = () => {
       <Sidebar projectId={projectId || ""} />
       <div className={styles.contentContainer}>
         {error && <div className={styles.errorBanner}>{error}</div>}
-        <main className={styles.main}>
+        {/* Overlay if not in a project and not on a footer route */}
+        {currentProject && currentProject.id === DEFAULT_PROJECT.id && !isFooterRoute() && (
+          <div className={styles.projectOverlay}>
+            <div className={styles.projectOverlayContent}>
+              <h1>Please select or create a project first</h1>
+              <p>You need to select or create a project before using this page.</p>
+            </div>
+          </div>
+        )}
+        <main className={styles.main} style={currentProject && currentProject.id === DEFAULT_PROJECT.id && !isFooterRoute() ? { filter: 'blur(6px)', pointerEvents: 'none', userSelect: 'none' } : {}}>
           <Routes>
             <Route
               index
               element={
                 <Navigate
-                  to={`settings${
+                  to={`project-settings${
                     projectId ? `?project=${projectId}` : "?newUser=true"
                   }`}
                   replace
@@ -319,7 +345,7 @@ const Dashboard = () => {
               element={<APIKeys project={currentProject} />}
             />
             <Route
-              path="settings"
+              path="project-settings"
               element={<ProjectSettings project={currentProject} />}
             />
             {/* <Route path="*" element={<ComingSoon project={currentProject} />} /> */}

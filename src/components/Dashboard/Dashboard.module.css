@@ -304,3 +304,40 @@
     width: 100%;
   }
 }
+
+.projectOverlay {
+  position: fixed;
+  top: 88px;
+  left: 15rem;
+  width: calc(100vw - 15rem);
+  height: calc(100vh - 88px);
+  background: rgba(17, 24, 39, 0.7);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+}
+
+.projectOverlayContent {
+  text-align: center;
+  color: #fff;
+  background: rgba(31, 41, 55, 0.95);
+  padding: 3rem 2.5rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+}
+
+.projectOverlayContent h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.2rem;
+  background: linear-gradient(90deg, #3B82F6, #A855F7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.projectOverlayContent p {
+  font-size: 1.25rem;
+  color: #d1d5db;
+}

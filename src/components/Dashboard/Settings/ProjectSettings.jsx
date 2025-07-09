@@ -373,7 +373,7 @@ const ProjectSettings = () => {
           });
 
           // Navigate to the newly created project
-          navigate(`/dashboard/settings?project=${project_id}`, {
+          navigate(`/dashboard/project-settings?project=${project_id}`, {
             replace: true,
           });
 
@@ -510,7 +510,7 @@ const ProjectSettings = () => {
         );
 
         // Immediately navigate with replace
-        navigate(`/dashboard/settings?project=${sortedProjects[0].id}`, {
+        navigate(`/dashboard/project-settings?project=${sortedProjects[0].id}`, {
           replace: true,
         });
       } else {
@@ -562,7 +562,7 @@ const ProjectSettings = () => {
         </p>
         <button
           className={styles.returnButton}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/dashboard/main")}
         >
           Return to Dashboard
         </button>
@@ -571,881 +571,884 @@ const ProjectSettings = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>
-        {/* Header with Project Name and Edit/Save buttons */}
-        <div className={styles.header}>
-          <h1 className={styles.title}>
-            {isEditing ? (
-              <input
-                type="text"
-                name="name"
-                value={editedProject.name}
-                onChange={handleInputChange}
-                className={styles.editableTitle}
-              />
-            ) : (
-              project.name
-            )}
-          </h1>
-
-          <div className={styles.actionButtons}>
-            {isEditing ? (
-              <>
-                <button
-                  className={`${styles.actionButton} ${styles.cancelButton}`}
-                  onClick={handleCancelEdit}
-                  disabled={actionLoading}
-                >
-                  Cancel
-                </button>
-                <button
-                  className={`${styles.actionButton} ${styles.saveButton}`}
-                  onClick={handleUpdateProject}
-                  disabled={actionLoading}
-                >
-                  {actionLoading ? "Saving..." : "Save Changes"}
-                  {!actionLoading && <Save size={16} />}
-                </button>
-              </>
-            ) : (
-              <button
-                className={`${styles.actionButton} ${styles.editButton}`}
-                onClick={() => setIsEditing(true)}
-              >
-                Edit Project
-                <Edit size={16} />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Notifications */}
-        {error && (
-          <div className={styles.errorMessage}>
-            <AlertCircle size={16} />
-            <span>{error}</span>
-          </div>
-        )}
-
-        {success && (
-          <div className={styles.successMessage}>
-            <Check size={16} />
-            <span>{success}</span>
-          </div>
-        )}
-
-        {/* Project Info Section */}
-        <section className={styles.infoSection}>
-          <h2 className={styles.sectionTitle}>Project Information</h2>
-          <div className={styles.infoGrid}>
-            <div className={styles.infoItem}>
-              <div className={styles.infoLabel}>Project ID</div>
-              <div className={styles.infoValue}>{project.id}</div>
-            </div>
-
-            <div className={styles.infoItem}>
-              <div className={styles.infoLabel}>Created At</div>
-              <div className={styles.infoValue}>
-                {formatDate(project.created_at)}
-              </div>
-            </div>
-
-            <div className={styles.infoItem}>
-              <div className={styles.infoLabel}>Description</div>
+    <div className={styles.settingsContainer}>
+      <h1 className={styles.settingsTitle}>Project Settings</h1>
+      <div className={styles.container}>
+        <div className={styles.content}>
+          {/* Header with Project Name and Edit/Save buttons */}
+          <div className={styles.header}>
+            <h1 className={styles.title}>
               {isEditing ? (
-                <textarea
-                  name="description"
-                  value={editedProject.description || ""}
-                  onChange={handleInputChange}
-                  className={styles.editableDescription}
-                  placeholder="Enter project description"
-                />
-              ) : (
-                <div className={styles.infoValue}>
-                  {project.description || "No description provided"}
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Preferences Sections */}
-        <section className={styles.preferencesSection}>
-          <h2 className={styles.sectionTitle}>Project Preferences</h2>
-
-          {/* Classifier Instructions */}
-          <div className={styles.preferencesCard}>
-            <div
-              className={styles.cardHeader}
-              onClick={() => toggleSection("classifierInstructions")}
-            >
-              <h3 className={styles.cardTitle}>Classifier Preferences</h3>
-              <button className={styles.toggleButton}>
-                {showSections.classifierInstructions ? (
-                  <ChevronUp size={20} />
-                ) : (
-                  <ChevronDown size={20} />
-                )}
-              </button>
-            </div>
-
-            {showSections.classifierInstructions && (
-              <div className={styles.cardContent}>
-                {/* Custom Instructions */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Custom Instructions
-                  </label>
-                  {editedProject.recall_preferences.classifier
-                    .custom_instructions.length > 0 ? (
-                    editedProject.recall_preferences.classifier.custom_instructions.map(
-                      (instruction, index) => (
-                        <div
-                          key={`instruction-${index}`}
-                          className={styles.arrayItemContainer}
-                        >
-                          {isEditing ? (
-                            <>
-                              <textarea
-                                value={instruction}
-                                onChange={(e) =>
-                                  handleArrayItemChange(
-                                    "recall_preferences.classifier.custom_instructions",
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                className={styles.arrayItemInput}
-                              />
-                              <button
-                                className={styles.removeItemButton}
-                                onClick={() =>
-                                  removeArrayItem(
-                                    "recall_preferences.classifier.custom_instructions",
-                                    index
-                                  )
-                                }
-                              >
-                                <X size={16} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className={styles.arrayItemValue}>
-                              {instruction || "No instruction provided"}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <InfoIcon size={18} />
-                      <p>
-                        No custom instructions have been added yet.{" "}
-                        {isEditing && "Use the button below to add some."}
-                      </p>
-                    </div>
-                  )}
-                  {isEditing && (
-                    <button
-                      className={styles.addItemButton}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addArrayItem(
-                          "recall_preferences.classifier.custom_instructions"
-                        );
-                      }}
-                    >
-                      <Plus size={16} />
-                      <span>Add Custom Instruction</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* False Positive Examples */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    False Positive Examples
-                  </label>
-                  {editedProject.recall_preferences.classifier
-                    .false_positive_examples.length > 0 ? (
-                    editedProject.recall_preferences.classifier.false_positive_examples.map(
-                      (example, index) => (
-                        <div
-                          key={`fp-${index}`}
-                          className={styles.arrayItemContainer}
-                        >
-                          {isEditing ? (
-                            <>
-                              <textarea
-                                value={example}
-                                onChange={(e) =>
-                                  handleArrayItemChange(
-                                    "recall_preferences.classifier.false_positive_examples",
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                className={styles.arrayItemInput}
-                              />
-                              <button
-                                className={styles.removeItemButton}
-                                onClick={() =>
-                                  removeArrayItem(
-                                    "recall_preferences.classifier.false_positive_examples",
-                                    index
-                                  )
-                                }
-                              >
-                                <X size={16} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className={styles.arrayItemValue}>
-                              {example || "No example provided"}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <InfoIcon size={18} />
-                      <p>
-                        No false positive examples have been added yet.{" "}
-                        {isEditing && "Use the button below to add some."}
-                      </p>
-                    </div>
-                  )}
-                  {isEditing && (
-                    <button
-                      className={styles.addItemButton}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addArrayItem(
-                          "recall_preferences.classifier.false_positive_examples"
-                        );
-                      }}
-                    >
-                      <Plus size={16} />
-                      <span>Add False Positive Example</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* False Negative Examples */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    False Negative Examples
-                  </label>
-                  {editedProject.recall_preferences.classifier
-                    .false_negative_examples.length > 0 ? (
-                    editedProject.recall_preferences.classifier.false_negative_examples.map(
-                      (example, index) => (
-                        <div
-                          key={`fn-${index}`}
-                          className={styles.arrayItemContainer}
-                        >
-                          {isEditing ? (
-                            <>
-                              <textarea
-                                value={example}
-                                onChange={(e) =>
-                                  handleArrayItemChange(
-                                    "recall_preferences.classifier.false_negative_examples",
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                className={styles.arrayItemInput}
-                              />
-                              <button
-                                className={styles.removeItemButton}
-                                onClick={() =>
-                                  removeArrayItem(
-                                    "recall_preferences.classifier.false_negative_examples",
-                                    index
-                                  )
-                                }
-                              >
-                                <X size={16} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className={styles.arrayItemValue}>
-                              {example || "No example provided"}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <InfoIcon size={18} />
-                      <p>
-                        No false negative examples have been added yet.{" "}
-                        {isEditing && "Use the button below to add some."}
-                      </p>
-                    </div>
-                  )}
-                  {isEditing && (
-                    <button
-                      className={styles.addItemButton}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addArrayItem(
-                          "recall_preferences.classifier.false_negative_examples"
-                        );
-                      }}
-                    >
-                      <Plus size={16} />
-                      <span>Add False Negative Example</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Subquery and Keywords Generator */}
-          <div className={styles.preferencesCard}>
-            <div
-              className={styles.cardHeader}
-              onClick={() => toggleSection("subqueryGenerator")}
-            >
-              <h3 className={styles.cardTitle}>
-                Subquery & Keywords Generator
-              </h3>
-              <button className={styles.toggleButton}>
-                {showSections.subqueryGenerator ? (
-                  <ChevronUp size={20} />
-                ) : (
-                  <ChevronDown size={20} />
-                )}
-              </button>
-            </div>
-
-            {showSections.subqueryGenerator && (
-              <div className={styles.cardContent}>
-                {/* Custom Instructions */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Custom Instructions
-                  </label>
-                  {editedProject.recall_preferences
-                    .subquery_and_keywords_generator.custom_instructions
-                    .length > 0 ? (
-                    editedProject.recall_preferences.subquery_and_keywords_generator.custom_instructions.map(
-                      (instruction, index) => (
-                        <div
-                          key={`subq-inst-${index}`}
-                          className={styles.arrayItemContainer}
-                        >
-                          {isEditing ? (
-                            <>
-                              <textarea
-                                value={instruction}
-                                onChange={(e) =>
-                                  handleArrayItemChange(
-                                    "recall_preferences.subquery_and_keywords_generator.custom_instructions",
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                className={styles.arrayItemInput}
-                              />
-                              <button
-                                className={styles.removeItemButton}
-                                onClick={() =>
-                                  removeArrayItem(
-                                    "recall_preferences.subquery_and_keywords_generator.custom_instructions",
-                                    index
-                                  )
-                                }
-                              >
-                                <X size={16} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className={styles.arrayItemValue}>
-                              {instruction || "No instruction provided"}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <InfoIcon size={18} />
-                      <p>
-                        No custom instructions have been added yet.{" "}
-                        {isEditing && "Use the button below to add some."}
-                      </p>
-                    </div>
-                  )}
-                  {isEditing && (
-                    <button
-                      className={styles.addItemButton}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addArrayItem(
-                          "recall_preferences.subquery_and_keywords_generator.custom_instructions"
-                        );
-                      }}
-                    >
-                      <Plus size={16} />
-                      <span>Add Custom Instruction</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* Subqueries Weight */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Subqueries Candidate Nodes Weight
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      name="subqueries_candidate_nodes_weight"
-                      value={
-                        editedProject.recall_preferences
-                          .subquery_and_keywords_generator
-                          .subqueries_candidate_nodes_weight
-                      }
-                      onChange={handleNumberChange}
-                      step="0.1"
-                      className={styles.numberInput}
-                    />
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {
-                        editedProject.recall_preferences
-                          .subquery_and_keywords_generator
-                          .subqueries_candidate_nodes_weight
-                      }
-                    </div>
-                  )}
-                </div>
-
-                {/* Example Subqueries */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Example Subqueries
-                  </label>
-                  {editedProject.recall_preferences
-                    .subquery_and_keywords_generator.example_subqueries.length >
-                  0 ? (
-                    editedProject.recall_preferences.subquery_and_keywords_generator.example_subqueries.map(
-                      (example, index) => (
-                        <div
-                          key={`subq-${index}`}
-                          className={styles.arrayItemContainer}
-                        >
-                          {isEditing ? (
-                            <>
-                              <input
-                                type="text"
-                                value={example}
-                                onChange={(e) =>
-                                  handleArrayItemChange(
-                                    "recall_preferences.subquery_and_keywords_generator.example_subqueries",
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                className={styles.arrayItemInput}
-                              />
-                              <button
-                                className={styles.removeItemButton}
-                                onClick={() =>
-                                  removeArrayItem(
-                                    "recall_preferences.subquery_and_keywords_generator.example_subqueries",
-                                    index
-                                  )
-                                }
-                              >
-                                <X size={16} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className={styles.arrayItemValue}>
-                              {example || "No example provided"}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <InfoIcon size={18} />
-                      <p>
-                        No example subqueries have been added yet.{" "}
-                        {isEditing && "Use the button below to add some."}
-                      </p>
-                    </div>
-                  )}
-                  {isEditing && (
-                    <button
-                      className={styles.addItemButton}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addArrayItem(
-                          "recall_preferences.subquery_and_keywords_generator.example_subqueries"
-                        );
-                      }}
-                    >
-                      <Plus size={16} />
-                      <span>Add Example Subquery</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* Keywords Weight */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Keywords Candidate Nodes Weight
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      name="keywords_candidate_nodes_weight"
-                      value={
-                        editedProject.recall_preferences
-                          .subquery_and_keywords_generator
-                          .keywords_candidate_nodes_weight
-                      }
-                      onChange={handleNumberChange}
-                      step="0.1"
-                      className={styles.numberInput}
-                    />
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {
-                        editedProject.recall_preferences
-                          .subquery_and_keywords_generator
-                          .keywords_candidate_nodes_weight
-                      }
-                    </div>
-                  )}
-                </div>
-
-                {/* Example Keywords */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>Example Keywords</label>
-                  {editedProject.recall_preferences
-                    .subquery_and_keywords_generator.example_keywords.length >
-                  0 ? (
-                    editedProject.recall_preferences.subquery_and_keywords_generator.example_keywords.map(
-                      (keyword, index) => (
-                        <div
-                          key={`keyword-${index}`}
-                          className={styles.arrayItemContainer}
-                        >
-                          {isEditing ? (
-                            <>
-                              <input
-                                type="text"
-                                value={keyword}
-                                onChange={(e) =>
-                                  handleArrayItemChange(
-                                    "recall_preferences.subquery_and_keywords_generator.example_keywords",
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                className={styles.arrayItemInput}
-                              />
-                              <button
-                                className={styles.removeItemButton}
-                                onClick={() =>
-                                  removeArrayItem(
-                                    "recall_preferences.subquery_and_keywords_generator.example_keywords",
-                                    index
-                                  )
-                                }
-                              >
-                                <X size={16} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className={styles.arrayItemValue}>
-                              {keyword || "No keyword provided"}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <InfoIcon size={18} />
-                      <p>
-                        No example keywords have been added yet.{" "}
-                        {isEditing && "Use the button below to add some."}
-                      </p>
-                    </div>
-                  )}
-                  {isEditing && (
-                    <button
-                      className={styles.addItemButton}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addArrayItem(
-                          "recall_preferences.subquery_and_keywords_generator.example_keywords"
-                        );
-                      }}
-                    >
-                      <Plus size={16} />
-                      <span>Add Example Keyword</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Generation Preferences */}
-          <div className={styles.preferencesCard}>
-            <div
-              className={styles.cardHeader}
-              onClick={() => toggleSection("generationPreferences")}
-            >
-              <h3 className={styles.cardTitle}>Generation Preferences</h3>
-              <button className={styles.toggleButton}>
-                {showSections.generationPreferences ? (
-                  <ChevronUp size={20} />
-                ) : (
-                  <ChevronDown size={20} />
-                )}
-              </button>
-            </div>
-
-            {showSections.generationPreferences && (
-              <div className={styles.cardContent}>
-                {/* Custom Instructions */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Custom Instructions
-                  </label>
-                  {editedProject.generation_preferences.custom_instructions
-                    .length > 0 ? (
-                    editedProject.generation_preferences.custom_instructions.map(
-                      (instruction, index) => (
-                        <div
-                          key={`gen-inst-${index}`}
-                          className={styles.arrayItemContainer}
-                        >
-                          {isEditing ? (
-                            <>
-                              <textarea
-                                value={instruction}
-                                onChange={(e) =>
-                                  handleArrayItemChange(
-                                    "generation_preferences.custom_instructions",
-                                    index,
-                                    e.target.value
-                                  )
-                                }
-                                className={styles.arrayItemInput}
-                              />
-                              <button
-                                className={styles.removeItemButton}
-                                onClick={() =>
-                                  removeArrayItem(
-                                    "generation_preferences.custom_instructions",
-                                    index
-                                  )
-                                }
-                              >
-                                <X size={16} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className={styles.arrayItemValue}>
-                              {instruction || "No instruction provided"}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <InfoIcon size={18} />
-                      <p>
-                        No custom instructions have been added yet.{" "}
-                        {isEditing && "Use the button below to add some."}
-                      </p>
-                    </div>
-                  )}
-                  {isEditing && (
-                    <button
-                      className={styles.addItemButton}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addArrayItem(
-                          "generation_preferences.custom_instructions"
-                        );
-                      }}
-                    >
-                      <Plus size={16} />
-                      <span>Add Custom Instruction</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* Top K Semantic Similarity Check */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Top K Semantic Similarity Check
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      name="top_k_symantic_similarity_check"
-                      value={
-                        editedProject.generation_preferences
-                          .top_k_symantic_similarity_check
-                      }
-                      onChange={handleNumberChange}
-                      min="0"
-                      step="1"
-                      className={styles.numberInput}
-                    />
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {
-                        editedProject.generation_preferences
-                          .top_k_symantic_similarity_check
-                      }
-                    </div>
-                  )}
-                </div>
-
-                {/* Raise Merge Conflict */}
-                <div className={styles.fieldGroup}>
-                  <label className={styles.fieldLabel}>
-                    Raise Merge Conflict
-                  </label>
-                  {isEditing ? (
-                    <div className={styles.switchContainer}>
-                      <input
-                        type="checkbox"
-                        id="raiseMergeConflict"
-                        name="raise_merge_conflict"
-                        checked={
-                          editedProject.generation_preferences
-                            .raise_merge_conflict
-                        }
-                        onChange={handleCheckboxChange}
-                        className={styles.switchInput}
-                      />
-                      <label
-                        htmlFor="raiseMergeConflict"
-                        className={styles.switchLabel}
-                      >
-                        {editedProject.generation_preferences
-                          .raise_merge_conflict
-                          ? "Enabled"
-                          : "Disabled"}
-                      </label>
-                    </div>
-                  ) : (
-                    <div className={styles.infoValue}>
-                      {editedProject.generation_preferences.raise_merge_conflict
-                        ? "Enabled"
-                        : "Disabled"}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Danger Zone */}
-        <section className={styles.dangerZone}>
-          <h2 className={styles.dangerTitle}>Danger Zone</h2>
-
-          <div className={styles.dangerCard}>
-            <div className={styles.dangerInfo}>
-              <h3>Delete this project</h3>
-              <p>
-                Once you delete a project, there is no going back. Please be
-                certain.
-              </p>
-            </div>
-
-            <button
-              className={styles.deleteButton}
-              onClick={() => setShowDeleteConfirm(true)}
-              disabled={actionLoading}
-            >
-              Delete Project
-            </button>
-          </div>
-        </section>
-
-        {/* Delete Confirmation Modal */}
-        {showDeleteConfirm && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.deleteModal}>
-              <div className={styles.modalHeader}>
-                <h3>Delete Project</h3>
-                <button
-                  className={styles.closeButton}
-                  onClick={() => setShowDeleteConfirm(false)}
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className={styles.modalBody}>
-                <div className={styles.warningMessage}>
-                  <AlertCircle size={20} />
-                  <span>
-                    This action cannot be undone. This will permanently delete
-                    the project.
-                  </span>
-                </div>
-
-                <p>
-                  Please type <strong>{project.name}</strong> to confirm.
-                </p>
-
                 <input
                   type="text"
-                  className={styles.confirmInput}
-                  placeholder="Type project name to confirm"
-                  value={deleteConfirmText}
-                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  name="name"
+                  value={editedProject.name}
+                  onChange={handleInputChange}
+                  className={styles.editableTitle}
                 />
+              ) : (
+                project.name
+              )}
+            </h1>
 
-                <div className={styles.modalActions}>
+            <div className={styles.actionButtons}>
+              {isEditing ? (
+                <>
                   <button
-                    className={styles.cancelButton}
-                    onClick={() => setShowDeleteConfirm(false)}
+                    className={`${styles.actionButton} ${styles.cancelButton}`}
+                    onClick={handleCancelEdit}
                     disabled={actionLoading}
                   >
                     Cancel
                   </button>
-
                   <button
-                    className={styles.deleteConfirmButton}
-                    onClick={handleDeleteProject}
-                    disabled={
-                      actionLoading || deleteConfirmText !== project.name
-                    }
+                    className={`${styles.actionButton} ${styles.saveButton}`}
+                    onClick={handleUpdateProject}
+                    disabled={actionLoading}
                   >
-                    {actionLoading
-                      ? "Deleting..."
-                      : "I understand, delete this project"}
+                    {actionLoading ? "Saving..." : "Save Changes"}
+                    {!actionLoading && <Save size={16} />}
                   </button>
+                </>
+              ) : (
+                <button
+                  className={`${styles.actionButton} ${styles.editButton}`}
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit Project
+                  <Edit size={16} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Notifications */}
+          {error && (
+            <div className={styles.errorMessage}>
+              <AlertCircle size={16} />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {success && (
+            <div className={styles.successMessage}>
+              <Check size={16} />
+              <span>{success}</span>
+            </div>
+          )}
+
+          {/* Project Info Section */}
+          <section className={styles.infoSection}>
+            <h2 className={styles.sectionTitle}>Project Information</h2>
+            <div className={styles.infoGrid}>
+              <div className={styles.infoItem}>
+                <div className={styles.infoLabel}>Project ID</div>
+                <div className={styles.infoValue}>{project.id}</div>
+              </div>
+
+              <div className={styles.infoItem}>
+                <div className={styles.infoLabel}>Created At</div>
+                <div className={styles.infoValue}>
+                  {formatDate(project.created_at)}
+                </div>
+              </div>
+
+              <div className={styles.infoItem}>
+                <div className={styles.infoLabel}>Description</div>
+                {isEditing ? (
+                  <textarea
+                    name="description"
+                    value={editedProject.description || ""}
+                    onChange={handleInputChange}
+                    className={styles.editableDescription}
+                    placeholder="Enter project description"
+                  />
+                ) : (
+                  <div className={styles.infoValue}>
+                    {project.description || "No description provided"}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* Preferences Sections */}
+          <section className={styles.preferencesSection}>
+            <h2 className={styles.sectionTitle}>Project Preferences</h2>
+
+            {/* Classifier Instructions */}
+            <div className={styles.preferencesCard}>
+              <div
+                className={styles.cardHeader}
+                onClick={() => toggleSection("classifierInstructions")}
+              >
+                <h3 className={styles.cardTitle}>Classifier Preferences</h3>
+                <button className={styles.toggleButton}>
+                  {showSections.classifierInstructions ? (
+                    <ChevronUp size={20} />
+                  ) : (
+                    <ChevronDown size={20} />
+                  )}
+                </button>
+              </div>
+
+              {showSections.classifierInstructions && (
+                <div className={styles.cardContent}>
+                  {/* Custom Instructions */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Custom Instructions
+                    </label>
+                    {editedProject.recall_preferences.classifier
+                      .custom_instructions.length > 0 ? (
+                      editedProject.recall_preferences.classifier.custom_instructions.map(
+                        (instruction, index) => (
+                          <div
+                            key={`instruction-${index}`}
+                            className={styles.arrayItemContainer}
+                          >
+                            {isEditing ? (
+                              <>
+                                <textarea
+                                  value={instruction}
+                                  onChange={(e) =>
+                                    handleArrayItemChange(
+                                      "recall_preferences.classifier.custom_instructions",
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  className={styles.arrayItemInput}
+                                />
+                                <button
+                                  className={styles.removeItemButton}
+                                  onClick={() =>
+                                    removeArrayItem(
+                                      "recall_preferences.classifier.custom_instructions",
+                                      index
+                                    )
+                                  }
+                                >
+                                  <X size={16} />
+                                </button>
+                              </>
+                            ) : (
+                              <div className={styles.arrayItemValue}>
+                                {instruction || "No instruction provided"}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className={styles.emptyState}>
+                        <InfoIcon size={18} />
+                        <p>
+                          No custom instructions have been added yet.{" "}
+                          {isEditing && "Use the button below to add some."}
+                        </p>
+                      </div>
+                    )}
+                    {isEditing && (
+                      <button
+                        className={styles.addItemButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addArrayItem(
+                            "recall_preferences.classifier.custom_instructions"
+                          );
+                        }}
+                      >
+                        <Plus size={16} />
+                        <span>Add Custom Instruction</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* False Positive Examples */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      False Positive Examples
+                    </label>
+                    {editedProject.recall_preferences.classifier
+                      .false_positive_examples.length > 0 ? (
+                      editedProject.recall_preferences.classifier.false_positive_examples.map(
+                        (example, index) => (
+                          <div
+                            key={`fp-${index}`}
+                            className={styles.arrayItemContainer}
+                          >
+                            {isEditing ? (
+                              <>
+                                <textarea
+                                  value={example}
+                                  onChange={(e) =>
+                                    handleArrayItemChange(
+                                      "recall_preferences.classifier.false_positive_examples",
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  className={styles.arrayItemInput}
+                                />
+                                <button
+                                  className={styles.removeItemButton}
+                                  onClick={() =>
+                                    removeArrayItem(
+                                      "recall_preferences.classifier.false_positive_examples",
+                                      index
+                                    )
+                                  }
+                                >
+                                  <X size={16} />
+                                </button>
+                              </>
+                            ) : (
+                              <div className={styles.arrayItemValue}>
+                                {example || "No example provided"}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className={styles.emptyState}>
+                        <InfoIcon size={18} />
+                        <p>
+                          No false positive examples have been added yet.{" "}
+                          {isEditing && "Use the button below to add some."}
+                        </p>
+                      </div>
+                    )}
+                    {isEditing && (
+                      <button
+                        className={styles.addItemButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addArrayItem(
+                            "recall_preferences.classifier.false_positive_examples"
+                          );
+                        }}
+                      >
+                        <Plus size={16} />
+                        <span>Add False Positive Example</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* False Negative Examples */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      False Negative Examples
+                    </label>
+                    {editedProject.recall_preferences.classifier
+                      .false_negative_examples.length > 0 ? (
+                      editedProject.recall_preferences.classifier.false_negative_examples.map(
+                        (example, index) => (
+                          <div
+                            key={`fn-${index}`}
+                            className={styles.arrayItemContainer}
+                          >
+                            {isEditing ? (
+                              <>
+                                <textarea
+                                  value={example}
+                                  onChange={(e) =>
+                                    handleArrayItemChange(
+                                      "recall_preferences.classifier.false_negative_examples",
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  className={styles.arrayItemInput}
+                                />
+                                <button
+                                  className={styles.removeItemButton}
+                                  onClick={() =>
+                                    removeArrayItem(
+                                      "recall_preferences.classifier.false_negative_examples",
+                                      index
+                                    )
+                                  }
+                                >
+                                  <X size={16} />
+                                </button>
+                              </>
+                            ) : (
+                              <div className={styles.arrayItemValue}>
+                                {example || "No example provided"}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className={styles.emptyState}>
+                        <InfoIcon size={18} />
+                        <p>
+                          No false negative examples have been added yet.{" "}
+                          {isEditing && "Use the button below to add some."}
+                        </p>
+                      </div>
+                    )}
+                    {isEditing && (
+                      <button
+                        className={styles.addItemButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addArrayItem(
+                            "recall_preferences.classifier.false_negative_examples"
+                          );
+                        }}
+                      >
+                        <Plus size={16} />
+                        <span>Add False Negative Example</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Subquery and Keywords Generator */}
+            <div className={styles.preferencesCard}>
+              <div
+                className={styles.cardHeader}
+                onClick={() => toggleSection("subqueryGenerator")}
+              >
+                <h3 className={styles.cardTitle}>
+                  Subquery & Keywords Generator
+                </h3>
+                <button className={styles.toggleButton}>
+                  {showSections.subqueryGenerator ? (
+                    <ChevronUp size={20} />
+                  ) : (
+                    <ChevronDown size={20} />
+                  )}
+                </button>
+              </div>
+
+              {showSections.subqueryGenerator && (
+                <div className={styles.cardContent}>
+                  {/* Custom Instructions */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Custom Instructions
+                    </label>
+                    {editedProject.recall_preferences
+                      .subquery_and_keywords_generator.custom_instructions
+                      .length > 0 ? (
+                      editedProject.recall_preferences.subquery_and_keywords_generator.custom_instructions.map(
+                        (instruction, index) => (
+                          <div
+                            key={`subq-inst-${index}`}
+                            className={styles.arrayItemContainer}
+                          >
+                            {isEditing ? (
+                              <>
+                                <textarea
+                                  value={instruction}
+                                  onChange={(e) =>
+                                    handleArrayItemChange(
+                                      "recall_preferences.subquery_and_keywords_generator.custom_instructions",
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  className={styles.arrayItemInput}
+                                />
+                                <button
+                                  className={styles.removeItemButton}
+                                  onClick={() =>
+                                    removeArrayItem(
+                                      "recall_preferences.subquery_and_keywords_generator.custom_instructions",
+                                      index
+                                    )
+                                  }
+                                >
+                                  <X size={16} />
+                                </button>
+                              </>
+                            ) : (
+                              <div className={styles.arrayItemValue}>
+                                {instruction || "No instruction provided"}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className={styles.emptyState}>
+                        <InfoIcon size={18} />
+                        <p>
+                          No custom instructions have been added yet.{" "}
+                          {isEditing && "Use the button below to add some."}
+                        </p>
+                      </div>
+                    )}
+                    {isEditing && (
+                      <button
+                        className={styles.addItemButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addArrayItem(
+                            "recall_preferences.subquery_and_keywords_generator.custom_instructions"
+                          );
+                        }}
+                      >
+                        <Plus size={16} />
+                        <span>Add Custom Instruction</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Subqueries Weight */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Subqueries Candidate Nodes Weight
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="number"
+                        name="subqueries_candidate_nodes_weight"
+                        value={
+                          editedProject.recall_preferences
+                            .subquery_and_keywords_generator
+                            .subqueries_candidate_nodes_weight
+                        }
+                        onChange={handleNumberChange}
+                        step="0.1"
+                        className={styles.numberInput}
+                      />
+                    ) : (
+                      <div className={styles.infoValue}>
+                        {
+                          editedProject.recall_preferences
+                            .subquery_and_keywords_generator
+                            .subqueries_candidate_nodes_weight
+                        }
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Example Subqueries */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Example Subqueries
+                    </label>
+                    {editedProject.recall_preferences
+                      .subquery_and_keywords_generator.example_subqueries.length >
+                    0 ? (
+                      editedProject.recall_preferences.subquery_and_keywords_generator.example_subqueries.map(
+                        (example, index) => (
+                          <div
+                            key={`subq-${index}`}
+                            className={styles.arrayItemContainer}
+                          >
+                            {isEditing ? (
+                              <>
+                                <input
+                                  type="text"
+                                  value={example}
+                                  onChange={(e) =>
+                                    handleArrayItemChange(
+                                      "recall_preferences.subquery_and_keywords_generator.example_subqueries",
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  className={styles.arrayItemInput}
+                                />
+                                <button
+                                  className={styles.removeItemButton}
+                                  onClick={() =>
+                                    removeArrayItem(
+                                      "recall_preferences.subquery_and_keywords_generator.example_subqueries",
+                                      index
+                                    )
+                                  }
+                                >
+                                  <X size={16} />
+                                </button>
+                              </>
+                            ) : (
+                              <div className={styles.arrayItemValue}>
+                                {example || "No example provided"}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className={styles.emptyState}>
+                        <InfoIcon size={18} />
+                        <p>
+                          No example subqueries have been added yet.{" "}
+                          {isEditing && "Use the button below to add some."}
+                        </p>
+                      </div>
+                    )}
+                    {isEditing && (
+                      <button
+                        className={styles.addItemButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addArrayItem(
+                            "recall_preferences.subquery_and_keywords_generator.example_subqueries"
+                          );
+                        }}
+                      >
+                        <Plus size={16} />
+                        <span>Add Example Subquery</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Keywords Weight */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Keywords Candidate Nodes Weight
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="number"
+                        name="keywords_candidate_nodes_weight"
+                        value={
+                          editedProject.recall_preferences
+                            .subquery_and_keywords_generator
+                            .keywords_candidate_nodes_weight
+                        }
+                        onChange={handleNumberChange}
+                        step="0.1"
+                        className={styles.numberInput}
+                      />
+                    ) : (
+                      <div className={styles.infoValue}>
+                        {
+                          editedProject.recall_preferences
+                            .subquery_and_keywords_generator
+                            .keywords_candidate_nodes_weight
+                        }
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Example Keywords */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>Example Keywords</label>
+                    {editedProject.recall_preferences
+                      .subquery_and_keywords_generator.example_keywords.length >
+                    0 ? (
+                      editedProject.recall_preferences.subquery_and_keywords_generator.example_keywords.map(
+                        (keyword, index) => (
+                          <div
+                            key={`keyword-${index}`}
+                            className={styles.arrayItemContainer}
+                          >
+                            {isEditing ? (
+                              <>
+                                <input
+                                  type="text"
+                                  value={keyword}
+                                  onChange={(e) =>
+                                    handleArrayItemChange(
+                                      "recall_preferences.subquery_and_keywords_generator.example_keywords",
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  className={styles.arrayItemInput}
+                                />
+                                <button
+                                  className={styles.removeItemButton}
+                                  onClick={() =>
+                                    removeArrayItem(
+                                      "recall_preferences.subquery_and_keywords_generator.example_keywords",
+                                      index
+                                    )
+                                  }
+                                >
+                                  <X size={16} />
+                                </button>
+                              </>
+                            ) : (
+                              <div className={styles.arrayItemValue}>
+                                {keyword || "No keyword provided"}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className={styles.emptyState}>
+                        <InfoIcon size={18} />
+                        <p>
+                          No example keywords have been added yet.{" "}
+                          {isEditing && "Use the button below to add some."}
+                        </p>
+                      </div>
+                    )}
+                    {isEditing && (
+                      <button
+                        className={styles.addItemButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addArrayItem(
+                            "recall_preferences.subquery_and_keywords_generator.example_keywords"
+                          );
+                        }}
+                      >
+                        <Plus size={16} />
+                        <span>Add Example Keyword</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Generation Preferences */}
+            <div className={styles.preferencesCard}>
+              <div
+                className={styles.cardHeader}
+                onClick={() => toggleSection("generationPreferences")}
+              >
+                <h3 className={styles.cardTitle}>Generation Preferences</h3>
+                <button className={styles.toggleButton}>
+                  {showSections.generationPreferences ? (
+                    <ChevronUp size={20} />
+                  ) : (
+                    <ChevronDown size={20} />
+                  )}
+                </button>
+              </div>
+
+              {showSections.generationPreferences && (
+                <div className={styles.cardContent}>
+                  {/* Custom Instructions */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Custom Instructions
+                    </label>
+                    {editedProject.generation_preferences.custom_instructions
+                      .length > 0 ? (
+                      editedProject.generation_preferences.custom_instructions.map(
+                        (instruction, index) => (
+                          <div
+                            key={`gen-inst-${index}`}
+                            className={styles.arrayItemContainer}
+                          >
+                            {isEditing ? (
+                              <>
+                                <textarea
+                                  value={instruction}
+                                  onChange={(e) =>
+                                    handleArrayItemChange(
+                                      "generation_preferences.custom_instructions",
+                                      index,
+                                      e.target.value
+                                    )
+                                  }
+                                  className={styles.arrayItemInput}
+                                />
+                                <button
+                                  className={styles.removeItemButton}
+                                  onClick={() =>
+                                    removeArrayItem(
+                                      "generation_preferences.custom_instructions",
+                                      index
+                                    )
+                                  }
+                                >
+                                  <X size={16} />
+                                </button>
+                              </>
+                            ) : (
+                              <div className={styles.arrayItemValue}>
+                                {instruction || "No instruction provided"}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className={styles.emptyState}>
+                        <InfoIcon size={18} />
+                        <p>
+                          No custom instructions have been added yet.{" "}
+                          {isEditing && "Use the button below to add some."}
+                        </p>
+                      </div>
+                    )}
+                    {isEditing && (
+                      <button
+                        className={styles.addItemButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addArrayItem(
+                            "generation_preferences.custom_instructions"
+                          );
+                        }}
+                      >
+                        <Plus size={16} />
+                        <span>Add Custom Instruction</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Top K Semantic Similarity Check */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Top K Semantic Similarity Check
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="number"
+                        name="top_k_symantic_similarity_check"
+                        value={
+                          editedProject.generation_preferences
+                            .top_k_symantic_similarity_check
+                        }
+                        onChange={handleNumberChange}
+                        min="0"
+                        step="1"
+                        className={styles.numberInput}
+                      />
+                    ) : (
+                      <div className={styles.infoValue}>
+                        {
+                          editedProject.generation_preferences
+                            .top_k_symantic_similarity_check
+                        }
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Raise Merge Conflict */}
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.fieldLabel}>
+                      Raise Merge Conflict
+                    </label>
+                    {isEditing ? (
+                      <div className={styles.switchContainer}>
+                        <input
+                          type="checkbox"
+                          id="raiseMergeConflict"
+                          name="raise_merge_conflict"
+                          checked={
+                            editedProject.generation_preferences
+                              .raise_merge_conflict
+                          }
+                          onChange={handleCheckboxChange}
+                          className={styles.switchInput}
+                        />
+                        <label
+                          htmlFor="raiseMergeConflict"
+                          className={styles.switchLabel}
+                        >
+                          {editedProject.generation_preferences
+                            .raise_merge_conflict
+                            ? "Enabled"
+                            : "Disabled"}
+                        </label>
+                      </div>
+                    ) : (
+                      <div className={styles.infoValue}>
+                        {editedProject.generation_preferences.raise_merge_conflict
+                          ? "Enabled"
+                          : "Disabled"}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Danger Zone */}
+          <section className={styles.dangerZone}>
+            <h2 className={styles.dangerTitle}>Danger Zone</h2>
+
+            <div className={styles.dangerCard}>
+              <div className={styles.dangerInfo}>
+                <h3>Delete this project</h3>
+                <p>
+                  Once you delete a project, there is no going back. Please be
+                  certain.
+                </p>
+              </div>
+
+              <button
+                className={styles.deleteButton}
+                onClick={() => setShowDeleteConfirm(true)}
+                disabled={actionLoading}
+              >
+                Delete Project
+              </button>
+            </div>
+          </section>
+
+          {/* Delete Confirmation Modal */}
+          {showDeleteConfirm && (
+            <div className={styles.modalOverlay}>
+              <div className={styles.deleteModal}>
+                <div className={styles.modalHeader}>
+                  <h3>Delete Project</h3>
+                  <button
+                    className={styles.closeButton}
+                    onClick={() => setShowDeleteConfirm(false)}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className={styles.modalBody}>
+                  <div className={styles.warningMessage}>
+                    <AlertCircle size={20} />
+                    <span>
+                      This action cannot be undone. This will permanently delete
+                      the project.
+                    </span>
+                  </div>
+
+                  <p>
+                    Please type <strong>{project.name}</strong> to confirm.
+                  </p>
+
+                  <input
+                    type="text"
+                    className={styles.confirmInput}
+                    placeholder="Type project name to confirm"
+                    value={deleteConfirmText}
+                    onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  />
+
+                  <div className={styles.modalActions}>
+                    <button
+                      className={styles.cancelButton}
+                      onClick={() => setShowDeleteConfirm(false)}
+                      disabled={actionLoading}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      className={styles.deleteConfirmButton}
+                      onClick={handleDeleteProject}
+                      disabled={
+                        actionLoading || deleteConfirmText !== project.name
+                      }
+                    >
+                      {actionLoading
+                        ? "Deleting..."
+                        : "I understand, delete this project"}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

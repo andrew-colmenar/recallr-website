@@ -200,7 +200,7 @@
 
 .navLink {
   padding: 0.4rem 0.6rem;
-  font-size: 0.75rem;
+  font-size: 1.15rem;
   color: #D1D5DB;
   /* Updated: gray-300 */
   text-decoration: none;
@@ -212,6 +212,7 @@
 .navLinkText {
   position: relative;
   z-index: 1;
+  font-size: 1.15rem;
 }
 
 .navLink:hover {

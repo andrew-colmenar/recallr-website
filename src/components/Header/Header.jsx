@@ -138,11 +138,7 @@ const Header = () => {
 
       <div className={styles.headerRight}>
         <Link
-          to={
-            currentProject.id !== DEFAULT_PROJECT.id
-              ? `/dashboard?project=${currentProject.id}`
-              : "/dashboard"
-          }
+          to="/dashboard/main"
           className={`${styles.navLink} ${
             isDashboardActive ? styles.active : ""
           }`}

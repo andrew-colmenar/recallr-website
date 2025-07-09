@@ -18,6 +18,8 @@ import "./App.css";
 import authService from "./services/authService";
 import Header from "./components/Header/Header";
 import GetStarted from "./components/GetStarted/GetStarted";
+import ContactHelp from "./components/ContactHelp";
+import ProjectManagement from "./components/Dashboard/Projects/ProjectManagement";
 
 // Custom loading component with updated styling
 const LoadingScreen = () => (
@@ -69,11 +71,11 @@ function AppContent() {
           {/* Public routes - accessible when not logged in */}
           <Route 
             path="/login" 
-            element={sessionValid ? <Navigate to="/getstarted" /> : <Login />} 
+            element={sessionValid ? <Navigate to="/dashboard/main" /> : <Login />} 
           />
           <Route 
             path="/signup" 
-            element={sessionValid ? <Navigate to="/getstarted" /> : <Signup />} 
+            element={sessionValid ? <Navigate to="/dashboard/main" /> : <Signup />} 
           />
 
           {/* Protected routes - require authentication */}
@@ -84,6 +86,10 @@ function AppContent() {
           <Route 
             path="/dashboard/main" 
             element={sessionValid ? <MainDashboard /> : <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/dashboard/projects" 
+            element={<ProjectManagement />} 
           />
 
           {/* Non-project specific routes */}
@@ -122,20 +128,24 @@ function AppContent() {
               <GetStarted />
             } 
           />
+          <Route 
+            path="/contact-help" 
+            element={<ContactHelp />} 
+          />
 
           {/* Redirect from root to dashboard */}
           <Route
             path="/"
             element={
-              sessionValid ? <Navigate to="/getstarted" /> : <Navigate to="/login" />
-            } 
+              sessionValid ? <Navigate to="/dashboard/main" /> : <Navigate to="/login" />
+            }
           />
 
           {/* 404 route - handle unmatched routes */}
           <Route 
             path="*" 
             element={
-              <Navigate to={sessionValid ? "/getstarted" : "/login"} />
+              <Navigate to={sessionValid ? "/dashboard/main" : "/login"} />
             } 
           />
         </Routes>
