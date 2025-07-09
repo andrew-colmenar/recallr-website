@@ -14,7 +14,7 @@ import Sidebar from "./Sidebar/Sidebar";
 import Users from "./Users/Users";
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
-import ProjectManagement from "./Projects/ProjectManagement";
+import ProjectSettings from "./Settings/ProjectSettings";
 import { useProjectContext } from "../../context/ProjectContext";
 
 // use postman     
@@ -382,7 +382,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 ) : (
-                  <ProjectManagement />
+                  <ProjectSettings />
                 )
               }
             />

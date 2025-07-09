@@ -333,7 +333,7 @@ const ProjectManagement = () => {
     setSelectedProject(null);
     setProjectDetails(null);
     setDetailsError(null);
-    navigate(`/dashboard/settings`);
+    navigate(`/dashboard/project-settings?project=${projectDetails.id}`);
   };
 
   const handleDeleteProject = async () => {
