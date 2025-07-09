@@ -93,11 +93,11 @@ const Header = () => {
 
     // If we're on a dashboard path, preserve the current route with the new project
     if (location.pathname.startsWith("/dashboard/")) {
-      const routePart = location.pathname.split("/dashboard/")[1] || "settings";
+      const routePart = location.pathname.split("/dashboard/")[1] || "project-settings";
       navigate(`/dashboard/${routePart}?project=${project.id}`);
     } else {
-      // Otherwise, go to settings with the selected project
-      navigate(`/dashboard/settings?project=${project.id}`);
+      // Otherwise, go to project-settings with the selected project
+      navigate(`/dashboard/project-settings?project=${project.id}`);
     }
 
     // Close the modal after project selection
