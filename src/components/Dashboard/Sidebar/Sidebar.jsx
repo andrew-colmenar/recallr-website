@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   Mail,
   Folder,
+  CreditCard,
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
@@ -48,6 +49,7 @@ const Sidebar = ({ projectId, onCollapseChange }) => {
     if (path.includes("/users")) return "Users";
     if (path.includes("/apikeys")) return "API Keys";
     if (path.includes("/settings")) return "Settings";
+    if (path.includes("/payment")) return "Payment";
     if (path.includes("/getstarted")) return "Get Started";
     if (path.includes("/status")) return "Status";
     return "Dashboard";
@@ -132,6 +134,17 @@ const Sidebar = ({ projectId, onCollapseChange }) => {
                     <Settings size={18} />
                   </div>
                   <span>Project Settings</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dashboard/payment"
+                  className={`${styles.navItem} ${isActive("/payment")}`}
+                >
+                  <div className={styles.iconContainer}>
+                    <CreditCard size={18} />
+                  </div>
+                  <span>Payment</span>
                 </Link>
               </li>
             </ul>

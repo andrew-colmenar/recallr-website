@@ -15,6 +15,7 @@ import Users from "./Users/Users";
 import styles from "./Dashboard.module.css";
 import APIKeys from "./APIKeys/APIKeys";
 import ProjectSettings from "./Settings/ProjectSettings";
+import Payment from "../Billing/Payment/Payment";
 import { useProjectContext } from "../../context/ProjectContext";
 
 // use postman     
@@ -293,7 +294,8 @@ const Dashboard = () => {
     return (
       path.includes("/getstarted") ||
       path.includes("/contact-help") ||
-      path.includes("/status")
+      path.includes("/status") ||
+      path.includes("/payment")
     );
   };
 
@@ -385,6 +387,10 @@ const Dashboard = () => {
                   <ProjectSettings />
                 )
               }
+            />
+            <Route
+              path="payment"
+              element={<Payment />}
             />
             {/* <Route path="*" element={<ComingSoon project={currentProject} />} /> */}
           </Routes>

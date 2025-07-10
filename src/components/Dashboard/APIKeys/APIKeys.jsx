@@ -1,104 +1,81 @@
 import React, { useState, useEffect } from "react";
+import { Key, Plus, Copy, Trash2, Eye, EyeOff, X } from "lucide-react";
+import styles from "./APIKeys.module.css";
+import { useProjectContext } from "../../../context/ProjectContext";
 import { appApi } from "../../../api/axios";
 import Cookies from "js-cookie";
-import { AlertCircle, Copy, Trash2, X, Check, Plus } from "lucide-react";
-import styles from "./APIKeys.module.css";
 
-const APIKeys = ({ project }) => {
-  const [apiKeys, setApiKeys] = useState([]);
+const APIKeys = () => {
+  const { currentProjectId } = useProjectContext();
+  const [keys, setKeys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showKey, setShowKey] = useState({}); // { [id]: true/false }
   const [newKeyName, setNewKeyName] = useState("");
-  const [isCreating, setIsCreating] = useState(false);
+  const [copiedKeyId, setCopiedKeyId] = useState(null);
+  const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState(null);
-  const [newKey, setNewKey] = useState(null);
-  const [copiedKey, setCopiedKey] = useState(false);
-  const [copiedProjectId, setCopiedProjectId] = useState(false); // New state for project ID copy
-  const [deletingKeyId, setDeletingKeyId] = useState(null);
-  // New state for delete confirmation
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [keyToDelete, setKeyToDelete] = useState(null);
+  const [showKeyModal, setShowKeyModal] = useState(false);
+  const [createdKey, setCreatedKey] = useState(null); // { id, key, ... }
+  const [deletingId, setDeletingId] = useState(null);
 
-  // Function to format date string
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      hour12: true,
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
-  // Fetch API keys for the current project
+  // Fetch API keys on mount
   useEffect(() => {
-    const fetchApiKeys = async () => {
-      if (!project || !project.id) return;
+    if (!currentProjectId) return;
+    fetchKeys();
+    // eslint-disable-next-line
+  }, [currentProjectId]);
 
-      try {
-        setLoading(true);
-        setError(null);
-
-        const user_id = Cookies.get("user_id");
-        const session_id = Cookies.get("session_id");
-
-        if (!user_id || !session_id) {
-          throw new Error("Authentication required");
-        }
-
-        const response = await appApi.get(`projects/${project.id}/api-keys`, {
-          headers: {
-            "X-User-Id": user_id,
-            "X-Session-Id": session_id,
-          },
-        });
-
-        setApiKeys(response.data.keys || []);
-      } catch (err) {
-        if (err.response?.status === 404) {
-          setError("Project not found or API keys feature is not available.");
-        } else if (err.response?.status === 403) {
-          setError("You do not have access to this project's API keys.");
-        } else {
-          setError("Failed to load API keys. Please try again.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApiKeys();
-  }, [project]);
-
-  // Create a new API key
-  const handleCreateKey = async (e) => {
-    e.preventDefault();
-
-    if (!newKeyName.trim()) {
-      setCreateError("API key name is required");
-      return;
-    }
-
+  const fetchKeys = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      setIsCreating(true);
-      setCreateError(null);
-
       const user_id = Cookies.get("user_id");
       const session_id = Cookies.get("session_id");
-
-      if (!user_id || !session_id) {
-        throw new Error("Authentication required");
-      }
-
-      const response = await appApi.post(
-        `projects/${project.id}/api-keys`,
-        {
-          name: newKeyName,
+      if (!user_id || !session_id) throw new Error("Authentication required. Please log in again.");
+      const res = await appApi.get(`/api/v1/projects/${currentProjectId}/api-keys`, {
+        headers: {
+          "X-User-Id": user_id,
+          "X-Session-Id": session_id,
         },
+        params: { offset: 0, limit: 100 },
+      });
+      setKeys(res.data.api_keys || res.data.keys || []);
+    } catch (err) {
+      let message = "Failed to load API keys.";
+      if (err.response) {
+        if (err.response.status === 404) {
+          message = "Project not found. Please check if the project exists and you have access.";
+        } else if (err.response.status === 401) {
+          message = "Authentication required. Please log in again.";
+        } else if (err.response.status === 403) {
+          message = "You do not have permission to access this project.";
+        } else if (err.response.data?.detail) {
+          message = err.response.data.detail;
+        }
+      } else if (err.message) {
+        message = err.message;
+      }
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Create API key
+  const handleCreateKey = async (e) => {
+    e.preventDefault();
+    if (!newKeyName.trim()) return;
+    setCreating(true);
+    setCreateError(null);
+    try {
+      const user_id = Cookies.get("user_id");
+      const session_id = Cookies.get("session_id");
+      if (!user_id || !session_id) throw new Error("Authentication required");
+      const res = await appApi.post(
+        `/api/v1/projects/${currentProjectId}/api-keys`,
+        { name: newKeyName },
         {
           headers: {
             "X-User-Id": user_id,
@@ -106,448 +83,187 @@ const APIKeys = ({ project }) => {
           },
         }
       );
-
-      // Set the new key to show in the success modal
-      setNewKey(response.data);
-
-      // Reset form
+      // Show modal with full key, add to list (but only show last 4 in list)
+      setCreatedKey(res.data);
+      setShowKeyModal(true);
+      setShowCreateModal(false);
       setNewKeyName("");
-      setCopiedKey(false);
-
-      setApiKeys((prevKeys) => [
-        ...prevKeys,
+      // Add to list, but only show last 4 chars in main list
+      setKeys((prev) => [
+        ...prev,
         {
-          id: response.data.id,
-          name: response.data.name,
-          prefix: response.data.key.substring(0, 8), // Show first 8 characters consistently
-          created_at: response.data.created_at,
+          ...res.data,
+          key: undefined, // Don't store full key in list
         },
       ]);
-
-      // Store the created API key in localStorage for use with the Users component
-      localStorage.setItem("api_key", response.data.key);
     } catch (err) {
-      if (err.response?.data?.detail) {
-        if (Array.isArray(err.response.data.detail)) {
-          setCreateError(
-            err.response.data.detail[0]?.msg || "Failed to create API key"
-          );
-        } else {
-          setCreateError(
-            err.response.data.detail || "Failed to create API key"
-          );
-        }
-      } else if (err.response?.status === 403) {
-        setCreateError(
-          "You do not have permission to create API keys for this project"
-        );
-      } else {
-        setCreateError("Failed to create API key. Please try again.");
-      }
+      setCreateError(
+        err.response?.data?.detail || err.message || "Failed to create API key."
+      );
     } finally {
-      setIsCreating(false);
+      setCreating(false);
     }
   };
 
-  // Show delete confirmation dialog
-  const confirmDeleteKey = (key) => {
-    setKeyToDelete(key);
-    setShowDeleteConfirmation(true);
-  };
-
-  // Cancel delete operation
-  const cancelDelete = () => {
-    setKeyToDelete(null);
-    setShowDeleteConfirmation(false);
-  };
-
-  // Revoke (delete) an API key after confirmation
-  const handleRevokeKey = async () => {
-    if (!keyToDelete) return;
-
+  // Delete API key
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this API key? This cannot be undone.")) return;
+    setDeletingId(id);
     try {
-      setDeletingKeyId(keyToDelete.id);
-
       const user_id = Cookies.get("user_id");
       const session_id = Cookies.get("session_id");
-
-      if (!user_id || !session_id) {
-        throw new Error("Authentication required");
-      }
-
-      await appApi.delete(`projects/${project.id}/api-keys/${keyToDelete.id}`, {
+      if (!user_id || !session_id) throw new Error("Authentication required");
+      await appApi.delete(`/api/v1/projects/${currentProjectId}/api-keys/${id}`, {
         headers: {
           "X-User-Id": user_id,
           "X-Session-Id": session_id,
         },
       });
-
-      // Update the list by removing the revoked key
-      setApiKeys((prevKeys) =>
-        prevKeys.filter((key) => key.id !== keyToDelete.id)
-      );
-
-      // Check if the deleted key is stored in localStorage
-      const storedKeyPrefix = localStorage.getItem("api_key")?.substring(0, 8);
-      const deletedKeyPrefix = keyToDelete.prefix;
-
-      if (storedKeyPrefix === deletedKeyPrefix) {
-        localStorage.removeItem("api_key");
-      }
-
-      // Close the confirmation dialog
-      setShowDeleteConfirmation(false);
-      setKeyToDelete(null);
+      setKeys((prev) => prev.filter((k) => k.id !== id));
     } catch (err) {
-      let errorMessage = "Failed to revoke API key";
-
-      if (err.response?.data?.detail) {
-        if (Array.isArray(err.response.data.detail)) {
-          errorMessage = err.response.data.detail[0]?.msg || errorMessage;
-        } else {
-          errorMessage = err.response.data.detail || errorMessage;
-        }
-      } else if (err.response?.status === 404) {
-        errorMessage = "API key not found";
-      } else if (err.response?.status === 403) {
-        errorMessage = "You do not have permission to revoke this API key";
-      }
-
-      setError(errorMessage);
+      setError(
+        err.response?.data?.detail || err.message || "Failed to delete API key."
+      );
     } finally {
-      setDeletingKeyId(null);
+      setDeletingId(null);
     }
   };
 
-  // Copy key to clipboard
-  const copyToClipboard = async (text, setCopied) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
+  // Copy key to clipboard (for modal only)
+  const handleCopy = (key, id) => {
+    navigator.clipboard.writeText(key);
+    setCopiedKeyId(id);
+    setTimeout(() => setCopiedKeyId(null), 1500);
+  };
 
-      // Reset the copied state after 3 seconds
-      setTimeout(() => {
-        setCopied(false);
-      }, 3000);
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
-    }
+  // Only show last 4 chars in list
+  const maskKey = (key) => {
+    if (!key) return "****";
+    return "****" + key.slice(-4);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
-        <div className={styles.header}>
+      <div className={styles.headerSection}>
+        <div className={styles.headerIcon}><Key size={28} /></div>
+        <div>
           <h1 className={styles.title}>API Keys</h1>
-          <div className={styles.projectId}>
-            Project ID:
-            <span className={styles.mono}>{project?.id || "Loading..."}</span>
-            <button
-              className={`${styles.projectIdCopyButton} ${
-                copiedProjectId ? styles.copied : ""
-              }`}
-              onClick={() => copyToClipboard(project?.id, setCopiedProjectId)}
-              disabled={!project?.id}
-              title="Copy project ID"
-            >
-              {copiedProjectId ? <Check size={14} /> : <Copy size={14} />}
+          <p className={styles.subtitle}>Manage your project's API keys. Keep your keys secure and never share them publicly.</p>
+        </div>
+        {/* Hide header button if no keys and not loading */}
+        {(!loading && keys.length > 0) && (
+          <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
+            <Plus size={18} /> New API Key
+          </button>
+        )}
+      </div>
+
+      {/* Error message */}
+      {error && <div className={styles.emptyState} style={{color: 'var(--error-color)'}}>{error}</div>}
+
+      {/* Keys List */}
+      <div className={styles.keysSection}>
+        {loading ? (
+          <div className={styles.emptyState}><span>Loading...</span></div>
+        ) : keys.length === 0 ? (
+          <div className={styles.emptyState}>
+            <Key size={48} />
+            <h2>No API Keys</h2>
+            <p>You haven't created any API keys yet.</p>
+            <button className={styles.createButton} onClick={() => setShowCreateModal(true)}>
+              <Plus size={18} /> Create API Key
             </button>
           </div>
-        </div>
-
-        {/* Error message display */}
-        {error && (
-          <div className={styles.errorMessage}>
-            <AlertCircle size={16} />
-            <span>{error}</span>
-          </div>
-        )}
-
-        {/* API Keys Table */}
-        <div className={styles.tableContainer}>
-          {loading ? (
-            <div className={styles.loading}>
-              <div className={styles.loadingSpinner}></div>
-              <p>Loading API keys...</p>
-            </div>
-          ) : apiKeys.length > 0 ? (
-            <table className={styles.table}>
-              <thead>
-                <tr className={styles.tableHeader}>
-                  <th className={styles.headerCell}>Name</th>
-                  <th className={styles.headerCell}>Prefix</th>
-                  <th className={styles.headerCell}>Created At</th>
-                  <th className={styles.headerCell}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {apiKeys.map((keyItem) => (
-                  <tr key={keyItem.id} className={styles.tableRow}>
-                    <td className={styles.cell}>{keyItem.name}</td>
-                    <td className={styles.cell}>
-                      <span className={styles.mono}>
-                        {keyItem.prefix + "*****"}
-                      </span>
-                    </td>
-                    <td className={styles.cell}>
-                      {formatDate(keyItem.created_at)}
-                    </td>
-                    <td className={styles.cell}>
-                      <button
-                        className={`${styles.iconButton} ${styles.deleteButton}`}
-                        onClick={() => confirmDeleteKey(keyItem)}
-                        disabled={deletingKeyId === keyItem.id}
-                        title="Revoke API key"
-                      >
-                        {deletingKeyId === keyItem.id ? (
-                          <div className={styles.buttonSpinner}></div>
-                        ) : (
-                          <Trash2 size={16} />
-                        )}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div className={styles.emptyState}>
-              <p>No API keys found for this project.</p>
-            </div>
-          )}
-        </div>
-
-        {/* Create Key Button */}
-        <button
-          className={styles.createButton}
-          onClick={() => setShowCreateModal(true)}
-        >
-          <Plus size={16} />
-          <span>Create API Key</span>
-        </button>
-
-        {/* Create Key Modal */}
-        {showCreateModal && !newKey && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-              <div className={styles.modalHeader}>
-                <h3>Create New API Key</h3>
-                <button
-                  className={styles.closeButton}
-                  onClick={() => {
-                    setShowCreateModal(false);
-                    setCreateError(null);
-                    setNewKeyName("");
-                  }}
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className={styles.modalBody}>
-                {createError && (
-                  <div className={styles.errorMessage}>
-                    <AlertCircle size={16} />
-                    <span>{createError}</span>
+        ) : (
+          <div className={styles.keysList}>
+            {keys.map((k) => (
+              <div className={styles.keyCard} key={k.id}>
+                <div className={styles.keyInfo}>
+                  <div className={styles.keyName}>{k.name}</div>
+                  <div className={styles.keyMeta}>
+                    <span>Created: {new Date(k.created_at).toLocaleDateString()}</span>
+                    <span>Last used: {k.last_used ? new Date(k.last_used).toLocaleDateString() : "Never"}</span>
                   </div>
-                )}
-
-                <form onSubmit={handleCreateKey}>
-                  <div className={styles.formGroup}>
-                    <label htmlFor="keyName">API Key Name *</label>
-                    <input
-                      type="text"
-                      id="keyName"
-                      value={newKeyName}
-                      onChange={(e) => setNewKeyName(e.target.value)}
-                      placeholder="e.g. Production API Key"
-                      required
-                    />
+                </div>
+                <div className={styles.keyValueRow}>
+                  <div className={styles.keyValueBox}>
+                    <span className={styles.keyValue}>{maskKey(k.last_four || k.key)}</span>
                   </div>
-
-                  <div className={styles.modalActions}>
-                    <button
-                      type="button"
-                      className={styles.cancelButton}
-                      onClick={() => {
-                        setShowCreateModal(false);
-                        setCreateError(null);
-                        setNewKeyName("");
-                      }}
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      type="submit"
-                      className={styles.submitButton}
-                      disabled={isCreating}
-                    >
-                      {isCreating ? (
-                        <>
-                          <div className={styles.buttonSpinner}></div>
-                          <span>Creating...</span>
-                        </>
-                      ) : (
-                        "Create Key"
-                      )}
+                  <div className={styles.keyActions}>
+                    <button className={styles.iconButton} onClick={() => handleDelete(k.id)} disabled={deletingId === k.id}>
+                      <Trash2 size={18} />
                     </button>
                   </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Success Modal for New API Key */}
-        {newKey && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-              <div className={styles.modalHeader}>
-                <h3>API Key Created</h3>
-                <button
-                  className={styles.closeButton}
-                  onClick={() => {
-                    setNewKey(null);
-                    setShowCreateModal(false);
-                  }}
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className={styles.modalBody}>
-                <div className={styles.successMessage}>
-                  <p>
-                    <strong>
-                      This is the only time you'll see the complete API key.
-                    </strong>{" "}
-                    Please copy it now as you won't be able to see it again!
-                  </p>
-                </div>
-
-                <div className={styles.keyDisplay}>
-                  <div className={styles.keyValue}>
-                    <span className={styles.mono}>{newKey.key}</span>
-                  </div>
-
-                  <button
-                    className={`${styles.copyButton} ${
-                      copiedKey ? styles.copied : ""
-                    }`}
-                    onClick={() => copyToClipboard(newKey.key, setCopiedKey)}
-                  >
-                    {copiedKey ? (
-                      <>
-                        <Check size={16} />
-                        <span>Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={16} />
-                        <span>Copy</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                <div className={styles.modalActions}>
-                  <button
-                    className={styles.doneButton}
-                    onClick={() => {
-                      setNewKey(null);
-                      setShowCreateModal(false);
-                    }}
-                  >
-                    Done
-                  </button>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* Delete Confirmation Modal */}
-        {showDeleteConfirmation && keyToDelete && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-              <div className={styles.modalHeader}>
-                <h3>Revoke API Key</h3>
-                <button
-                  className={styles.closeButton}
-                  onClick={cancelDelete}
-                  disabled={deletingKeyId === keyToDelete.id}
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className={styles.modalBody}>
-                <div className={styles.warningMessage}>
-                  <AlertCircle size={20} />
-                  <div>
-                    <p>
-                      <strong>
-                        Are you sure you want to revoke this API key?
-                      </strong>
-                    </p>
-                    <p>
-                      This action cannot be undone. Any applications using this
-                      key will no longer be able to access the API.
-                    </p>
-                  </div>
-                </div>
-
-                <div className={styles.keyDetails}>
-                  <div className={styles.keyDetail}>
-                    <span className={styles.keyDetailLabel}>Name:</span>
-                    <span className={styles.keyDetailValue}>
-                      {keyToDelete.name}
-                    </span>
-                  </div>
-                  <div className={styles.keyDetail}>
-                    <span className={styles.keyDetailLabel}>Prefix:</span>
-                    <span className={styles.keyDetailValue}>
-                      {keyToDelete.prefix}
-                    </span>
-                  </div>
-                  <div className={styles.keyDetail}>
-                    <span className={styles.keyDetailLabel}>Created:</span>
-                    <span className={styles.keyDetailValue}>
-                      {formatDate(keyToDelete.created_at)}
-                    </span>
-                  </div>
-                </div>
-
-                <div className={styles.modalActions}>
-                  <button
-                    className={styles.cancelButton}
-                    onClick={cancelDelete}
-                    disabled={deletingKeyId === keyToDelete.id}
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    className={styles.deleteConfirmButton}
-                    onClick={handleRevokeKey}
-                    disabled={deletingKeyId === keyToDelete.id}
-                  >
-                    {deletingKeyId === keyToDelete.id ? (
-                      <>
-                        <div className={styles.buttonSpinner}></div>
-                        <span>Revoking...</span>
-                      </>
-                    ) : (
-                      "Revoke API Key"
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         )}
       </div>
+
+      {/* Create Key Modal */}
+      {showCreateModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <div className={styles.modalHeader}>
+              <h2>Create API Key</h2>
+              <button className={styles.iconButton} onClick={() => setShowCreateModal(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            <form onSubmit={handleCreateKey} className={styles.modalForm}>
+              <label className={styles.label}>Key Name</label>
+              <input
+                className={styles.input}
+                type="text"
+                value={newKeyName}
+                onChange={e => setNewKeyName(e.target.value)}
+                placeholder="e.g. Production Key"
+                autoFocus
+                required
+              />
+              {createError && <div style={{color: 'var(--error-color)', fontSize: '0.95rem'}}>{createError}</div>}
+              <div className={styles.modalActions}>
+                <button type="button" className={styles.cancelButton} onClick={() => setShowCreateModal(false)}>
+                  Cancel
+                </button>
+                <button type="submit" className={styles.createButton} disabled={creating}>
+                  <Plus size={16} /> {creating ? 'Creating...' : 'Create'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Show full key ONCE after creation */}
+      {showKeyModal && createdKey && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <div className={styles.modalHeader}>
+              <h2>API Key Created</h2>
+              <button className={styles.iconButton} onClick={() => { setShowKeyModal(false); setCreatedKey(null); }}>
+                <X size={20} />
+              </button>
+            </div>
+            <div style={{marginBottom: '1rem', color: 'var(--text-secondary)'}}>
+              <strong>This is the only time you'll see the full API key.</strong> Please copy it now. You will not be able to view or copy it again!
+            </div>
+            <div className={styles.keyValueBox} style={{marginBottom: '1.5rem', fontSize: '1.1rem', justifyContent: 'space-between'}}>
+              <span className={styles.keyValue}>{createdKey.key}</span>
+              <button className={styles.iconButton} onClick={() => handleCopy(createdKey.key, createdKey.id)}>
+                <Copy size={18} />
+                {copiedKeyId === createdKey.id && <span className={styles.copiedText}>Copied!</span>}
+              </button>
+            </div>
+            <div className={styles.modalActions}>
+              <button className={styles.createButton} onClick={() => { setShowKeyModal(false); setCreatedKey(null); }}>
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
