@@ -12,7 +12,6 @@ const DEFAULT_PROJECT = {
   name: "Default Project",
   description: "Default project for new users",
   created_at: new Date().toISOString(),
-  is_available: true,
 };
 
 const getSessionFromCookies = () => {
@@ -232,7 +231,6 @@ const ProjectModal = ({
         name: newProject.name,
         description: newProject.description,
         created_at: new Date().toISOString(),
-        is_available: true,
       };
 
       // Add the new project to the list
@@ -374,23 +372,13 @@ const ProjectModal = ({
                 <div
                   key={project.id}
                   className={`${styles.projectItem} ${
-                    !project.is_available ? styles.projectDisabled : ""
-                  } ${
                     project.id === currentProjectId ? styles.projectActive : ""
                   }`}
-                  onClick={() =>
-                    project.is_available !== false &&
-                    handleProjectSelect(project)
-                  }
+                  onClick={() => handleProjectSelect(project)}
                 >
                   <div className={styles.projectInfo}>
                     <h3 className={styles.projectName}>
                       {project.name}
-                      {project.is_available === false && (
-                        <span className={styles.unavailableTag}>
-                          Unavailable
-                        </span>
-                      )}
                       {project.id === currentProjectId && (
                         <span className={styles.currentTag}>Current</span>
                       )}

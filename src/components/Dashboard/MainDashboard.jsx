@@ -9,7 +9,7 @@ import { appApi } from "../../api/axios";
 import Cookies from "js-cookie";
 
 const MainDashboard = () => {
-  const { currentProjectId } = useProjectContext();
+  const { currentProjectId, setCurrentProjectId } = useProjectContext();
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [balance, setBalance] = useState(null);
   const [balanceLoading, setBalanceLoading] = useState(true);
@@ -118,8 +118,11 @@ const MainDashboard = () => {
           <ProjectModal
             isOpen={isProjectModalOpen}
             onClose={() => setIsProjectModalOpen(false)}
-            onProjectSelect={() => setIsProjectModalOpen(false)}
-            currentProjectId={null}
+            onProjectSelect={(project) => {
+              setCurrentProjectId(project.id);
+              setIsProjectModalOpen(false);
+            }}
+            currentProjectId={currentProjectId}
           />
         </div>
       </div>
