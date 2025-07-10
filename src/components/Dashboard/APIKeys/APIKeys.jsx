@@ -34,7 +34,7 @@ const APIKeys = () => {
       const user_id = Cookies.get("user_id");
       const session_id = Cookies.get("session_id");
       if (!user_id || !session_id) throw new Error("Authentication required. Please log in again.");
-      const res = await appApi.get(`/api/v1/projects/${currentProjectId}/api-keys`, {
+      const res = await appApi.get(`/projects/${currentProjectId}/api-keys`, {
         headers: {
           "X-User-Id": user_id,
           "X-Session-Id": session_id,
@@ -74,7 +74,7 @@ const APIKeys = () => {
       const session_id = Cookies.get("session_id");
       if (!user_id || !session_id) throw new Error("Authentication required");
       const res = await appApi.post(
-        `/api/v1/projects/${currentProjectId}/api-keys`,
+        `/projects/${currentProjectId}/api-keys`,
         { name: newKeyName },
         {
           headers: {
@@ -113,7 +113,7 @@ const APIKeys = () => {
       const user_id = Cookies.get("user_id");
       const session_id = Cookies.get("session_id");
       if (!user_id || !session_id) throw new Error("Authentication required");
-      await appApi.delete(`/api/v1/projects/${currentProjectId}/api-keys/${id}`, {
+      await appApi.delete(`/projects/${currentProjectId}/api-keys/${id}`, {
         headers: {
           "X-User-Id": user_id,
           "X-Session-Id": session_id,
@@ -137,9 +137,10 @@ const APIKeys = () => {
   };
 
   // Only show last 4 chars in list
-  const maskKey = (key) => {
-    if (!key) return "****";
-    return "****" + key.slice(-4);
+  const maskKey = (k) => {
+    // Use 'prefix' if present (from API), otherwise last 4 of 'key'
+    const last4 = k.prefix || (k.key ? k.key.slice(-4) : '');
+    return `****${last4}`;
   };
 
   return (
@@ -187,7 +188,7 @@ const APIKeys = () => {
                 </div>
                 <div className={styles.keyValueRow}>
                   <div className={styles.keyValueBox}>
-                    <span className={styles.keyValue}>{maskKey(k.last_four || k.key)}</span>
+                    <span className={styles.keyValue}>{maskKey(k)}</span>
                   </div>
                   <div className={styles.keyActions}>
                     <button className={styles.iconButton} onClick={() => handleDelete(k.id)} disabled={deletingId === k.id}>
