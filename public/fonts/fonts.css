@@ -6,6 +6,7 @@
   font-display: swap;
 }
 
+/* test */
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('./JetBrainsMono-Medium.woff2') format('woff2');
